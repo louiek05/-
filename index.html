@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>美食冒險者</title>
+<style>
+
+  /* ============================================================
+     🎨 設計變數 — 想改顏色、字體、圓角，改這裡就好
+     ============================================================ */
+  :root {
+    /* 主色調 */
+    --color-primary: #111111;        /* 主要按鈕、深色文字 */
+    --color-primary-text: #ffffff;   /* 主要按鈕上的文字 */
+    --color-bg: #ffffff;             /* 頁面背景 */
+    --color-surface: #f5f5f4;        /* 卡片、輸入框背景 */
+    --color-border: #e5e5e4;         /* 邊框顏色 */
+
+    /* 文字顏色 */
+    --color-text-main: #111111;      /* 主要文字 */
+    --color-text-sub: #6b6b69;       /* 次要文字（地址、說明） */
+    --color-text-hint: #a8a8a5;      /* 提示文字 */
+
+    /* 標籤顏色 — 評分 */
+    --color-badge-rating-bg: #e8f5ef;
+    --color-badge-rating-text: #1a7a45;
+
+    /* 標籤顏色 — 已加入 */
+    --color-added-bg: #e8f5ef;
+    --color-added-text: #1a7a45;
+    --color-added-border: #b6dfc9;
+
+    /* 字體 — 改這裡換字型 */
+    /* 可換成: 'Georgia', 'Noto Serif TC', 'Noto Sans TC' 等 */
+    --font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+
+    /* 圓角大小 */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    /* APP 最大寬度（手機感） */
+    --max-width: 430px;
+  }
+
+  /* ============================================================
+     🌙 深色模式（自動跟隨系統）
+     想關掉深色模式：把下面整個 @media 區塊刪掉就好
+     ============================================================ */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-primary: #f0f0ee;
+      --color-primary-text: #111111;
+      --color-bg: #161614;
+      --color-surface: #222220;
+      --color-border: #2e2e2c;
+      --color-text-main: #f0f0ee;
+      --color-text-sub: #9a9a97;
+      --color-text-hint: #5a5a58;
+      --color-badge-rating-bg: #1a3d2b;
+      --color-badge-rating-text: #6fcf97;
+      --color-added-bg: #1a3d2b;
+      --color-added-text: #6fcf97;
+      --color-added-border: #2d6644;
+    }
+  }
+
+  /* ============================================================
+     基礎重置
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--color-bg);
+    color: var(--color-text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .app {
+    width: 100%;
+    max-width: var(--max-width);
+    min-height: 100vh;
+    background: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ============================================================
+     畫面切換
+     ============================================================ */
+  .screen { display: none; animation: fadeIn 0.18s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ============================================================
+     頂部導覽列
+     ============================================================ */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px 0;
+  }
+
+  .back-btn {
+    width: 36px; height: 36px;
+    background: var(--color-surface);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--color-text-sub);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.12s;
+    flex-shrink: 0;
+  }
+  .back-btn:hover { background: var(--color-border); }
+
+  .page-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-main);
+  }
+
+  /* ============================================================
+     首頁
+     ============================================================ */
+  .home-hero {
+    padding: 56px 28px 32px;
+    text-align: center;
+  }
+
+  /* APP 圖示 — 改 font-size 調大小，改內容換 emoji */
+  .app-icon {
+    width: 72px; height: 72px;
+    background: var(--color-surface);
+    border-radius: 20px;
+    margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* ============================================================
+     🖊 想改 APP 名稱或副標題，改這裡對應的 HTML 文字即可
+     ============================================================ */
+  .app-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-text-hint);
+    margin-bottom: 12px;
+  }
+
+  .home-question {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-text-main);
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+
+  .home-sub {
+    font-size: 14px;
+    color: var(--color-text-sub);
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  /* 主要「隨便」按鈕 */
+  .roll-btn {
+    width: 100%;
+    padding: 17px;
+    background: var(--color-primary);
+    color: var(--color-primary-text);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .roll-btn:hover { opacity: 0.88; }
+  .roll-btn:active { transform: scale(0.98); opacity: 0.75; }
+
+  /* 首頁底部兩個次要按鈕 */
+  .nav-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px 28px 40px;
+  }
+
+  .nav-btn {
+    padding: 14px 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-sub);
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.12s;
+  }
+  .nav-btn:hover { background: var(--color-border); }
+  .nav-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+
+  /* ============================================================
+     推薦結果頁
+     ============================================================ */
+  .result-area { padding: 20px 20px 0; }
+
+  /* 分類標題（「對自己好點」/ 「簡單吃頓飯」） */
+  .result-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-text-hint);
+    margin-bottom: 10px;
+    padding: 0 2px;
+  }
+
+  /* 餐廳卡片 */
+  .restaurant-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 14px;
+    transition: border-color 0.15s;
+  }
+  .restaurant-card:hover { border-color: var(--color-text-hint); }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    gap: 10px;
+  }
+
+  .card-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  /* 加入清單按鈕 */
+  .add-btn {
+    background: var(--color-primary);
+    color: var(--color-primary-text);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 7px 13px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.12s;
+  }
+  .add-btn:hover { opacity: 0.8; }
+
+  /* 已加入狀態 */
+  .add-btn.added {
+    background: var(--color-added-bg);
+    color: var(--color-added-text);
+    border: 1px solid var(--color-added-border);
+  }
+
+  .card-addr {
+    font-size: 13px;
+    color: var(--color-text-sub);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .card-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* 標籤 */
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: var(--radius-full);
+    border: 1px solid transparent;
+  }
+  .badge-rating {
+    background: var(--color-badge-rating-bg);
+    color: var(--color-badge-rating-text);
+  }
+  .badge-price {
+    background: var(--color-surface);
+    color: var(--color-text-sub);
+    border-color: var(--color-border);
+  }
+
+  /* 再抽一次按鈕 */
+  .reroll-row {
+    padding: 8px 20px 32px;
+    text-align: center;
+  }
+  .reroll-btn {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: 9px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-sub);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .reroll-btn:hover { background: var(--color-surface); }
+
+  /* ============================================================
+     我的清單頁
+     ============================================================ */
+  .list-area { padding: 16px 20px 32px; }
+
+  .list-count {
+    font-size: 12px;
+    color: var(--color-text-hint);
+    margin-bottom: 12px;
+  }
+
+  /* 空清單狀態 */
+  .empty-state {
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--color-text-hint);
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 14px; }
+  .empty-text { font-size: 14px; line-height: 1.7; }
+
+  /* 清單中每間餐廳 */
+  .list-item {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    transition: border-color 0.12s;
+  }
+
+  .list-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+    gap: 8px;
+  }
+
+  .list-item-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  /* 刪除按鈕 */
+  .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-hint);
+    font-size: 15px;
+    width: 28px; height: 28px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.12s, color 0.12s;
+  }
+  .delete-btn:hover { background: #fee2e2; color: #dc2626; }
+
+  .list-item-addr {
+    font-size: 12px;
+    color: var(--color-text-sub);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .list-item-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .badge-cat {
+    background: var(--color-surface);
+    color: var(--color-text-sub);
+    border-color: var(--color-border);
+  }
+
+  /* 備註輸入框 */
+  .note-area {
+    width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 9px 11px;
+    font-size: 13px;
+    color: var(--color-text-main);
+    font-family: var(--font);
+    resize: none;
+    min-height: 36px;
+    outline: none;
+    line-height: 1.5;
+    transition: border-color 0.12s;
+    overflow: hidden;
+  }
+  .note-area::placeholder { color: var(--color-text-hint); }
+  .note-area:focus { border-color: var(--color-text-sub); }
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- =====================================================
+       🏠 首頁
+       ===================================================== -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+
+      <!-- 改 emoji 換 APP 圖示 -->
+      <div class="app-icon">🗺</div>
+
+      <!-- APP 英文副標名，不想要可以刪掉這行 -->
+      <div class="app-name">Food Adventure</div>
+
+      <!-- 主標題 -->
+      <div class="home-question">你今天想吃什麼？</div>
+
+      <!-- 副標說明 -->
+      <div class="home-sub">讓命運決定，中山區美食隨機報到</div>
+
+      <!-- 主要按鈕文字 -->
+      <button class="roll-btn" onclick="doRoll()">隨便</button>
+    </div>
+
+    <div class="nav-bar">
+      <button class="nav-btn" onclick="showScreen('screen-list')">
+        <span class="nav-icon">📋</span>我的清單
+      </button>
+      <button class="nav-btn" onclick="doRoll()">
+        <span class="nav-icon">🎲</span>再抽一次
+      </button>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       🎯 推薦結果頁
+       ===================================================== -->
+  <div class="screen" id="screen-result">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <div class="page-title">今日推薦</div>
+    </div>
+
+    <div class="result-area">
+      <!-- 分類一標題 -->
+      <div class="result-label">✦ 對自己好點</div>
+      <div class="restaurant-card">
+        <div class="card-top">
+          <div class="card-name" id="good-name"></div>
+          <button class="add-btn" id="add-good" onclick="addToList('good')">加入清單</button>
+        </div>
+        <div class="card-addr" id="good-addr"></div>
+        <div class="card-meta">
+          <span class="badge badge-rating" id="good-rating"></span>
+          <span class="badge badge-price" id="good-price"></span>
+        </div>
+      </div>
+
+      <!-- 分類二標題 -->
+      <div class="result-label" style="margin-top: 4px;">✦ 簡單吃頓飯</div>
+      <div class="restaurant-card">
+        <div class="card-top">
+          <div class="card-name" id="simple-name"></div>
+          <button class="add-btn" id="add-simple" onclick="addToList('simple')">加入清單</button>
+        </div>
+        <div class="card-addr" id="simple-addr"></div>
+        <div class="card-meta">
+          <span class="badge badge-rating" id="simple-rating"></span>
+          <span class="badge badge-price" id="simple-price"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reroll-row">
+      <button class="reroll-btn" onclick="doRoll()">再抽一次</button>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       📋 我的清單頁
+       ===================================================== -->
+  <div class="screen" id="screen-list">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <div class="page-title">我的清單</div>
+    </div>
+    <div class="list-area">
+      <div id="list-count" class="list-count"></div>
+      <div id="list-content"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   📦 餐廳資料庫
+   想新增/刪除餐廳：直接在下面的陣列裡加減物件
+   格式：{ name:"店名", addr:"地址", rating:評分數字, price:"$/$$/$$$/$$$$" }
+   ============================================================ */
+
+const GOOD = [
+  {name:"AN-Burger(漢堡)",addr:"中山北路二段36巷17號",rating:4.2,price:"$$"},
+  {name:"Burger Bae 寶貝漢堡",addr:"中原街136-1號",rating:4.9,price:"$$"},
+  {name:"Buttermilk 餐廳",addr:"中山北路二段57-1號1樓",rating:4.2,price:"$$"},
+  {name:"DOUBLE SINGLE",addr:"南京西路18巷26-1號",rating:4.4,price:"$$"},
+  {name:"源本家燒肉火鍋",addr:"民生西路66巷11號",rating:4.6,price:"$$"},
+  {name:"阿城鵝肉",addr:"吉林路105號",rating:4.6,price:"$$"},
+  {name:"Rendezvous Burger & Bar",addr:"中山北路二段137巷45號",rating:4.5,price:"$$"},
+  {name:"TakeOut Burger&Cafe 民權店",addr:"富順街11號1樓",rating:4.7,price:"$$"},
+  {name:"燒。肉爆拳｜ShoRyu",addr:"南京東路一段132巷23號",rating:4.9,price:"$$"},
+  {name:"Uncle Laymen 美式餐廳",addr:"松江路313巷1號",rating:4.1,price:"$$"},
+  {name:"POPINA 餐酒館",addr:"中山北路一段歐風街區",rating:4.2,price:"$$"},
+  {name:"Aye Taipei Bar & Restaurant",addr:"中山北路二段",rating:4.7,price:"$$"},
+  {name:"BFLO Restaurant",addr:"中山北路二段",rating:4.3,price:"$$"},
+  {name:"乾杯燒肉 中山店",addr:"南京西路25巷2-1號",rating:3.9,price:"$$$"},
+  {name:"乾杯 南西店",addr:"南京西路12號7樓",rating:4.2,price:"$$$"},
+  {name:"暮烟muyan yakiniku",addr:"中山北路二段77巷12-5號",rating:5.0,price:"$$$"},
+  {name:"Smith & Wollensky 牛排",addr:"中山北路二段",rating:4.4,price:"$$$$"},
+  {name:"CHAMONIX 鐵板燒",addr:"中山北路二段",rating:4.5,price:"$$$"},
+  {name:"Itamae Wagyu Teppanyaki",addr:"中山北路二段52號",rating:4.8,price:"$$$"},
+  {name:"56 Teppanyaki",addr:"民權東路三段56號",rating:4.4,price:"$$$$"},
+  {name:"ROBIN'S Grill",addr:"中山北路二段39巷3號2樓",rating:4.4,price:"$$$"},
+  {name:"地中海牛排",addr:"林森北路646號1樓",rating:4.7,price:"$$$"},
+  {name:"Danny's Steakhouse",addr:"樂群三路58號",rating:4.2,price:"$$$$"},
+  {name:"王品牛排",addr:"中山北路二段33號2F",rating:4.8,price:"$$$"},
+  {name:"N°168 Prime Steakhouse",addr:"中山區",rating:4.5,price:"$$$$"},
+  {name:"欣葉台菜",addr:"雙城街34-1號",rating:4.2,price:"$$$"},
+  {name:"三燔本家 晶華酒店",addr:"中山北路二段39巷3號B3",rating:4.0,price:"$$$"},
+  {name:"濱松屋",addr:"林森北路119巷12號",rating:4.0,price:"$$$"},
+  {name:"初魚 鮨 晶華酒店",addr:"中山北路二段39巷3號B2",rating:4.4,price:"$$$"},
+  {name:"品司和食",addr:"天祥路48巷1號1樓",rating:4.8,price:"$$"},
+  {name:"旬采鮨處 中山店",addr:"中山北路二段",rating:4.5,price:"$$$"},
+  {name:"龍軒傳承 粵式料理",addr:"新生北路二段38號2F",rating:4.5,price:"$$$"},
+  {name:"晶華軒 Silks House",addr:"中山北路二段39巷3號3樓",rating:4.4,price:"$$$"},
+  {name:"紅玉 新飲茶 林森店",addr:"林森北路263號2F-1",rating:4.5,price:"$$"},
+  {name:"好市多涮涮鍋 雙城店",addr:"雙城街19巷5號",rating:4.6,price:"$$"},
+  {name:"武鶴和牛火鍋 吉林總店",addr:"吉林路228號",rating:4.6,price:"$$"},
+  {name:"牛燉溫體牛肉火鍋",addr:"建國北路二段86號1樓",rating:4.8,price:"$$"},
+  {name:"Wagyu Shabu 和牛涮涮鍋",addr:"林森北路",rating:4.8,price:"$$"},
+  {name:"Old Sichuan 老四川 南京店",addr:"南京東路二段45號",rating:4.5,price:"$$"},
+  {name:"Old Sichuan 老四川 長安店",addr:"長安東路二段112號",rating:4.4,price:"$$"},
+  {name:"慶花椒 Chin Huajiao",addr:"中山北路一段137號",rating:4.7,price:"$$"},
+  {name:"New Mala Hot Pot 中山店",addr:"南京東路一段2號2樓",rating:4.4,price:"$$$"},
+  {name:"麻辣火鍋 Mala Hot Pot",addr:"南京西路22號B1",rating:4.5,price:"$$"},
+  {name:"八條老宅麻辣鍋",addr:"林森北路133巷3號",rating:4.4,price:"$$$"},
+  {name:"麻凡麻辣火鍋 松江店",addr:"松江路437號",rating:4.6,price:"$$"},
+  {name:"食令 shabu 涮涮鍋",addr:"中山區",rating:4.7,price:"$$$"},
+  {name:"五燈獎精選鍋物 中山店",addr:"中山北路二段36-1號",rating:4.3,price:"$$$"},
+  {name:"So Veg 素食",addr:"農安街263號",rating:4.8,price:"$$"},
+  {name:"Monday 蔬食料理",addr:"錦州街439號",rating:4.9,price:"$$"},
+  {name:"Bencotto 義大利麵",addr:"中山區",rating:4.4,price:"$$"},
+  {name:"青沐 中山店",addr:"中山站附近",rating:4.5,price:"$$"},
+  {name:"Golden Son Korea Pasta 金孫韓廚",addr:"中山北路二段26巷15-1號",rating:4.6,price:"$$"},
+  {name:"Ginto Soup Curry",addr:"中山北路一段140巷23號",rating:4.5,price:"$$"},
+  {name:"通安咖哩 中山店",addr:"中山北路二段77巷3號",rating:4.5,price:"$$"},
+  {name:"奇跡咖哩 KiseKi Curry",addr:"中山北路一段126巷12號",rating:4.5,price:"$$"},
+  {name:"稲町家香料咖哩 中山本舖",addr:"中山北路二段42巷20號",rating:4.2,price:"$$"},
+  {name:"Moni 餐廳",addr:"南京西路21號B1",rating:4.3,price:"$$"},
+  {name:"隱家拉麵 晴光店",addr:"雙城街15-5號",rating:4.4,price:"$$"},
+  {name:"Ajito 拉麵",addr:"南京西路25巷28號",rating:4.3,price:"$$"},
+  {name:"麵屋武藏 神山",addr:"中山北路一段121巷18號",rating:4.3,price:"$$"},
+  {name:"博多長濱一幸舍拉麵",addr:"中山北路一段109號",rating:4.4,price:"$$"},
+  {name:"麵屋壹 中山店",addr:"中山北路二段61巷15號",rating:4.5,price:"$$"},
+  {name:"山頭火拉麵 中山店",addr:"中山北路二段71號",rating:4.1,price:"$$"},
+  {name:"風見雞拉麵",addr:"錦州街89號",rating:4.6,price:"$$"},
+  {name:"麵場 田所商店",addr:"松江路158巷1號",rating:4.3,price:"$$"},
+  {name:"横濱家系拉麵",addr:"林森北路293號",rating:4.5,price:"$$"},
+  {name:"博多幸龍 中山北路店",addr:"中山北路二段66號",rating:4.7,price:"$$"},
+  {name:"彩頤拉麵",addr:"民生東路三段131號",rating:4.4,price:"$$"},
+  {name:"定置漁場三代目 The Fishery",addr:"中山北路二段附近",rating:4.4,price:"$$"},
+  {name:"二屋牡蠣拉麵",addr:"中山站附近",rating:4.3,price:"$$"},
+  {name:"麒麟創作拉麵坊",addr:"中山北路一段",rating:4.7,price:"$$"},
+  {name:"京都柚子豚骨拉麵",addr:"中山北路二段附近",rating:4.4,price:"$$"},
+  {name:"萊寶鐵板燒",addr:"錦州街212號1樓",rating:4.9,price:"$$"},
+  {name:"NEST 巢 TEPPANYAKI",addr:"伊通街87巷10-1號",rating:4.8,price:"$$"},
+  {name:"滾厚炙燒熟成牛排",addr:"復興北路69號",rating:4.5,price:"$$"},
+  {name:"長浜魚屋 南西店",addr:"南京西路21號B1",rating:4.3,price:"$$"},
+  {name:"藏壽司 くら寿司 南西店",addr:"南京西路57號2樓",rating:4.0,price:"$$"},
+  {name:"米達人壽司 南西店",addr:"南京西路12號B1",rating:4.2,price:"$$"},
+  {name:"稻町家洋食喫茶",addr:"赤峰街85號",rating:4.1,price:"$$"},
+  {name:"村亭咖啡",addr:"中山北路一段105巷11號2F",rating:4.3,price:"$$"},
+];
+
+const SIMPLE = [
+  {name:"新欣眾小火鍋 林森",addr:"林森北路259巷9-47號",rating:4.7,price:"$"},
+  {name:"ONE GOOD 烤肉飯",addr:"遼寧街141號",rating:4.6,price:"$"},
+  {name:"麵線傳奇",addr:"天祥路39號",rating:4.4,price:"$"},
+  {name:"偵鎂水餃",addr:"長安西路3號中山市場38號位",rating:4.0,price:"$"},
+  {name:"如香小炒店",addr:"金洲街177號",rating:4.2,price:"$"},
+  {name:"中山牛肉麵館",addr:"長安西路3號",rating:4.3,price:"$"},
+  {name:"愛加倍餐廳",addr:"中山北路二段137巷8號",rating:4.6,price:"$"},
+  {name:"清海食堂",addr:"林森北路399巷14號",rating:4.1,price:"$"},
+  {name:"香滿園",addr:"萬全街8巷",rating:4.4,price:"$"},
+  {name:"黃記燉煮滷肉飯",addr:"中山北路二段183巷28號",rating:4.2,price:"$"},
+  {name:"裕城牛肉麵",addr:"中山北路二段116巷2-7號",rating:4.4,price:"$"},
+  {name:"難得一面 牛肉麵",addr:"中山北路二段59巷41弄3號",rating:4.6,price:"$"},
+  {name:"將町牛肉麵館",addr:"建國北路三段113巷11號1樓",rating:4.8,price:"$"},
+  {name:"尚麵牛肉麵",addr:"長春路76號",rating:4.7,price:"$"},
+  {name:"小巷子清燉牛肉麵",addr:"四平街40號",rating:4.8,price:"$"},
+  {name:"犇牛堂",addr:"合江街102巷15號1樓",rating:4.8,price:"$"},
+  {name:"面線町",addr:"赤峰街",rating:4.2,price:"$"},
+  {name:"金仙魚丸店",addr:"龍江路342巷25號",rating:4.1,price:"$"},
+  {name:"33區熱炒生猛海鮮",addr:"長安東路一段63-1號",rating:4.0,price:"$"},
+  {name:"富野丼飯（FULL YEAH）",addr:"天祥路17號",rating:4.5,price:"$"},
+  {name:"潮丼日式定食",addr:"民生西路45巷21號",rating:4.4,price:"$"},
+  {name:"和風咖哩",addr:"雙城街10巷21號",rating:4.3,price:"$"},
+  {name:"禾花素食",addr:"天祥路48巷8號1樓",rating:4.7,price:"$"},
+  {name:"京園素食館",addr:"松江路330巷22號",rating:4.4,price:"$"},
+  {name:"女王漢堡 雙城店",addr:"雙城街38-1號",rating:4.6,price:"$"},
+  {name:"榕美樹館 豆花",addr:"赤峰街附近",rating:4.5,price:"$"},
+  {name:"芋艿川豆花 誠品南西",addr:"南京西路12號",rating:4.3,price:"$"},
+  {name:"鳥貴族 Torikizoku 南西店",addr:"南京西路12號5F",rating:4.2,price:"$"},
+  {name:"一起烤串中山店",addr:"中山北路二段",rating:4.3,price:"$"},
+  {name:"長田本庄軒 南西店",addr:"南京西路15號B1",rating:4.6,price:"$"},
+  {name:"螺絲瑪莉義麵坊",addr:"中山站附近",rating:4.4,price:"$"},
+  {name:"waku waku pasta 赤峰店",addr:"赤峰街附近",rating:4.5,price:"$"},
+  {name:"新丼",addr:"中山北路一段",rating:4.3,price:"$"},
+  {name:"鬍鬚張",addr:"中山北路二段59號",rating:4.1,price:"$"},
+  {name:"Sukiya すき家",addr:"民權西路75號",rating:3.9,price:"$"},
+  {name:"肯德基 KFC",addr:"民生西路9號",rating:3.5,price:"$"},
+  {name:"漢堡王 Burger King",addr:"林森北路247號1樓",rating:4.0,price:"$"},
+  {name:"八方雲集",addr:"林森北路271號",rating:3.3,price:"$"},
+  {name:"阿城鵝肉",addr:"吉林路105號",rating:4.6,price:"$"},
+];
+
+/* ============================================================
+   ⚙️ APP 邏輯 — 以下不需要改
+   ============================================================ */
+let myList = [];
+let currentGood = null;
+let currentSimple = null;
+
+function rand(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'screen-list') renderList();
+}
+
+function doRoll() {
+  currentGood = rand(GOOD);
+  currentSimple = rand(SIMPLE);
+
+  document.getElementById('good-name').textContent = currentGood.name;
+  document.getElementById('good-addr').textContent = currentGood.addr;
+  document.getElementById('good-rating').textContent = '★ ' + currentGood.rating;
+  document.getElementById('good-price').textContent = currentGood.price;
+
+  document.getElementById('simple-name').textContent = currentSimple.name;
+  document.getElementById('simple-addr').textContent = currentSimple.addr;
+  document.getElementById('simple-rating').textContent = '★ ' + currentSimple.rating;
+  document.getElementById('simple-price').textContent = currentSimple.price;
+
+  const inG = myList.some(i => i.name === currentGood.name);
+  const inS = myList.some(i => i.name === currentSimple.name);
+  const btnG = document.getElementById('add-good');
+  const btnS = document.getElementById('add-simple');
+  btnG.textContent = inG ? '已加入 ✓' : '加入清單';
+  btnG.className = 'add-btn' + (inG ? ' added' : '');
+  btnS.textContent = inS ? '已加入 ✓' : '加入清單';
+  btnS.className = 'add-btn' + (inS ? ' added' : '');
+
+  showScreen('screen-result');
+}
+
+function addToList(type) {
+  const item = type === 'good' ? currentGood : currentSimple;
+  const btn = document.getElementById('add-' + type);
+  if (myList.some(i => i.name === item.name)) return;
+  myList.push({ ...item, note: '', type: type === 'good' ? '對自己好點' : '簡單吃頓飯' });
+  btn.textContent = '已加入 ✓';
+  btn.className = 'add-btn added';
+}
+
+function removeFromList(name) {
+  myList = myList.filter(i => i.name !== name);
+  renderList();
+  if (currentGood && currentGood.name === name) {
+    const b = document.getElementById('add-good');
+    if (b) { b.textContent = '加入清單'; b.className = 'add-btn'; }
+  }
+  if (currentSimple && currentSimple.name === name) {
+    const b = document.getElementById('add-simple');
+    if (b) { b.textContent = '加入清單'; b.className = 'add-btn'; }
+  }
+}
+
+function updateNote(name, val) {
+  const item = myList.find(i => i.name === name);
+  if (item) item.note = val;
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function renderList() {
+  const el = document.getElementById('list-content');
+  const count = document.getElementById('list-count');
+  count.textContent = myList.length ? '共 ' + myList.length + ' 間餐廳' : '';
+
+  if (!myList.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">還沒有收藏的餐廳<br>去隨機抽選後加入吧！</div></div>';
+    return;
+  }
+
+  el.innerHTML = myList.map(item => {
+    const safeName = item.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `
+      <div class="list-item">
+        <div class="list-item-top">
+          <div class="list-item-name">${item.name}</div>
+          <button class="delete-btn" onclick="removeFromList('${safeName}')">✕</button>
+        </div>
+        <div class="list-item-addr">${item.addr}</div>
+        <div class="list-item-meta">
+          <span class="badge badge-rating">★ ${item.rating}</span>
+          <span class="badge badge-price">${item.price}</span>
+          <span class="badge badge-cat">${item.type}</span>
+        </div>
+        <textarea class="note-area" placeholder="加個備註..." rows="1"
+          onchange="updateNote('${safeName}', this.value)"
+          oninput="autoResize(this)"
+        >${item.note}</textarea>
+      </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
