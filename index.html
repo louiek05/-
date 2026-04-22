@@ -5,50 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>美食冒險者</title>
 <style>
-
-  /* ============================================================
-     🎨 設計變數 — 想改顏色、字體、圓角，改這裡就好
-     ============================================================ */
-    :root {
-    /* 主色調 — 暖橘蛋色系 */
-    --color-primary: #7A3E1A;        /* 主要按鈕、深色文字 */
-    --color-primary-text: #fff8f0;   /* 主要按鈕上的文字 */
-    --color-bg: #FDF5E8;             /* 頁面背景（米杏） */
-    --color-surface: #EDE0C4;        /* 卡片、輸入框背景（淺杏） */
-    --color-border: #D9C9A8;         /* 邊框顏色 */
-
-    /* 文字顏色 */
-    --color-text-main: #3D2009;      /* 主要文字（深咖啡） */
-    --color-text-sub: #7A5C3A;       /* 次要文字 */
-    --color-text-hint: #B59878;      /* 提示文字 */
-
-    /* 標籤顏色 — 評分 */
+  :root {
+    --color-primary: #7A3E1A;
+    --color-primary-text: #fff8f0;
+    --color-bg: #FDF5E8;
+    --color-surface: #EDE0C4;
+    --color-border: #D9C9A8;
+    --color-text-main: #3D2009;
+    --color-text-sub: #7A5C3A;
+    --color-text-hint: #B59878;
     --color-badge-rating-bg: #F5E4CC;
     --color-badge-rating-text: #8B4513;
-
-    /* 標籤顏色 — 已加入 */
-    --color-added-bg: #F5E4CC;
-    --color-added-text: #7A3E1A;
-    --color-added-border: #C8A070;
-
-    /* 字體 */
     --font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-
-    /* 圓角大小 */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-full: 999px;
-
-    /* APP 最大寬度 */
     --max-width: 430px;
   }
 
-  /* ============================================================
-     🌙 深色模式（自動跟隨系統）
-     想關掉深色模式：把下面整個 @media 區塊刪掉就好
-     ============================================================ */
-    @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: dark) {
     :root {
       --color-primary: #F5C896;
       --color-primary-text: #3D2009;
@@ -60,16 +36,9 @@
       --color-text-hint: #7A5C3A;
       --color-badge-rating-bg: #4A2E12;
       --color-badge-rating-text: #F5C896;
-      --color-added-bg: #4A2E12;
-      --color-added-text: #F5C896;
-      --color-added-border: #8B5E30;
     }
   }
-  }
 
-  /* ============================================================
-     基礎重置
-     ============================================================ */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -86,69 +55,31 @@
     max-width: var(--max-width);
     min-height: 100vh;
     background: var(--color-bg);
-    position: relative;
-    overflow: hidden;
   }
 
-  /* ============================================================
-     畫面切換
-     ============================================================ */
   .screen { display: none; animation: fadeIn 0.18s ease; }
   .screen.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ============================================================
-     頂部導覽列
-     ============================================================ */
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 16px 20px 0;
-  }
-
-  .back-btn {
-    width: 36px; height: 36px;
-    background: var(--color-surface);
-    border: none;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: 18px;
-    color: var(--color-text-sub);
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.12s;
-    flex-shrink: 0;
-  }
-  .back-btn:hover { background: var(--color-border); }
-
-  .page-title {
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--color-text-main);
-  }
-
-  /* ============================================================
-     首頁
-     ============================================================ */
   .home-hero {
     padding: 56px 28px 32px;
     text-align: center;
   }
 
-  /* APP 圖示 — 改 font-size 調大小，改內容換 emoji */
   .app-icon {
     width: 72px; height: 72px;
-    background: var(--color-surface);
     border-radius: 20px;
     margin: 0 auto 24px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-    border: 1px solid var(--color-border);
+    overflow: hidden;
+  }
+  .app-icon img {
+    width: 72px; height: 72px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 20px;
   }
 
-  /* ============================================================
-     🖊 想改 APP 名稱或副標題，改這裡對應的 HTML 文字即可
-     ============================================================ */
   .app-name {
     font-size: 13px;
     font-weight: 600;
@@ -173,7 +104,6 @@
     margin-bottom: 40px;
   }
 
-  /* 主要「隨便」按鈕 */
   .roll-btn {
     width: 100%;
     padding: 17px;
@@ -190,35 +120,59 @@
   .roll-btn:hover { opacity: 0.88; }
   .roll-btn:active { transform: scale(0.98); opacity: 0.75; }
 
-  /* 首頁底部兩個次要按鈕 */
-  .nav-bar {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  /* header：← 今日推薦  [emoji] */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
     gap: 10px;
-    padding: 12px 28px 40px;
   }
 
-  .nav-btn {
-    padding: 14px 12px;
+  .back-btn {
+    width: 36px; height: 36px;
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-text-sub);
+    border: none;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    text-align: center;
+    font-size: 18px;
+    color: var(--color-text-sub);
+    display: flex; align-items: center; justify-content: center;
     transition: background 0.12s;
+    flex-shrink: 0;
   }
-  .nav-btn:hover { background: var(--color-border); }
-  .nav-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .back-btn:hover { background: var(--color-border); }
 
-  /* ============================================================
-     推薦結果頁
-     ============================================================ */
-  .result-area { padding: 20px 20px 0; }
+  .page-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-main);
+  }
 
-  /* 分類標題（「對自己好點」/ 「簡單吃頓飯」） */
+  /* emoji 框框：跟 header 同行，右側 */
+  .emoji-card {
+    border: 5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    background: var(--color-bg);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .result-area {
+    padding: 16px 20px 0;
+  }
+
   .result-label {
     font-size: 11px;
     font-weight: 600;
@@ -229,31 +183,23 @@
     padding: 0 2px;
   }
 
-  /* 餐廳卡片 */
   .restaurant-card {
     background: var(--color-bg);
-    border: 1px solid var(--color-border);
+    border: 5px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 16px;
     margin-bottom: 14px;
+    text-align: center;
     transition: border-color 0.15s;
   }
-  .restaurant-card:hover { border-color: var(--color-text-hint); }
-
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-    gap: 10px;
-  }
+  .restaurant-card:hover { border-color: var(--color-text-sub); }
 
   .card-name {
     font-size: 16px;
     font-weight: 600;
     color: var(--color-text-main);
     line-height: 1.4;
-    flex: 1;
+    margin-bottom: 8px;
   }
 
   .card-addr {
@@ -263,9 +209,13 @@
     line-height: 1.4;
   }
 
-  .card-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+  .card-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-  /* 標籤 */
   .badge {
     font-size: 11px;
     font-weight: 600;
@@ -283,155 +233,39 @@
     border-color: var(--color-border);
   }
 
-  /* ============================================================
-     我的清單頁
-     ============================================================ */
-  .list-area { padding: 16px 20px 32px; }
-
-  .list-count {
-    font-size: 12px;
-    color: var(--color-text-hint);
-    margin-bottom: 12px;
+  .reroll-row {
+    padding: 12px 20px 36px;
   }
-
-  /* 空清單狀態 */
-  .empty-state {
-    text-align: center;
-    padding: 64px 24px;
-    color: var(--color-text-hint);
-  }
-  .empty-icon { font-size: 40px; margin-bottom: 14px; }
-  .empty-text { font-size: 14px; line-height: 1.7; }
-
-  /* 清單中每間餐廳 */
-  .list-item {
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    transition: border-color 0.12s;
-  }
-
-  .list-item-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 4px;
-    gap: 8px;
-  }
-
-  .list-item-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--color-text-main);
-    line-height: 1.4;
-    flex: 1;
-  }
-
-  /* 刪除按鈕 */
-  .delete-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-hint);
-    font-size: 15px;
-    width: 28px; height: 28px;
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.12s, color 0.12s;
-  }
-  .delete-btn:hover { background: #fee2e2; color: #dc2626; }
-
-  .list-item-addr {
-    font-size: 12px;
-    color: var(--color-text-sub);
-    margin-bottom: 8px;
-    line-height: 1.4;
-  }
-
-  .list-item-meta {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-  }
-
-  .badge-cat {
-    background: var(--color-surface);
-    color: var(--color-text-sub);
-    border-color: var(--color-border);
-  }
-
-  /* 備註輸入框 */
-  .note-area {
-    width: 100%;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    padding: 9px 11px;
-    font-size: 13px;
-    color: var(--color-text-main);
-    font-family: var(--font);
-    resize: none;
-    min-height: 36px;
-    outline: none;
-    line-height: 1.5;
-    transition: border-color 0.12s;
-    overflow: hidden;
-  }
-  .note-area::placeholder { color: var(--color-text-hint); }
-  .note-area:focus { border-color: var(--color-text-sub); }
-
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- =====================================================
-       🏠 首頁
-       ===================================================== -->
   <div class="screen active" id="screen-home">
     <div class="home-hero">
-
-      <!-- APP 圖示（蛋頭） -->
-      <div class="app-icon" style="padding:0; overflow:hidden; background:none; border:none;">
-        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QC8RXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAABgAAAAAQAAAGAAAAABAAAABgAAkAcABAAAADAyMTABkQcABAAAAAECAwAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAMAAQAAAMAFAAADoAMAAQAAAEADAAAAAAAA/+EPImh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8APD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpBdHRyaWI9J2h0dHA6Ly9ucy5hdHRyaWJ1dGlvbi5jb20vYWRzLzEuMC8nPgogIDxBdHRyaWI6QWRzPgogICA8cmRmOlNlcT4KICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogICAgIDxBdHRyaWI6Q3JlYXRlZD4yMDI1LTAzLTMwPC9BdHRyaWI6Q3JlYXRlZD4KICAgICA8QXR0cmliOkV4dElkPmJhYTg0NDY2LTdkOTAtNDMwYi1hZTM1LTE0YjAwYTlhMjU0YjwvQXR0cmliOkV4dElkPgogICAgIDxBdHRyaWI6RmJJZD41MjUyNjU5MTQxNzk1ODA8L0F0dHJpYjpGYklkPgogICAgIDxBdHRyaWI6VG91Y2hUeXBlPjI8L0F0dHJpYjpUb3VjaFR5cGU+CiAgICA8L3JkZjpsaT4KICAgPC9yZGY6U2VxPgogIDwvQXR0cmliOkFkcz4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6Q29udGFpbnNBaUdlbmVyYXRlZENvbnRlbnQ9J2h0dHBzOi8vY2FudmEuY29tL2V4cG9ydCc+CiAgPENvbnRhaW5zQWlHZW5lcmF0ZWRDb250ZW50OkNvbnRhaW5zQWlHZW5lcmF0ZWRDb250ZW50PlllczwvQ29udGFpbnNBaUdlbmVyYXRlZENvbnRlbnQ6Q29udGFpbnNBaUdlbmVyYXRlZENvbnRlbnQ+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0nJwogIHhtbG5zOmRjPSdodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyc+CiAgPGRjOnRpdGxlPgogICA8cmRmOkFsdD4KICAgIDxyZGY6bGkgeG1sOmxhbmc9J3gtZGVmYXVsdCc+VW50aXRsZWQgZGVzaWduIC0gMTwvcmRmOmxpPgogICA8L3JkZjpBbHQ+CiAgPC9kYzp0aXRsZT4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6cGRmPSdodHRwOi8vbnMuYWRvYmUuY29tL3BkZi8xLjMvJz4KICA8cGRmOkF1dGhvcj5XaW5rIFNwaWN5PC9wZGY6QXV0aG9yPgogPC9yZGY6RGVzY3JpcHRpb24+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczp4bXA9J2h0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8nPgogIDx4bXA6Q3JlYXRvclRvb2w+Q2FudmEgKFJlbmRlcmVyKSBkb2M9REFHak4xRFQyVUEgdXNlcj1VQUdUeWYzbC1tQSBicmFuZD1CQUdUeWZBazRPSSB0ZW1wbGF0ZT08L3htcDpDcmVhdG9yVG9vbD4KIDwvcmRmOkRlc2NyaXB0aW9uPgo8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo8P3hwYWNrZXQgZW5kPSd3Jz8+/9sAQwAGBAUGBQQGBgUGBwcGCAoQCgoJCQoUDg8MEBcUGBgXFBYWGh0lHxobIxwWFiAsICMmJykqKRkfLTAtKDAlKCko/9sAQwEHBwcKCAoTCgoTKBoWGigoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo/8AAEQgDQAXAAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A9vpaSlr509oOtFHaigAo70Uf+hUAFFFFAC0lFFABQ1FHSgAooooAKKKKAClpKKACij8aDxQAdaKM0UAFFH+9RQAUUUUAHej2oooAKKKKACiiigAoo6UUAFFFFABRR3ooAKKKOlAAtKtJS96ACikooAKKWkoAKKOlLQAlFFLQAi0UUUAFGaWigBM0Uc0UAFFFFABRR2ooAKKKKAFoopP96gAoopc0AJRS5pOlABRS0lAB2ooooAKKKM0AFFFLQAlFFFABRS/4UdelACUUUUAFFFFABRQvWigAo7UUUAFFGaKACiiigAooo60AFFFHSgAooooAKKKKACijNFABRRRQAUUUUAFFFFABmiiigAooxRQAUUUtACUUUUAHWiiigAooooAKKKX/AHqAEpaKSgAbpRRRQAUUUUAKtJRRQAUUUUAFFFHSgAzzS5pGooAKKFooAKKKPwoAKKKKACiiigA9qKWkoAKKKKACiiigAoopaAEopaKACiikoAWiikxQAd6KKKACijvRQAtJRmigBaKKSgAooooAKKP96igAooooAKKXpR60AJRRS9aAEopaSgBaKKKACj/eoooASlX60nehfrQAUUlL3oAKKOlFABRRRQAUUUdaABqKKKACiiigAopaSgAooooAKM0UUAFFHajoKAD3ooooAKKKKACiiigAo69aKKACjNFFABRRRQAUUUUAFFFFABR2oooAKKKKACjNFFABmlopKACilpOtABRRQ1ABRilpKAClzSUUAFFFFABRRRQAUNRRQAtJRR2oAGooooAKKKKACij2ooAKKKKACiijtQAUUUUAH40UUUAFFFLSASiij2pgFLSUUAFFFFABRS0UAJRRRQAUZoooAM0Zoo7UAFGaKKACiiigAooooAKKKKACihqKAFopKKACijrRQAUUUUAFFFGaACiiigAoooxQAZopaSgAo60Ud6ACijFDUALSUf8AoVFABRS5pKAFpKOlFABRRRQAUUUUAFFFFABmiiigAo70daKACiiigA6UZoooAKKO1FABRRS0AJ1opaKAEopaSgApaKSgAoopaAEopelFACUUtJ3oAP8AepaSigBaKSloAKKSjNABRRRQAUv60lLQAUnWlpKACiiigAoaihqAClpOnFLQAlFFLQAnvRRS0AH4UdaKKAEzRRS0AJRS0UAJRS0UAJRSUtIA/wB2haKOtMAo/CiigA/3aKKKACiiigAoozRQAUd6PzooAOlFFFABRRR/vUAFFFFABR/u0UUAFFFFABRRS0AJR7UUdKACiiigAooooAP96ilpKACijvRQAfhRS/8AoVJQAUUUtACUtJRQAUtFHWgAoo9qSgApaSloASilpKAFpKKWgBOlFFGaACiiigAo70e1FAB3oopaAEoooagAopaKAEopaSgAoo/9BooAKKKKAD8aM0UUAHtRRRQAUUdKKACiiigAooooAKKKKADvS0lFAC0lFH+7QAUUdqKACiij8aACiijNABR7+lHaigAooooAKOlFFABRR0ooAPwooooAKM0UUAFLSUUAFLSUUAFFFFABRS0lABRRRQAUUUUAFFL0pKACiiloASilpKACj1paTrQAUUUtACelFLSUAFFFHagAooooAKKKOlABRmiigAooo/3aACiiigAooooAWkpaTtQAUUUdO9ABRRRQAUUUUAFFFFAC0lFK1ACUUUUALSUUtACUe1LRQAlLRRSAKSiimAUUtJ2oAXvSUUUAFFFFAC0UUUAJR/6FRRQAUtFFABRSUUAFHQUtJQAuaKM0lAC0UlLQAlFFFABRRRQAUUYooAWko7UUAFFFFABRRRQAtFJS0AFJ2opaACkpaSgBaSjrRQAd6KGooAKM0UtABSUv+7RmgBKKKOtAB2ooooAKDxRRQAUdaKKACilWigBKX0pOtFABS0UlABRS0UAH60UUUAFJS0lABijrRS0AJRRRQAUUdaKADrRRR1oAPaiiigAaiiigAoo70UADUUUUAFFFFABRRRQAUUf1ooAKKKKACiiigAooooAKKKKACiiigAooooAKWkooAOtFFL1oASiiloAKSlpKACiiigAoo9qKACiiigAooooAKKKKACj/ANBoooAKPzoooAKKKM0AFFFFABRRRQALRRSrQAlFLRQAUUUUAJR6UtJQAUUUUAFLSUtABSUtHegAoopKACiiloAKSlpKAChqKKADiijvQtABRRS0AJ7UUtJQAtJRS0AJS0lFABRR/vUUALRSe1FAC0lFFABRS0UAJS0lFAC0lFFAC0UlFABRS0nagApaSigBaKKKQwooooEJR70tFMBKWkpaACkpe9JQAUtJRQAtFFJQAtJ3paSgBaKKKACiikoAXBoopKACiiigApaSloASij8aPegApaSjFABS96KSgA4xRS0UAJ3opaP6UgEooopgFLSUUALSUUUALRRSUAHWjvRS0AJRS0lAC0UdaKAEpaTrRQAUUtJQAUUZopAGaKKKYBRRRQAUNRR0oAKWikoAKKXvRQAlL2pKWgBKOlLRQAUlFFKwBRR3oqgFpKKKQBmiiigAoopaAEopaSgAozmiigAooaigAooozzQAUUUtIBKKWkpgFFFFAC0naiigAooooAKKO9FABRRRQAUf7tFFABRRS0AJ7UtJS0AI1LSUUAFFFL0FACUUUtAB0pKKKACiiigBaT2opaAEpaSigBaSlooASiiigA70UUdKACiiigAo/wB2iigA7cUUUUAFFFFABRS0lABRS0lABRR1ooAKKO1FABRS0maAClpKMUAL0pKWigAopKKAF60UUUAJRS0lABRS5pKAClpKKAFo/wB2ikxQAUUUUAFL/u0lFABRRRQAtJS96P8AdoAKSiigAooooAKKP92igApaSloAKKTpRQAUUtFABSUUtABSUtFABSUUUAFFLSUALRSd6KAF9qSiigApaKMdqACkpaKAEpelJS0AFJR2paAEpaPaigBO1LR3pKACjFH+9S0AFFFC0AJRRRQAUUUUAFLSUUALRSUUAFLRRSATrRRRTAOlFLSUAFFFFAC0lFGaACilpKACiiloASlopKAClzSUtACd6WiigBKWkpaACiikoAWkpaSgBaKSigAo/wDQqWigBF6UtJS0AFK3Sm9KXtQAUUZooAKSlpP0oAWikpaAEpaPxooASj/dpaKAEpaSl70gCkopaYBSUvSikAlFL70lABS0UlMAoxRRQAUUUvegBKWkooAKKWkoAKOtDCigAzRRRQAduKKKKQBRRS0wE/GiiigApaKKAEooooAKP4etFFABRS0lABR2oooAGope1JQAUtJS5oATtRRRQAUUUUALRSUUALSUtJQAUUUNQAf71GaKKACiij/doAKKKKACjrR2o70ALRSUUAFLRSUAFFFHtQAUf7tFFABSj0pKKACl60lFAC0frRRQAUUdqKACkopfxoASlopKACiiimAUUUUgFpO1FLQAlC0UUAFFLRQAneiiloAKSjg0UAH+7R/6FS0UAJRRS0AJS0lFABS0lFAC0UlLQAUlLR0oASlopOtAC0lLRQAUlL1pKACloooASloooAKKKKACihqKAEpaSloAKKT86WgBKKWkz7UAGaKP/QqX3oAKTpRRQAUv40nel/GgBKKSl/8AQqQB7UUdqKYBRRS5oAP1ooopAFFFFABSUtH9KYCdKXvR+lJQAUUtJQAUveko7UAFFLRQAlL2pKWgAxRnPaijvQAUfrR/u0lIBaKSloAKKSl6UwCkpaKAEpaSigBaSlooAKKKSgApaKKACij2ooAKKSloAKKKFoATPpRnil7UUAFFFHTigApKWigAoopKADtxS0UUAJ/u0tFFACUUUUAFLSUe1ABRRS0AJRRS0AJRS+lFACUUtJQAUtJ2ooAKKPyooAKKKKAClpKWgBKKWigAopKWgAopKKACilpKAFpKWk9qACiijtQAtJS0lABS0lFAB/u0tHWkoAWkoooAWk/Cil7UAFJRRQAUUUZ5oAKWkpaAEooooAOtLmiigAakopaAEooooAKKP92igBaSlpKACiil7UAJQ1FLQAlFFFAC0lFFABS0lFABRS0UAJRS0lABR1paSgAooooAKWkzS0AJRS0lABS0ntRQAvSkpaSgBaKOaKACijpRQAUlFLQAf7tFJS0AFFFJQAtFJRQAtHakpaACiiigAzSUtJQAtJS0UAFFFFACUtB4ooAKKKT0oAWiiigA6UlL2ooAKSj2pe9ABSUv+9RQAlFFLQAUlLRQAUUZooASiiigAooooAKKOaX/AHaACiikoAWiiigA/Sj3pOe9LQAn40tJS0AJR+tLSUALRRRQAUn+7RS0AFFFFABRRRQAUlHtQ1ABS0lFAC0UUUAJS0UUAJR1paPagBKXNJRQAq0Zo/GkoAWjFFFABRRnikzQAvrR7UUlAC0UUUAH/oVFFFABRRRQAdaSlooASl6UUlAC0UUUAFJS0UAJmilpKADvRS0lABRR3ooAOtFFLQAlLSUtABRRSUAFLSUtABSUUtACUUUMaAFo/wDQqKO2aACj/doooAKKKSgApaSloAKKKSgAoopaAEooooAKWikoAWkpaSgAzRR/6FRQAUd6KKAF4/4DSUUZoAOtGaKKACiiigBaPWiigAooooAKKKOtABSUvekoAKWiigBGopaKACkpaO9ACUUtH4UAJRRRQAUUZooAWk7UtJQAUdKWkagBfakopaAEzRS0f7tABRRRQAlFFFMApaSlpAGKMUUUAHSjFFJigBaSlooAO1JRRQArGikpf96gBKVqKKAE/GiijvQAtJRRQAUtJ0/+tRQAUtFHWgAoaj6iigBKKWigAooooAKP96ij/doAKKO9FABR3oooASloooAKKKOtACUtFFAB60UUdO9ABSUtFABRRR1oAKKKKAEooooAKKKc3SgBtHSiigA7UUUUAHtS0lFAC0dKKTNAC96KKKAEpaKSgApaKKACj/0KjrRQAlLRRigA7UUUUAJS0UUAJRRRQAtJjtS96SgBaKM0UAFJRRQAUtFFACUveiigAopKWgAooooAKKKKACjNFDCgAooooASloooAKKSl70AJR+NL70lAC0lLRQAUUUlAC0UdaM0AJRS9KKACkoxR1oAWkoooAKO9LRQAUn50ULQAtJRRQAUUtFACUUUtACUtJS0AJRRRQAUtFFACUUtJQAUUUvekAUUUlMAopaSgBaKP92koAKKOtHagBaTtS0UAFFFJQAUUZooAOlDUfhRQAUUtHvQAUUUUAFFFFABRRRQAlLijvRQAlLRSUALRRRQAUUUd6ACjpRmigA4oopKAFxmjNH60UAJRRRQAUUtFABSUUtACdaWiigAooo6UAJRS0lAC0lFFAC9aOu6kpaACjNFFACZoopc0AJ0paKKAEpaT2ooAWiko570AFGaKWgBKM0tJQAtFJRQAUtFJQAtFJS0AFFC0UAFFJS0AFFFFABRRRQAUUUdKACj/AHaPaj3oAKPx4ooxQAUZo7UUAHeihqKACiiigAooooAKKKKAEoooWgAooooAWkopaACko5paACijtR3oAKSlooAKKKKABetFFFABRSt0pKACiikoAWikzS0AFFFFACUtJS0AFFFJQAtFJRQAv+9R/vUUUAFJS0UADUlLSN1FABS0UUAJRS0nSgBaM0lLQAUdaGooAKKKKACiiigBKWiigBKKWigBP1pc0lFAC0lLRQAUnpRRQAUvtSUtABRRSdKAFpKKKADNLSUtAB1ooooASl60naloAKKKSgBevWkpaKADvSUUvWgApPxopaACkopaACiiikAn+7S0lFAC/wD6qFoopgFFFItABRQ1LQAlFFFAAtFLRQAUUlLmgApKKWgA70lFLQAnSloooATrS0UUAFJS0UAJS0UNQAnWilooASlpKPxoAWihaKAEpaSloASilpKADj0paKKACkpaKAChqKSgBaKKP96gAopKWgBKKWk6UAFFFLQAULRRQAlFLSUAFFFHfigAopf96igBKWkpaAEpfwpKWgApKWkoAXNJ7UtJQAdaKKWgA/3qSjpRQAUUtJQAtJ2paKADrRR2ooATpS0UUAJS0UUAGaKKKACiiigAooooAO9FFFABmiiigA96KKKADrRRRQAUUUUAFFFDUAFFFJQAuaKKKAG0tFHQUDFpKKKBC0UlLQAlLRRQAf8AoNFJ3paAEpaKTtQAUtFFABRRR0oASlpKGoAWiij8KACj2opKAClpKXq1ABSUUe1ABS0nvS0AFJRS0AFFJS0AFHtRR+FABRSUvagApKWkoAKKKKACloooAKSlaigA7UUUUAFFFFABRRRQAUlLRQAlLSZooAX2opKWgApPwpc80ZoAPakpc0d6ACkpaKAEooo70AFFFGaACiiloAKKRqWgApKKWgApM0vWk/3aAFpKWigBKKOtFAC0lLSUAFFFH/oNAC0UZpKAFooo6UAJRR/6FS0AJRRRQAUtFJQAtFHaigBKX/epGpaAE70tJS/7tABRSUtACUveiigBKWik7UAFK1H4UlAC0UlFAC0UlFAC0lHFFABS0lL/AL1ABRSUtABSUtJQAUUe1LQAUlLSUALSUtFAB3o7UlLQAlFGc0tAB3ooooATtRRS0AJS0lLQAlFLSUALRSUtABSexpf4v9qk/wB2gBaKKFoASl9qSigBe1JRS0AJRS0lABS0UNQAlFHSigA70tJRQAtFFJQAtFH/AKDScUAL70lLRQAUUUUAGaKKSgBaKKKACjtRR/6DQAZooo/OgAooooAOlFJS0AFFFFABmiik/wB6gBaKKKACiikoAWjvSUtACUUlLQAUUUUAFLSUUALR+FFJQAUUUUALRSUtABRR2ooAM5oopKAClopKAFopKWgA9qKSigAoopf6UAJS9qSj3oAKWkooAX/eoooPtQAn+7RS0lAC0lL3pKACj9aWkWgBelFFFABSUNRQAtHeikoAKWiigAooooAKKKKQBRRRTAKKKGoATpRR3paAEpe9FJQAf+hUUUUALRikpaACj/dpKXvQAlFK1FACUUUUADUtFJQAUUtJQAUUUUALSUUUALRRSUAFFFFAC0UlFABRRRQAtFFFACUtHaigAo70dqKAEpaSigApfWkpaADrRSUUALSUtFABRQtFABR/vUUUAFFFJQAtFHWigAo6UUUAFFFFABSNRS0AJRR2o60AFLRRQAUUUlAC0UUetACe1FHaloAP96iiigApKWk/3aAClopKACl/GikoAWiikoAWko/CigApaKKAE/Cloo9KACiiigBKOlGfWlzQAlL3opOlAC0n+7RRQAtJR/vUtABRRRQAntS0UlABRRRQAUUUtACUUUf7tAC8ULSdqKAFo/3aKTtmgApaTvS0AFIOaWigAzRRRQAlL0opKAFooo70AFFFFABR3o/9BooAOlFFFABRRmigA60UUUAFFFFABj2oozRQAlFHtRQAUUUtACUtJRQAvTtSUtHegBKKKP8AdoAWiiigAooooAKKKKAEpaO9HegBP92lo6UUAFJRxRQAfpRRRQAc0UUUAFFH50UAFLRRQAUlLSUAFFFFAB0ooo/3qACiil70AFFJRQArUlK1JQAUtJS0AFFFFABRRR2oAKKKSkAtFFJTAWiiigAooo60AHtSUUUAFLSUtAB3pKWigBKXpSf+g0de1ABRRRQAUUUdqAFpKWkoAWkopaACik/3qXvQAUlKtJQAfpRRS0AFJS0lAC0cUUUAFFFGaACk4paKACiij/eoASloooAT2paKKACihqKACiiigAooooAKP96iigAoaiigA/3qKFo7UAFFFFABQ1FJQAZzRStSd6AFpKKKAF9aKSigAoo/3aP/AEKgApaSlagBKX+tJS0AFJSr9aKACiij8KAEo70tJQAtGaTtS0AJ3paSl70AJRS0dKACiiigAooooAKKKKAEooooAKKWk/SgBaKSl7UAFJ/6FRR+tAC0lLSdKAF/3aKSloAKSlozzQAUd6KSgBaSiloASilpKAClpKWgBKXrSelL1oAKSil60AJ3ooooAOtKv1oBo7UAFFFFACfjS0UUAJS0UUAFFJS0AFFFFABRmiigAoo/WhaACihe9HSgBFooooAKKKKAClpKKAClopKADrRRS5oATpRRS0AFFFFABSUtDUAFJS0UAJRRS0AJmilpKACiiigA70fhQ1HWgAooooAKWkpaACkpaSgBaSiigApaKSgAozRR/vUALSUUUAFLQ1FABRRRQAUUZ5ooAO9FFFACUUtJQAdaP92ijrQAtFJRQAUUelFABRSrSUAFFC9KWgBKKKKAClpKKAAe1HpRRQAUUZxS0AFFJ1paAEo6UUtACUd6WigAopKWgA/3aSlpO1AC0d6KKACiiikAUUUf7tMAooooAKKKKACiikoAWikpaACjvRnFFABRSUtABRRR/u0AFFFFABRRRQAUUUUAFHrRRQAZ9KKKKAEopc5o9qAEpaKKAEpfxoooAKSlpKADrRS0UAFJS56UmfagAo70dqKADrRRS0AFJRR2oAKWkpaACiiigApKPxpaAEpaTpS0AFFJ2paACjvRRQAlC0tFACUUtJQAUUtFACUv+7RSUALSf71LSUAFFH8XSloAKKKSgAopaKACkopaAEoopaAEpaM0UAC0UlLQAHiiik7UAFFFLQAd6SlooAKKKKACiiigBKP96iigBaKKKACikooAWiik47UALRRRQAdaKKKAEo70lLQAUUdqKAClooWgBKKXpRQAlLRRQAlFFLQAUZpKWgAooooAGooooAOtJS96SgAooooAKKKKAD/0GilooASjvS0npQAUvaiigAooooAP/QaSlxR3oATvRRRQAUUtJQAtFJS0AFFFFABRRRQAd6KKSgBaKSigAaiij2oAKWko6fWgAooooAWko/GjvQAUZoooAWkoooAKKKWgBPaiiigApc0jUUAC0UUtACUYoWigApaKSgA/3qO9FFAC0lFLQAlLRRQAUUUUAH/oVHejrR/6FQAUlL7015I4k3SMFHqTikAtFZs+s2sX3GMp/wBkcVQm12V+IIlT3PJrN1Yo2hQnLodFSMyoOWA+prk5b65l+/M/0HFQfePJJrJ4hdDdYR9WdY95bL1nj/A5qM6lbD/loT9BXNp0p69KzeJZX1VG6dTt+wkI+lH9qw/3JP0rFp1L6xIf1aJsf2pD/dkp66lAf74/CsZRx0pwFH1iQvq8TaF9bn/lpj6ipBcQv0lT86wcU7FUsSyXhkdCpB6EGlrngSOhINTpczL0kJ+vNWsQupm8O+htZorOj1Bh99QfpViO8hbqSPrWqqRZk6UkWVopAQRkHI9qWtOYgKP60ZopiCiijpQAUfxdaO9FABSUtFABSdKWk9qAFozRmkoAWk7UUUALRSUtABR3pKWgBKKKWgBM0UUUALRRRQAUUUlACtSUUtAB1opKWgApKKKAFoopO1AC9qKTrRQAdBS0lFABRRRQAUtJRQAtJRRQAUd6P/QqOtACrR1pOtHVqAFpKM+1H5UALRRR3oASilpKACijpS0AJRS0UAJS0lLQAUlFH+7QAd6P/QqWkoAKOnNFFAC0UdaSgBaKKKACkpaKAEpaKMUAH6UUUUAFFH6UUAFJS0lAC0Uq9KbQAUUUUAFFLSUgCl70UUwEopaSgApaKDzQAUnSl/3qP/QaADvRRSUALR3oozQAnvRS0dKAEopaKAE/h6UUd6WgBKWkzRQAtFFFABR2opO3FAC0UlFAC0UUUAHaiiigApKO1LQAlGaKX/0KgAoaikoAWjvRRQAlB5paKAEopaSgAoopaAEooooAKKKKAClpKKAFooooAKKKSgBaSiigApaSloASjNH+7RQAUUUN1oAKWik/3aAFaijFFABSUtJQAUd6KKACilooASlzSUUALSUVS1DU7XT1/fSfP2jHJqW0hqLeiLtU7zUraz4mlG7+6OTXL3+v3N1lYf3MR9Ov51l5yctz/WuedZLY7aeEb1kdBdeIJpOLVREPU8msuWeWZ90sjyH3NVxzUiVzSqtnZGjGGyHr171ItMWpF46VlcsetSLTBxxUi0riYvepF+tNBqQCmQKtPApuOxp60CFA5py9aAKWqJExSgUuKdimIbinYpcUuKCbjaVaXFOximSCMyHKEirMV6w/1gzVbFGK0VRrYlwTNWKeOXoefQ1JWJViG7kj4Pzj0NbQrdznnR7GpRUUM8cvQ8+hqXvXQmmYtNbhRmiiqEFFHeigAooooAKKP96igBKKWkoAKKPxooAWilbpSUAJS0UUAFFFFACUtFC0AJS0UnagAooooAKKWigBKWk6UUALSUdRS0AJRRRQAtFJS96AE70UUetAB+tHWiloASiiigAoo6iloASiil4oAKP96kpelACUtFFABRQ1FACUv/oVFFABRRRQAUUUUAFFJ2pf96gAopP/AEGigApaSloAKO9FFABRRRQAUUdaKACiiigAooooAKKKKACiiigBFpaSloASihaKAClpKKAFo/GikoAWhaKMUAH+9RmiigBKKWhqAEpaGpKACloooAPqKSlooAKS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ACijq1HSgAopKWgBKWikoAO9LRRQAlFLSUAFLRR/vUAJS96FpKAD/dpaSigBe1FFFACUtJRQAd6KWk60AFLSUvegApO1FGaAFpKKKACiil/3aAE70tFFABR0oooAKTiiloASlopKAFzSUv8A6DRQAlLRSfQ0AL1opKKABqWiigBKWihqACk60UtACUvakpaACko6UtABRRRQAlHeis/X9TTR9JnvJOqDEa+rHoKASucX8S9c3SppVu3yJ88xHr2Fef55pbmeS5mkmmYvJIS7E+pqMH8qymz18PT5ETocmpVPIqulTpWLOtIspU61Xj/WrCfjWLNCdOtTJx7/AEqFOamT+E1mwJ06e5qUfyqJKnTqKgRIg6VKnpUSdPapk5zSEyVelPXryajXr1qZef8ACghki/5FSL/Sox6VIDxTJZIlSj3qJe2akQnNNEMlT61ImfTmogT1qRTx9KozZKPSpB61Ev1qROvStESyUHmpF6VGpGelPX61aMWSL+hpyn0qMdqkB6ba0RLHjGM09aYp5xTx6ZqyRy0f+g0n49KXnNWjMdS570gPt8tGeKBB3+tH8X+1R3470duetADW7UhBzT/T9KYeBg1DGRsO9Rkc1K3amsOPWs2i0V2pjVK1RMK55o1QykpWpGqCxKuadNhvKPQ9PrVFqcpwRjrVU5cjuROHOrG7R2qK2lE0Qbv3qVa9KLurnA1Z2FpOlFLmqEFFFFACUtJRQAtH4UlLQAUZpKWgBKKWigBKX2xRRQAUUlFABRRR/SgAooooAKWikoAWkoo9qACilooAOBRRRQAUlLRQAUelFFACUUdKWgA/3aSiigBaKPaigAooo70AH+7SD2oooAWiiigAoopKAFox9aKKAEpaRqKAF/3aKKKACjvRRQAlFFLQAlLRRQAUUUe9AB1o60UUAJ3opaSgBaKVelJQAUlL+FJ3oASlx60lLQAUUUYoAKO1HeigAopaSgBetJS/pSdaACijpRQAUtJS0AHeiiigAoopOKAFopKKACjrRRQAUUZ9KKACij8aKAFpKP6UUALRSUv4UAGaP92ikoAO1FFFABRRS0AJRRRQAUtJR2oAKKKO9AB0paSloAKKSloAKKKKACikpaAEo7UveigAopP92igBWopKKAClpP8AdpfwoASlpKKAFo60UUAJ/u0tFFACdKKKWgAo/Gk7UtABXlXxO1j7XqosYm/cWv3sd5D1/KvR9b1BNL0i5vH/AOWS5A9T2H514HcTNNK8sjbnkJcn1JpnThoXdw70oPNRZpwzmudnqQROhqwhqun41On+RWbN0WE/hFWU7ZqtH+dWU681kyydKmT6dKhT7v8AhVhKyYiVPrU6etQJ6HpmpUqAJ0+vapV6+tRJnHvUq9OtIkkT8RipB2qNT3HTFSDIOKZJID+lSDr6iowaetBDJV6evpUinjr0qIGnr0qiGTL3qRT79KjXnFcR8R/FM+gzraWMXmXCqC7E4AJ7e9a04ObsiN3Y78HI6+9SA8cV5V4C+ID6vqJ0++i8q4xlTnINepxnp781U6cqbtIhtdCwvB605ajhya474meMG8L28UNnB593Mu8Z6IvqaumnN2RFrux26GpFOa8U8GfFSe91dLHVIhGZThWByK9niO5Aw6EZrWVOUNzOVuhYB4pR0xio1OcU9T2FBDJB/wCPUuem36UxTyKdz+PpTEO7fNxTs5pinI49aF69aZA/NHejP5U3rzmgA/HmkalzSNj8KQCMe9RtUnf61GeazZaIXqM8d+lTPzUbCsWaIhamtTmprdKyZoNpM0UmaRRcsJvLm2no/Fav+9XPKcHity2l82JG7nrXZQnpY48RDW5NRSdaWuo5hKWiigApKX1pKACiiigBaSiloASil70lABS0UUAFGaSloASiil60AJ1oozRQAtFJ70UALRmkpaACijNJQAdfpS0n/oVLQAlFLRQAd6Sij/eoAOKKKWgBKXvSUvegA/3aKKKACk60tHWgApKWigAooopAFFFFMBO3rS0UUAFJRRQAf+g0tJ3paAE60tFJQAtHSkpaAEpaKKAEpaKKACijikoAWiiigApKKKAChaVqKAEooooAKKKKACilooASil/3qKADFDUlFABS0n+7RQAv6UUUdKACijNJQAUtJ/u0ZoAKWkooAXvSUtFACUtJR3oAOtFFFABRRRQAUelFFABRRS0AJ3opaSgAopaKAEooo/pQAUUUUAFFFFABRR3ooAKKWigAopOtLQAf7tFFFABRR1ooASilooASloooAKOgoooAKPeiigBKWk60tABSUtFACUtH+7RQAUlFFMDzz4taltitNOjb7376T+Q/rXmLnJra8Y6j/aXiC9nzlA2yP/dHArDzzUvY9LDwsh4NSJ/KoBwamQ+1Ys7k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UUAFFFFIAooopgJRS0lABS0lLQAUUUlAC0UUUAJS0UlAC0ZpKWgAooooAKSjFFAC/wC7RQtFABRRRQAlLRSUALRSUUALSUUf71ABRRS0AJS0UUAFFJ0paACjiiigAopKWgAoWikoAWkpaKAD0ooxRQAUUUlABRRS0AGaSiigBaSj0ooAKWiigBKWiigBKWkooAPelopKACloooASijNFAC5o6UUlABRRRQAUtJS0AJRRRQAUv60fhRQAUUUUAFGaM/nRQAZoo/3aKACiiigAopKWgA6UUUUAFFFFABSUUtABRRRQAd6OKTtS+1ACUtJRQAvakpaSgAooaigApaSigBc0maOtLQAUUlFABRS0lABRRRQAUlLRQAlFFDUANaiikagAak60NTaADNNY0vWo2pDDNIWprU1qAFLUwtTXqNqCiTzKa0lRMaYxqbjsTNLTfNqFiajYmlcLFlpqjaaqzMajLU0Fi403vTGnqmzGmNIaoLFxp6a09UWkNNaSgdi99opv2iqDSUjS0BYvfaKRris9paZ5tAWNL7QfWj7RWZ51J53vQOxqfaPej7UfWsvzvem+f70BY1vtVL9r96x/Po8+gLGx9r96X7X71jfaPej7RQFjZ+108XfvWH9opftFAchvC896X7b71gfaPenfaKA5DoBee9SC8rnPtXvSi7x3phyHSC896et4K5sXfvSi896Bch063g9akW8HrXLLe4705b/HekHIdULz3qRbw+tcouoj1qRdRHrQHszqDcLIMOEce4zVaSy0yf8A19haSf70K/4VhrqQH8VSDUx3ai4crLz+H/D0n39FsD/2wT/Co/8AhFfDZ/5glh/36FV11JfWpF1Ff71F2Hvky+FfDf8A0BrH/v0Klj8OaBH9zR7Af9sRVddRX1qRdQB71QvfNCHTNKi/1enWSY9IV/wq7EYYhiOKOMf7KgVirfD1py3wPelcTTZued70nm1jreD1p63Q9aLk8preZRurLW6HrUguB60BY0dwpd1UFnHrT1mFArFriiq4lp6yUAS5oqMNTs/nQA7rSUZooAX/AHaP/QqSlzQAdqKKKACkpaKACkoooAKWkpaACiiikAUUUUwCiiigAoopKAFpP96iloAKKKKAEopfaigAoopKAFo6UUdKAEopaSgAopaSgA/CiiigAooooAPelpKPxoAKXvRRQAUUUUAC0UUUAJS59+KRqKAFY0UUnSgApaKKACij8aSgBWpKWigApKWigApKKKAF6Uf7tJ/u0dqACiilbrQAUnXtS0UAFJRS/wBKAEooooAGooo/3aACij/0KigAoo4ooAWikpaAEooo/wB6gBaSjvRQAtFFJQAvFFJS0AFFFFAB7UUUUAJS0UUAFFFFAB+FFHakoAWiij8aACijNJQAUrUlFAC0nWlpKAClopKACij9aKACilpKACilpKAFpKXrR2oASilooASijvRQAUUetH4UAJRS0UAJTWp1FADKSnYpMUARsKRhUmKawzQBEwphXmp8UhWkMqlaaVqyVpNtIoplajK1daOmNFUjTKRWo3Wr7RUwxe1Fh3M8rURWtFoajaCgDOYVGwNaLQVG0BqwM5gajatFrf2qNrf2qBmc1RtWi1uaia1PpVgZ7E0xiavtamo2tT6UrgUGJpjMavNan0qM259Koq5TZjTWkq0bc+lRm3PpQBX8ym+bUzW5qNoG9KAGNLSedStA1RtC1IsXz/ejz6jaFqjaJvSgCx9o96Rrr3qt5TUxo29KALf2r3pn2sjvVNlb0pjKaBl5r33pPtx9aoMpqNgaYGj/AGgfWk/tA+tZmDSMDTA1P7Rb1pP7Rb1rKYGkw1AGuupN60v9pH1rHw1HzUCsbK6k3rUi6mfWsNd1O5pDsby6ofWpl1b3rnQGqRQ3vQOyOjTVj61Omq+9c2garEavQTZHRJqZ9asJqOe9c9FG9W442oJaRvJfe9WI73PesOKJqtwxsKRNkbKXee9WEuM96yo1arcamoEaKTVOkuaoxqasIDxVk2LaSVIGqsgINTAUEk4NKDUYFPWmSPzS0i0UALR1opaAEpaSigBfajHFFFABRRRQAUcUUUAFFHeigAo6UUe1ACUv60UlAC+9FHekoAWk/wB6lpKACloooASlopOtAC0lFLQAUlFH+TQAtJR0paADq1JS0n+7QAUUtJ2oAM0UtHTrQAUnal96KAD/AHaKKKACiiigAoopOlAB1opaSgBf1ooooAKSlzRQAUUUlAC9KKKKACkpaKACiiigAoopKAClopM+9AC0lFFAC96KKSgBaSiigApaT/dooAKKP/QqKAClzSdqOlABRRRigAooopAFFFFMApaT/dooAX9aKSigBaKKKACik7+tLQAUUlLTAKSlopAFFHWigAzRmkpaAE7UtI1FABS0lL3oASlpKPwoAKKKWgAopP4utFAC0UUZoASlo7UdKAD2ooooAKKSloATtRS9aSgAoopaAExRRRmgBKPwpaKAGY5oxT6GoAjxSYqXFJigCPFNx7VNgUYoAh20m2p9tG2gCvs9qPLqxim7fzqbBcrbBSNEPSrW2k20x3KjQ+1NaD2q7tpNtAXM9oBTfIrS203Z7UBczjbj0qNrUelanl0bBQO5lNa1GbT2rY8oUeUPSgLmIbT2phs63PKFJ5I9KAuYDWPtTWsfaug8kU3yfagOc55rH2ph0/2rpfIHpTfs49KA5zmjp/tUbad7V1P2celJ9mHpTK5zlDpvtUZ032rrfsw9KPsw9KQc5xzaZ7UxtM9q7P7IPSkazHpQP2hxLaX/ALNNbST6V3H2MelN+xD0ph7Q4VtJP92mNpB9K777EvpTfsKelA/aHANo59KT+xj/AHK9A+wp6UfYF9KA9oeeNox9KP7FPpXof2BfSl/s5PSmHtDz1dGPpSroZ9K9B+wL6U77CnpRYPaHn/8AYZ/u05dDPpXfrZL6U77EvpSF7Q4JNDPpUy6L7V3IswO1L9kX0oD2hxSaNjtVhNI/2a6/7IvpSraqO1Ae0OWTScfw1MmmY7V0ywL6UqwigXOYCadjtU6WOO1baxAdqVYx6Uiecyks8dqlS1rR8sCjbigXMUxBUiw1awKXAoC5XEVPC1LiimK4zFGKkpKADpRS9qP/AEKgBKKWigBKX8aKSgBaTNLSUAFKtJ3ooAVaSilpADUlLRTAOtJR1ooAWikooAWiiigAooooAKKKSkAtJ0paKYBRRR0oASilzxRQAUlLRQAUUUUAJmloooAKOlGaKABaKKKACiiigAooooAKKKSgAzS0UlABRS0lAC0fhSUtABRRRQAUUUlAC0UUlAC9aKKKACikpaACiiigApKWk7UAFFFLQAlLSUUAFLR70UAJRRRQAUUdKKADmjpRRSAKOtFFMAooooAKWhqSgBVo7UUUAFFHNJQAtFJS9qAEoopaACj9aKKACiijNACUUtFACUtFFACe9FFLQAUlLSUAFFH4UUAL1pKWigBP92l69aSloAKSlooAKP1oooAKOtFFACUUtHegBKKWj2oAT/doo/8AQqKACiiigAo/OiigBaSiigAailooASlooxQAn+7RS0UAJRS0UAJxR7ClpKACjFFLQAnH/AqMUUUAGBRjvRRQAmBRsHal70tADcCjaKWigBMCjbmndKKAG7RRtFOooAbtFG3ine1FADdoo2ilooATaPSjaKWloAbto2gU6igBu0UbRS0tADdooxS0tADce1GBTqKAG4pcDFLRQAmKMClooATFFLRjNACUUv40UgExRS0UwCiiigAoo7UUAFFH+7RQAUUUUAJS0UlABRSrRQAUUZooAKTvS0UAI1FK1FABRRRSAKKKOlMAopKWgAoopKACijNLQAlLRSUALSUtHegBKKKGoAKWikoAPeloooAKKKKACij86SgAooooAWkopaACkpaKADtRRRQAn4UUtFACcUv+9R+NFABRRSUALRmkpaACikpaAD2ooooAPSkoooAKWikoAWiikoAWiiigApKWk70ALmkpaSgBaTtS0UAJRmlpKAF6UlFFAC0maKKACj/do/3qKACiiikAtJ+dL3opgJRRRQAq0UlFAC0UUlABS0lFABS0lLQAUUUUAFFFFABRmiigBO1FLSUAFLSUUALRR3pPwoAKWikoAP8Aeo/3aWkoAWj2pO9FABS0lLQAUUUUAFFJStQAlLRRQAlLRR7UAHSiijvQAUlLR2oASilooASilpO9AC0lFFABS0UfhQAUUUnbFABSr1pKKAFooooAO1FFFAB1oajrRQAUUlGaAF70UlLQAlFFFAC0UUUAB5pKKWgAzSUUUALmikpaACik7UvagAoo70lAC0lHtRQAtFFFACUtJS0AFFJS/rQAUUUUAFFFHSgAozSdqWgA9qKKT8aAF70UUUAFJS0UAFFFFABR1pKKAFpKKWgBKX/doooAKKKP4v8AaoASiiigAoo/WigA70ULS0ADUlLRQAUUlFAC0UUUAJS0lFAB0FL+NC0lABmj/dpaKACkopc0AJRRmigApaSigA70tJRQAtJ/u0tJQAtHekpaAEopaKACj8KKKADvRRRQAUUUUAFJS0dKACiiigAopKWgBKWikoAVqO9JS0AJS0lFABS0lLQAq9KSij/doAT8KWk96XtQAUUlLQAUlLQvWgBOnSloakoAWihqKAEaj2oooAKWkooAOtH+9R3ooAPSj8aP1pe9ACUtJSrQAUf+g0lLQAlLSUq0AFJS0UAFFHSigBKWiigAooooAKTilooAKKKKAEpaKKACikooAKKKKAFooooASilpKAFooxmkoAWkpaKAEpaKKACikpaACikpfagAoo60UAFFJwaWgAozSUtACdqKKWgBKKX8KSgBaKTrS0AJRS0lABRRS0AFJ1oo/CmAUUUUgClpP92loAKKPWjpQAUNSUtABRR/SigApKO1L7UAJRS0lABS0lLmgBP60daKKABaKKKACiiloAOtFJS0AFJmiloASihqPxoAWiiigAoox60UAJS9qKKADtSUtFABRRRQALRRRQAUUUUAFFFJQAtFFFABRR/u0UAFFFFACUUUtABRRR7UAHak60rUUAJS0lFABRR2paAEo9qWkoAWiikoAWiijrTAKKKP/QqQB2oopKAFooooAKKKKACjvRRQAf7tJS0UAFFFFABSUtJ2oAWkoooAKKP/AEGigBf92iijvQAlFLSUALRRR2oAKKKKAEpaKKAEpT6UUUAFFFFABSUtH/oVABRRRQAUUlLQAUlLRQAUlLRQAUUUUAFJS0UAFFFFABRmjtRQAn+7RRS0AH9KSiloASj2paSgAo60UUAFFFFABR+tFFABS0lLQAUUlLQAdKTr2paKAD8KKSloAKKKPxoAKKKKAD2oo/WigApKKKAFopKWgAopKWgAo7UUUAFFFFACUtJS0AJS0UUAFJS0UAFFFJQAtFFFAA1JS9aKACiikoAWikpaACjtRR3oAKKSigAooooAKXo1JRQAUtFJ/wChUAHaloooAT2ope9JQAUUNRQAtFFJQAUUUUAL/u0lFLQAlFFFABR0o/CigAoopfxoAM0naijvQAUtJS0AJS0UUAJ7UtFFABRSUuaACkpaKACko70UALRRRQAUlLSUALRRRQAdaKKM0AFFHejNABR2oooAKKTrS0AFFGaKACiiigAoopKAFzSe1FGaYBRS0f4UgCikpc0AH/oNJS0nagAoajrR+NAC0daO1JQAUtFFAB3oo7UlAC0UUUAFFGKSgBaT2opaACkpelFABR2oo69aACkpf96koAKXvR1pKACilooAPbFJRRQAfrRRRQAtJR+FLQAnNL7Ufw9KKAE5paKSgBetFFJQAtH+7RRQAUUUUAFJS+1FABRSUtABRR+NFABRRRQAUUlFAB04paSl70AFFFFABRRRQAUUUUAFFDUUAFFH/oVFABSUtFABRRR2oAP92kpWpKACiiigA/3aXpQtJQAUe1FFABRRRQAdaKWk/wB6gBaKP60UAFFFFACUtFJ2oAWijrR0oASiiigBWooo7UAFFFJQAUUtFACUtFJQAUtFFABRSUtABSUtFABRRRQAUlLR3oASjNLSUALSUUUAFLRRQAUUUUAHtQ1FFABmk6UtJQAtFFFAB1pKKWgA/wB2koooAKKKKAClpKWgBKWko6UAFFH+7RQAUUUUAFFLSUALRSUtABRR2ooAKOlGKSgAzmlzSUtABRRRQAUUUUAFHaj/AHqP/QaACiikoAWjNHWigABpKXpRQAUn+7S0daACkoxS0AJS4oooAKOtHSigBKKWigApKWigAopKX/0KgA/3aKKKADNFFFABR3oozQAlLRRQAlHWiloASlpKOlABjiiiigAoaiigApaKTrQAUUc0UAL3oopKAFpOOlL/AOhUUAGaKMUlAC0UlLQAUUlH60ALSUtJQAUtFJQAtFFJQAtJS0lABRR2ooAP92iiigA6UUUUAFFFFABS0UUAJS0UUAFJS0UAHFFHeigApPal4o/9CoAKSiigBaKKKAEpaSloAT9aXrRRQAUnalpPegApaKKACiiigA69aM0UfhQAH0ooooAKKKKAD2ooooASlpKKAFaiiigApOlHSigA6NS0lFABRR/vUfhQAUUdqKACiiigBaSiigBaKKKACj3o/WigAooooASloooAKM0UUAFFGaSgBaSiloASloooAKKSigApaKKACiiigA/CiijFABRRR+FACUtFFACUUtFABRRRQAUUUUAFFFFABRRRQAdaO1HeigApKWigAoo9qKAEozS0lAC0UlFAB2pc0lFAB2pe9JS9qAE/9CopaSgBaPwo7UUAJS0UUAJRRS96ACiiigApKPve1LQAUUUUAFFFFABRmiigA7UUelFABmhaKKACkpaKACkoooAWikpaAEpaKKAD2ooo/i6UAJS0ULQAUn40UUAL70UUUAJ7UtHSigAoo9KKQBRRRQAUUUUwEpaSloAOlFJ70tACUUtJQAd6KWigBKWikoAWiik7UAHWloooAO9JS96KADrSdaWigBKWj1pP96gBaKKRaAFo9qSloAKM0UNQAlLRSUALRR/u0UAI1FFFABR2oooAWkopaAEooooAKXpRSdaAF/WijpRQAdaSlo/3aADpRRRQAUUUZoAKSlpKAFooooAKKKAaACiiigAooooAKKTNLQAUUdaM0AFFFFABzRRRQAUd6KKACiijrQAlFK1FAB3ooooAKSlpKAFpKPaloASlpKWgBPwozS0UAJRS0UAFFFFABRRRQAUdKKKACiiigAooooAM0UUYoAKKTvS9qACiikoAWij2ooATpRS0UAJ2o6UUUALRSUUALRRRQAUUUUAJS0d6KACj9aKKADvRRR0oAKKSl7UAFFJS0AFFFFABRRRQAUdaP96igAooooAKKKKACj/doo6igBKKWkoAWk6UtFAB3ozSUtABRSUNQAtFJS0AJS0UlAC96SlooAO9FH+9RQAUUUdBQAcUUZooAKPxo/CkoAXNJS0d6ACik7UtABRRSUALRRSNQAUtHekHpQAtFHekoAWiiigAooooAKPaiigApKWigAooooAKKKKACijtRQAUUUUAFFGaKACjtRSZoAO1L/u0UUAFFHeigAo6UUUAFJS9uaO9ABRRRQAUUUUAGaSlzRQAUlFLQAUlLRQAdaKKKAChaKKAEpaKKACkopaAEpaKKAEopaKAE60tJRQAtFJRQAUUtFACZpVopKAFopO9LQAUUUUAFFFHtQAUUUUAJRS0UAFFFFABRRRQAUUmKVqACiiigAooooAKKKKACikpaACiiigAxiiiigA60dqKKACjtRRQAlFL3ooAKKSloASlpPxo60gFooooAP8A0GkpaKYBRSUtAB1o60NRQAnaloooAF60lFFAC0lH40tABRSUv4UAJ/6FRS9aSgAozR7UUALSUtFABSNS0lAC0lL2ooAKSiloASlpKWgAoooWgA96Sl70lAB3waKWj+HrQAd6SlooASlopKAFooooAKKKO9ABRRR/D/tUAFFJS0AJS0UnvQAtFFJ70ALRxRRQAUnWlooAOtFDUfhQAUUUlAC0UUlAC0ZoooASlopKAFooWigAopKWgA60UUUAHaij8KKAE9qWkpetAA1HaijpQAUc4ooxQAUlLRQAUUUlABS0UUAFFFJQAtFHeigApM0tGaACiiigApKWjNABSUtFABRRRQAUUlFAC0UUUAFFFFABRRSUALRSUdKAF70UZpKAF4opKWgAooo6UAFFHtRQAe1FJRQAtFFFABSUtFIBKWiimAUUUUAFFFFABRRRQAdetFJS0AFFFJQAUvTrRSZoAKWkpaACikpaAEo7UUUAFL3opKAFpP8AepaKACiiigAo7c0UUAFFHrSUAK1FFFABRR70UAFFDUUAFDUUUAFFFFABRRmigAoo60lAC0UUUAFHSiigAooooASl9qKFoAP92ijoKSgAopc0dKAEpaSlX60AJRRR3pALSUtFMAopKWgAooooAOlFFFABRRRQAUUUlAB70e9LSUALSUtFABSUe1LQAUUUUAJRR/u0UALR60lLQAUZ4pKXpQAUlLRQAlHSlpKAF/3aKSj3oAWikooAWikpaACiiigAo9KKKACihqKACjNJ3pf92gBKKKKAFopM0tAB0oopKAFzRQ1JQAtFFFACYopc0n+7QAtFJS0AHvSUUtABRRRQAe1FJS0ADUlLRQAUlLRQAUUlKDQAUd6KKACiijvQAUUUUAJ+opaKPagBKWkpaAD1pOnOaWk6UALmk/Cl7UUAJRR1paAEoopc0AGaKSigBe1FJS5oATPtS0maWgAo9qKKACikooAWiiigAoo6UUAJS0d6KAEpaKSgBaSlooASlpKKACjpS0lAC0UUlAC+9FJml70AFFFFAB3opKWgBOtLRRQAUUUUAFFJmloAPeikpaACjNGaKACiijrQAlLSdKWgAooooAKKKKAE/wB2iiloATilopKAFpKX/dooAKKOlJQAUtJS0AFFFFABRRQtAB/vUUUUAFHSikoAWiiigAozRRQAdqKKTvQAuKKD7UUAFFFFABRRxRQAUd6KKAD/AHaKKFoAKO9FFABR/wCg0dKKACiijpQAUUUdaAEopfeigBKKM0dKACiil70AJRS0lAC0UUYoAKKKKACj3opKACloooAKO9FFAB1o60UUAJ/u0tFFABRRRQAUlFLQAUlFFAC/7tFC0nWgBaSlooAO9JS+1J0oAFooooAWik96KAF70UUUAFJS0UAFFFFACUtFJQAUuaT3paAEopaSgApaSloAKKOtFABSUdaKAFooooASlo/KigAopO1LQAUUUetABRR3opAFFFFMAooo70AFFDUd6ACiiigAo9KKPSgAooooAKKKKACiiigA7Ue1FH+7QAUdqKSgBaTrS0lABRRS0AFJRR6UALRSUUAL3oopKAClopKAFooooATtRRxRQAvej0oooAKT2paSgApaKOlABRRRQAUUUUAFJRRQAUUtFAB3pKWkoAWikpaAEpaKSgBaO1C0UAFFFC0AJRRS0AFFJS0AJS0Z9aKACiikoAWiiigAooooAKKP/QaKAEopelFABRSdKKAClpOtLQAUUi0UAFLR/wCg0UAFFHSigA/3aKOtFAB3ooooAKKKSgBaTFLSUALSUtJQAtFFH+9QAdWooooAKGooWgAooooAKKKKACiiigAoo/CigAooooAKO9DUUAFJS9aM0AGaKKAaADNH40d+aKAEooo7UAFHrRQ1ABS0f7tFABRRRQAUUfrRQAfjRR/vUUAFFFFACUtFFABmiiigAWiiigAopKWgApKWigApKWigBKOtLRQAUUUUAFFFFABR/wChUUUAJS0UUAHaik/3qP8AdoAWkopf/QaACkpaPyoAKKSloAKT/dpaKAD1pKWigAooooAKKPeigAoo/wB2koAKWiigAooooAKM0UUAFJS0elAB1ooooAKKKKADP50UUUAFDUdqKACikooAWiiigAWiikoAWiiigBKWiigAooooAKKKKACjvRR1oAKSiigApaSigBaTNLSUAFLSUUALRRRQANSd6KKACloxRQAUn/oVLRQAUUUlABS0UlAC0UmaWgAopKX1oAP60UNRQAUlLSUALRRSe9ABRS0lAB0o70UtABRRR/6FQAUUUUAHWjNFFABSUtFABmjvR/6FSUALRRRQAUUe1FABRRRQAUULRQAUUUUAFJS0lABRS0UAFJS0lABS0lLQAlFLRQAUdaKKACijvRQAUUUUAGaKKSgBaKP96j+lABRRRQAUdKPwooAKKKOlABRRR/u0AFFFHrQAUUUUAC0e9FFABRRRQAUfQUdqKACijpRQAlL3+lFJQAtFJRQAUUc0D2oAO9FFFAC0UUUAFHWikoAWjrRRQAUUUYoAKKPoKKACiiigAopPeloAKKSloAKM80lLQAf7tFJS0AHeg8UlFAC0maKKAFpKKWgAo/3qSloAKKKSgBaKKKACko/CloAKKPeigAooxSUALRRQtABRRRQAdaKP92igBKWijmgAoopKAFoo78UYoAO1FFFABRR3oxQAUf71FFACZpaKKACjpSUtABSUUUAGaWkoWgBaKKKACikpaACiiigApKKWgBOtLSUtAB2o/wDQqKKADrQxo/CigAoPvxRQ1ACUtGKKACk6UtJQAtFJRQAtJmiloASloxSUAFFFFABS0neloAKSjFFAC0UUUAJS0fhRQAUlL/u0YoATPpRS0UAJS0UUAFFFFABRiikoAKKKKAClpKKAClpKKAFooooAKKKKACiiigApKWjtQAlLRSUALRSUtABRRSUAL1ooooATrS96KSgBaSiigBaKSimAuaKKMUAJRRStSAKSlooAKKKSgBaKKMUAFFFFABR0oooAKP8Aeoo70AFFFFABRRSUALRRSdqAFooooAKMZoozQAZooooAKKSj/wBBoAWik/3aWgA/3qKFooAKKSl5oAKGoooASjrRRQAUmaVqTHtTA//Z"
-          style="width:72px;height:72px;object-fit:cover;object-position:center;border-radius:20px;display:block;" />
+      <div class="app-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QC8RXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAABgAAAAAQAAAGAAAAABAAAABgAAkAcABAAAADAyMTABkQcABAAAAAECAwAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAMAAQAAAMAFAAADoAMAAQAAAEADAAAAAAAA/+EPImh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8APD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpBdHRyaWI9J2h0dHA6Ly9ucy5hdHRyaWJ1dGlvbi5jb20vYWRzLzEuMC8nPgogIDxBdHRyaWI6QWRzPgogICA8cmRmOlNlcT4KICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogICAgIDxBdHRyaWI6Q3JlYXRlZD4yMDI1LTAzLTMwPC9BdHRyaWI6Q3JlYXRlZD4KICAgICA8QXR0cmliOkV4dElkPmJhYTg0NDY2LTdkOTAtNDMwYi1hZTM1LTE0YjAwYTlhMjU0YjwvQXR0cmliOkV4dElkPgogICAgIDxBdHRyaWI6RmJJZD41MjUyNjU5MTQxNzk1ODA8L0F0dHJpYjpGYklkPgogICAgIDxBdHRyaWI6VG91Y2hUeXBlPjI8L0F0dHJpYjpUb3VjaFR5cGU+CiAgICA8L3JkZjpsaT4KICAgPC9yZGY6U2VxPgogIDwvQXR0cmliOkFkcz4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6Q29udGFpbnNBaUdlbmVyYXRlZENvbnRlbnQ9J2h0dHBzOi8vY2FudmEuY29tL2V4cG9ydCc+CiAgPENvbnRhaW5zQWlHZW5lcmF0ZWRDb250ZW50OkNvbnRhaW5zQWlHZW5lcmF0ZWRDb250ZW50PlllczwvQ29udGFpbnNBaUdlbmVyYXRlZENvbnRlbnQ6Q29udGFpbnNBaUdlbmVyYXRlZENvbnRlbnQ+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0nJwogIHhtbG5zOmRjPSdodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyc+CiAgPGRjOnRpdGxlPgogICA8cmRmOkFsdD4KICAgIDxyZGY6bGkgeG1sOmxhbmc9J3gtZGVmYXVsdCc+VW50aXRsZWQgZGVzaWduIC0gMTwvcmRmOmxpPgogICA8L3JkZjpBbHQ+CiAgPC9kYzp0aXRsZT4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6cGRmPSdodHRwOi8vbnMuYWRvYmUuY29tL3BkZi8xLjMvJz4KICA8cGRmOkF1dGhvcj5XaW5rIFNwaWN5PC9wZGY6QXV0aG9yPgogPC9yZGY6RGVzY3JpcHRpb24+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczp4bXA9J2h0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8nPgogIDx4bXA6Q3JlYXRvclRvb2w+Q2FudmEgKFJlbmRlcmVyKSBkb2M9REFHak4xRFQyVUEgdXNlcj1VQUdUeWYzbC1tQSBicmFuZD1CQUdUeWZBazRPSSB0ZW1wbGF0ZT08L3htcDpDcmVhdG9yVG9vbD4KIDwvcmRmOkRlc2NyaXB0aW9uPgo8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo8P3hwYWNrZXQgZW5kPSd3Jz8+/9sAQwAGBAUGBQQGBgUGBwcGCAoQCgoJCQoUDg8MEBcUGBgXFBYWGh0lHxobIxwWFiAsICMmJykqKRkfLTAtKDAlKCko/9sAQwEHBwcKCAoTCgoTKBoWGigoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo/8AAEQgDQAXAAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A9vpaSlr509oOtFHaigAo70Uf+hUAFFFFAC0lFFABQ1FHSgAooooAKKKKAClpKKACij8aDxQAdaKM0UAFFH+9RQAUUUUAHej2oooAKKKKACiiigAoo6UUAFFFFABRR3ooAKKKOlAAtKtJS96ACikooAKKWkoAKKOlLQAlFFLQAi0UUUAFGaWigBM0Uc0UAFFFFABRR2ooAKKKKAFoopP96gAoopc0AJRS5pOlABRS0lAB2ooooAKKKM0AFFFLQAlFFFABRS/4UdelACUUUUAFFFFABRQvWigAo7UUUAFFGaKACiiigAooo60AFFFHSgAooooAKKKKACijNFABRRRQAUUUUAFFFFABmiiigAooxRQAUUUtACUUUUAHWiiigAooooAKKKX/AHqAEpaKSgAbpRRRQAUUUUAKtJRRQAUUUUAFFFHSgAzzS5pGooAKKFooAKKKPwoAKKKKACiiigA9qKWkoAKKKKACiiigAoopaAEopaKACiikoAWiikxQAd6KKKACijvRQAtJRmigBaKKSgAooooAKKP96igAooooAKKXpR60AJRRS9aAEopaSgBaKKKACj/eoooASlX60nehfrQAUUlL3oAKKOlFABRRRQAUUUdaABqKKKACiiigAopaSgAooooAKM0UUAFFHajoKAD3ooooAKKKKACiiigAo69aKKACjNFFABRRRQAUUUUAFFFFABR2oooAKKKKACjNFFABmlopKACilpOtABRRQ1ABRilpKAClzSUUAFFFFABRRRQAUNRRQAtJRR2oAGooooAKKKKACij2ooAKKKKACiijtQAUUUUAH40UUUAFFFLSASiij2pgFLSUUAFFFFABRS0UAJRRRQAUZoooAM0Zoo7UAFGaKKACiiigAooooAKKKKACihqKAFopKKACijrRQAUUUUAFFFGaACiiigAoooxQAZopaSgAo60Ud6ACijFDUALSUf8AoVFABRS5pKAFpKOlFABRRRQAUUUUAFFFFABmiiigAo70daKACiiigA6UZoooAKKO1FABRRS0AJ1opaKAEopaSgApaKSgAoopaAEopelFACUUtJ3oAP8AepaSigBaKSloAKKSjNABRRRQAUv60lLQAUnWlpKACiiigAoaihqAClpOnFLQAlFFLQAnvRRS0AH4UdaKKAEzRRS0AJRS0UAJRS0UAJRSUtIA/wB2haKOtMAo/CiigA/3aKKKACiiigAoozRQAUd6PzooAOlFFFABRRR/vUAFFFFABR/u0UUAFFFFABRRS0AJR7UUdKACiiigAooooAP96ilpKACijvRQAfhRS/8AoVJQAUUUtACUtJRQAUtFHWgAoo9qSgApaSloASilpKAFpKKWgBOlFFGaACiiigAo70e1FAB3oopaAEoooagAopaKAEopaSgAoo/9BooAKKKKAD8aM0UUAHtRRRQAUUdKKACiiigAooooAKKKKADvS0lFAC0lFH+7QAUUdqKACiij8aACiijNABR7+lHaigAooooAKOlFFABRR0ooAPwooooAKM0UUAFLSUUAFLSUUAFFFFABRS0lABRRRQAUUUUAFFL0pKACiiloASilpKACj1paTrQAUUUtACelFLSUAFFFHagAooooAKKKOlABRmiigAooo/3aACiiigAooooAWkpaTtQAUUUdO9ABRRRQAUUUUAFFFFAC0lFK1ACUUUUALSUUtACUe1LRQAlLRRSAKSiimAUUtJ2oAXvSUUUAFFFFAC0UUUAJR/6FRRQAUtFFABRSUUAFHQUtJQAuaKM0lAC0UlLQAlFFFABRRRQAUUYooAWko7UUAFFFFABRRRQAtFJS0AFJ2opaACkpaSgBaSjrRQAd6KGooAKM0UtABSUv+7RmgBKKKOtAB2ooooAKDxRRQAUdaKKACilWigBKX0pOtFABS0UlABRS0UAH60UUUAFJS0lABijrRS0AJRRRQAUUdaKADrRRR1oAPaiiigAaiiigAoo70UADUUUUAFFFFABRRRQAUUf1ooAKKKKACiiigAooooAKKKKACiiigAooooAKWkooAOtFFL1oASiiloAKSlpKACiiigAoo9qKACiiigAooooAKKKKACj/ANBoooAKPzoooAKKKM0AFFFFABRRRQALRRSrQAlFLRQAUUUUAJR6UtJQAUUUUAFLSUtABSUtHegAoopKACiiloAKSlpKAChqKKADiijvQtABRRS0AJ7UUtJQAtJRS0AJS0lFABRR/vUUALRSe1FAC0lFFABRS0UAJS0lFAC0lFFAC0UlFABRS0nagApaSigBaKKKQwooooEJR70tFMBKWkpaACkpe9JQAUtJRQAtFFJQAtJ3paSgBaKKKACiikoAXBoopKACiiigApaSloASij8aPegApaSjFABS96KSgA4xRS0UAJ3opaP6UgEooopgFLSUUALSUUUALRRSUAHWjvRS0AJRS0lAC0UdaKAEpaTrRQAUUtJQAUUZopAGaKKKYBRRRQAUNRR0oAKWikoAKKXvRQAlL2pKWgBKOlLRQAUlFFKwBRR3oqgFpKKKQBmiiigAoopaAEopaSgAozmiigAooaigAooozzQAUUUtIBKKWkpgFFFFAC0naiigAooooAKKO9FABRRRQAUf7tFFABRRS0AJ7UtJS0AI1LSUUAFFFL0FACUUUtAB0pKKKACiiigBaT2opaAEpaSigBaSlooASiiigA70UUdKACiiigAo/wB2iigA7cUUUUAFFFFABRS0lABRS0lABRR1ooAKKO1FABRS0maAClpKMUAL0pKWigAopKKAF60UUUAJRS0lABRS5pKAClpKKAFo/wB2ikxQAUUUUAFL/u0lFABRRRQAtJS96P8AdoAKSiigAooooAKKP92igApaSloAKKTpRQAUUtFABSUUtABSUtFABSUUUAFFLSUALRSd6KAF9qSiigApaKMdqACkpaKAEpelJS0AFJR2paAEpaPaigBO1LR3pKACjFH+9S0AFFFC0AJRRRQAUUUUAFLSUUALRSUUAFLRRSATrRRRTAOlFLSUAFFFFAC0lFGaACilpKACiiloASlopKAClzSUtACd6WiigBKWkpaACiikoAWkpaSgBaKSigAo/wDQqWigBF6UtJS0AFK3Sm9KXtQAUUZooAKSlpP0oAWikpaAEpaPxooASj/dpaKAEpaSl70gCkopaYBSUvSikAlFL70lABS0UlMAoxRRQAUUUvegBKWkooAKKWkoAKOtDCigAzRRRQAduKKKKQBRRS0wE/GiiigApaKKAEooooAKP4etFFABRS0lABR2oooAGope1JQAUtJS5oATtRRRQAUUUUALRSUUALSUtJQAUUUNQAf71GaKKACiij/doAKKKKACjrR2o70ALRSUUAFLRSUAFFFHtQAUf7tFFABSj0pKKACl60lFAC0frRRQAUUdqKACkopfxoASlopKACiiimAUUUUgFpO1FLQAlC0UUAFFLRQAneiiloAKSjg0UAH+7R/6FS0UAJRRS0AJS0lFABS0lFAC0UlLQAUlLR0oASlopOtAC0lLRQAUlL1pKACloooASloooAKKKKACihqKAEpaSloAKKT86WgBKKWkz7UAGaKP/QqX3oAKTpRRQAUv40nel/GgBKKSl/8AQqQB7UUdqKYBRRS5oAP1ooopAFFFFABSUtH9KYCdKXvR+lJQAUUtJQAUveko7UAFFLRQAlL2pKWgAxRnPaijvQAUfrR/u0lIBaKSloAKKSl6UwCkpaKAEpaSigBaSlooAKKKSgApaKKACij2ooAKKSloAKKKFoATPpRnil7UUAFFFHTigApKWigAoopKADtxS0UUAJ/u0tFFACUUUUAFLSUe1ABRRS0AJRRS0AJRS+lFACUUtJQAUtJ2ooAKKPyooAKKKKAClpKWgBKKWigAopKWgAopKKACilpKAFpKWk9qACiijtQAtJS0lABS0lFAB/u0tHWkoAWkoooAWk/Cil7UAFJRRQAUUUZ5oAKWkpaAEooooAOtLmiigAakopaAEooooAKKP92igBaSlpKACiil7UAJQ1FLQAlFFFAC0lFFABS0lFABRS0UAJRS0lABR1paSgAooooAKWkzS0AJRS0lABS0ntRQAvSkpaSgBaKOaKACijpRQAUlFLQAf7tFJS0AFFFJQAtFJRQAtHakpaACiiigAzSUtJQAtJS0UAFFFFACUtB4ooAKKKT0oAWiiigA6UlL2ooAKSj2pe9ABSUv+9RQAlFFLQAUlLRQAUUZooASiiigAooooAKKOaX/AHaACiikoAWiiigA/Sj3pOe9LQAn40tJS0AJR+tLSUALRRRQAUn+7RS0AFFFFABRRRQAUlHtQ1ABS0lFAC0UUUAJS0UUAJR1paPagBKXNJRQAq0Zo/GkoAWjFFFABRRnikzQAvrR7UUlAC0UUUAH/oVFFFABRRRQAdaSlooASl6UUlAC0UUUAFJS0UAJmilpKADvRS0lABRR3ooAOtFFLQAlLSUtABRRSUAFLSUtABSUUtACUUUMaAFo/wDQqKO2aACj/doooAKKKSgApaSloAKKKSgAoopaAEooooAKWikoAWkpaSgAzRR/6FRQAUd6KKAF4/4DSUUZoAOtGaKKACiiigBaPWiigAooooAKKKOtABSUvekoAKWiigBGopaKACkpaO9ACUUtH4UAJRRRQAUUZooAWk7UtJQAUdKWkagBfakopaAEzRS0f7tABRRRQAlFFFMApaSlpAGKMUUUAHSjFFJigBaSlooAO1JRRQArGikpf96gBKVqKKAE/GiijvQAtJRRQAUtJ0/+tRQAUtFHWgAoaj6iigBKKWigAooooAKP96ij/doAKKO9FABR3oooASloooAKKKOtACUtFFAB60UUdO9ABSUtFABRRR1oAKKKKAEooooAKKKc3SgBtHSiigA7UUUUAHtS0lFAC0dKKTNAC96KKKAEpaKSgApaKKACj/0KjrRQAlLRRigA7UUUUAJS0UUAJRRRQAtJjtS96SgBaKM0UAFJRRQAUtFFACUveiigAopKWgAooooAKKKKACjNFDCgAooooASloooAKKSl70AJR+NL70lAC0lLRQAUUUlAC0UdaM0AJRS9KKACkoxR1oAWkoooAKO9LRQAUn50ULQAtJRRQAUUtFACUUUtACUtJS0AJRRRQAUtFFACUUtJQAUUUvekAUUUlMAopaSgBaKP92koAKKOtHagBaTtS0UAFFFJQAUUZooAOlDUfhRQAUUtHvQAUUUUAFFFFABRRRQAlLijvRQAlLRSUALRRRQAUUUd6ACjpRmigA4oopKAFxmjNH60UAJRRRQAUUtFABSUUtACdaWiigAooo6UAJRS0lAC0lFFAC9aOu6kpaACjNFFACZoopc0AJ0paKKAEpaT2ooAWiko570AFGaKWgBKM0tJQAtFJRQAUtFJQAtFJS0AFFC0UAFFJS0AFFFFABRRRQAUUUdKACj/AHaPaj3oAKPx4ooxQAUZo7UUAHeihqKACiiigAooooAKKKKAEoooWgAooooAWkopaACko5paACijtR3oAKSlooAKKKKABetFFFABRSt0pKACiikoAWikzS0AFFFFACUtJS0AFFFJQAtFJRQAv+9R/vUUUAFJS0UADUlLSN1FABS0UUAJRS0nSgBaM0lLQAUdaGooAKKKKACiiigBKWiigBKKWigBP1pc0lFAC0lLRQAUnpRRQAUvtSUtABRRSdKAFpKKKADNLSUtAB1ooooASl60naloAKKKSgBevWkpaKADvSUUvWgApPxopaACkopaACiiikAn+7S0lFAC/wD6qFoopgFFFItABRQ1LQAlFFFAAtFLRQAUUlLmgApKKWgA70lFLQAnSloooATrS0UUAFJS0UAJS0UNQAnWilooASlpKPxoAWihaKAEpaSloASilpKADj0paKKACkpaKAChqKSgBaKKP96gAopKWgBKKWk6UAFFFLQAULRRQAlFLSUAFFFHfigAopf96igBKWkpaAEpfwpKWgApKWkoAXNJ7UtJQAdaKKWgA/3qSjpRQAUUtJQAtJ2paKADrRR2ooATpS0UUAJS0UUAGaKKKACiiigAooooAO9FFFABmiiigA96KKKADrRRRQAUUUUAFFFDUAFFFJQAuaKKKAG0tFHQUDFpKKKBC0UlLQAlLRRQAf8AoNFJ3paAEpaKTtQAUtFFABRRR0oASlpKGoAWiij8KACj2opKAClpKXq1ABSUUe1ABS0nvS0AFJRS0AFFJS0AFHtRR+FABRSUvagApKWkoAKKKKACloooAKSlaigA7UUUUAFFFFABRRRQAUlLRQAlLSZooAX2opKWgApPwpc80ZoAPakpc0d6ACkpaKAEooo70AFFFGaACiiloAKKRqWgApKKWgApM0vWk/3aAFpKWigBKKOtFAC0lLSUAFFFH/oNAC0UZpKAFooo6UAJRR/6FS0AJRRRQAUtFJQAtFHaigBKX/epGpaAE70tJS/7tABRSUtACUveiigBKWik7UAFK1H4UlAC0UlFAC0UlFAC0lHFFABS0lL/AL1ABRSUtABSUtJQAUUe1LQAUlLSUALSUtFAB3o7UlLQAlFGc0tAB3ooooATtRRS0AJS0lLQAlFLSUALRSUtABSexpf4v9qk/wB2gBaKKFoASl9qSigBe1JRS0AJRS0lABS0UNQAlFHSigA70tJRQAtFFJQAtFH/AKDScUAL70lLRQAUUUUAGaKKSgBaKKKACjtRR/6DQAZooo/OgAooooAOlFJS0AFFFFABmiik/wB6gBaKKKACiikoAWjvSUtACUUlLQAUUUUAFLSUUALR+FFJQAUUUUALRSUtABRR2ooAM5oopKAClopKAFopKWgA9qKSigAoopf6UAJS9qSj3oAKWkooAX/eoooPtQAn+7RS0lAC0lL3pKACj9aWkWgBelFFFABSUNRQAtHeikoAKWiigAooooAKKKKQBRRRTAKKKGoATpRR3paAEpe9FJQAf+hUUUUALRikpaACj/dpKXvQAlFK1FACUUUUADUtFJQAUUtJQAUUUUALSUUUALRRSUAFFFFAC0UlFABRRRQAtFFFACUtHaigAo70dqKAEpaSigApfWkpaADrRSUUALSUtFABRQtFABR/vUUUAFFFJQAtFHWigAo6UUUAFFFFABSNRS0AJRR2o60AFLRRQAUUUlAC0UUetACe1FHaloAP96iiigApKWk/3aAClopKACl/GikoAWiikoAWko/CigApaKKAE/Cloo9KACiiigBKOlGfWlzQAlL3opOlAC0n+7RRQAtJR/vUtABRRRQAntS0UlABRRRQAUUUtACUUUf7tAC8ULSdqKAFo/3aKTtmgApaTvS0AFIOaWigAzRRRQAlL0opKAFooo70AFFFFABR3o/9BooAOlFFFABRRmigA60UUUAFFFFABj2oozRQAlFHtRQAUUUtACUtJRQAvTtSUtHegBKKKP8AdoAWiiigAooooAKKKKAEpaO9HegBP92lo6UUAFJRxRQAfpRRRQAc0UUUAFFH50UAFLRRQAUlLSUAFFFFAB0ooo/3qACiil70AFFJRQArUlK1JQAUtJS0AFFFFABRRR2oAKKKSkAtFFJTAWiiigAooo60AHtSUUUAFLSUtAB3pKWigBKXpSf+g0de1ABRRRQAUUUdqAFpKWkoAWkopaACik/3qXvQAUlKtJQAfpRRS0AFJS0lAC0cUUUAFFFGaACk4paKACiij/eoASloooAT2paKKACihqKACiiigAooooAKP96iigAoaiigA/3qKFo7UAFFFFABQ1FJQAZzRStSd6AFpKKKAF9aKSigAoo/3aP/AEKgApaSlagBKX+tJS0AFJSr9aKACiij8KAEo70tJQAtGaTtS0AJ3paSl70AJRS0dKACiiigAooooAKKKKAEooooAKKWk/SgBaKSl7UAFJ/6FRR+tAC0lLSdKAF/3aKSloAKSlozzQAUd6KSgBaSiloASilpKAClpKWgBKXrSelL1oAKSil60AJ3ooooAOtKv1oBo7UAFFFFACfjS0UUAJS0UUAFFJS0AFFFFABRmiigAoo/WhaACihe9HSgBFooooAKKKKAClpKKAClopKADrRRS5oATpRRS0AFFFFABSUtDUAFJS0UAJRRS0AJmilpKACiiigA70fhQ1HWgAooooAKWkpaACkpaSgBaSiigApaKSgAozRR/vUALSUUUAFLQ1FABRRRQAUUZ5ooAO9FFFACUUtJQAdaP92ijrQAtFJRQAUUelFABRSrSUAFFC9KWgBKKKKAClpKKAAe1HpRRQAUUZxS0AFFJ1paAEo6UUtACUd6WigAopKWgA/3aSlpO1AC0d6KKACiiikAUUUf7tMAooooAKKKKACiikoAWikpaACjvRnFFABRSUtABRRR/u0AFFFFABRRRQAUUUUAFHrRRQAZ9KKKKAEopc5o9qAEpaKKAEpfxoooAKSlpKADrRS0UAFJS56UmfagAo70dqKADrRRS0AFJRR2oAKWkpaACiiigApKPxpaAEpaTpS0AFFJ2paACjvRRQAlC0tFACUUtJQAUUtFACUv+7RSUALSf71LSUAFFH8XSloAKKKSgAopaKACkopaAEoopaAEpaM0UAC0UlLQAHiiik7UAFFFLQAd6SlooAKKKKACiiigBKP96iigBaKKKACikooAWiik47UALRRRQAdaKKKAEo70lLQAUUdqKAClooWgBKKXpRQAlLRRQAlFFLQAUZpKWgAooooAGooooAOtJS96SgAooooAKKKKAD/0GilooASjvS0npQAUvaiigAooooAP/QaSlxR3oATvRRRQAUUtJQAtFJS0AFFFFABRRRQAd6KKSgBaKSigAaiij2oAKWko6fWgAooooAWko/GjvQAUZoooAWkoooAKKKWgBPaiiigApc0jUUAC0UUtACUYoWigApaKSgA/3qO9FFAC0lFLQAlLRRQAUUUUAH/oVHejrR/6FQAUlL7015I4k3SMFHqTikAtFZs+s2sX3GMp/wBkcVQm12V+IIlT3PJrN1Yo2hQnLodFSMyoOWA+prk5b65l+/M/0HFQfePJJrJ4hdDdYR9WdY95bL1nj/A5qM6lbD/loT9BXNp0p69KzeJZX1VG6dTt+wkI+lH9qw/3JP0rFp1L6xIf1aJsf2pD/dkp66lAf74/CsZRx0pwFH1iQvq8TaF9bn/lpj6ipBcQv0lT86wcU7FUsSyXhkdCpB6EGlrngSOhINTpczL0kJ+vNWsQupm8O+htZorOj1Bh99QfpViO8hbqSPrWqqRZk6UkWVopAQRkHI9qWtOYgKP60ZopiCiijpQAUfxdaO9FABSUtFABSdKWk9qAFozRmkoAWk7UUUALRSUtABR3pKWgBKKKWgBM0UUUALRRRQAUUUlACtSUUtAB1opKWgApKKKAFoopO1AC9qKTrRQAdBS0lFABRRRQAUtJRQAtJRRQAUd6P/QqOtACrR1pOtHVqAFpKM+1H5UALRRR3oASilpKACijpS0AJRS0UAJS0lLQAUlFH+7QAd6P/QqWkoAKOnNFFAC0UdaSgBaKKKACkpaKAEpaKMUAH6UUUUAFFH6UUAFJS0lAC0Uq9KbQAUUUUAFFLSUgCl70UUwEopaSgApaKDzQAUnSl/3qP/QaADvRRSUALR3oozQAnvRS0dKAEopaKAE/h6UUd6WgBKWkzRQAtFFFABR2opO3FAC0UlFAC0UUUAHaiiigApKO1LQAlGaKX/0KgAoaikoAWjvRRQAlB5paKAEopaSgAoopaAEooooAKKKKAClpKKAFooooAKKKSgBaSiigApaSloASjNH+7RQAUUUN1oAKWik/3aAFaijFFABSUtJQAUd6KKACilooASlzSUUALSUVS1DU7XT1/fSfP2jHJqW0hqLeiLtU7zUraz4mlG7+6OTXL3+v3N1lYf3MR9Ov51l5yctz/WuedZLY7aeEb1kdBdeIJpOLVREPU8msuWeWZ90sjyH3NVxzUiVzSqtnZGjGGyHr171ItMWpF46VlcsetSLTBxxUi0riYvepF+tNBqQCmQKtPApuOxp60CFA5py9aAKWqJExSgUuKdimIbinYpcUuKCbjaVaXFOximSCMyHKEirMV6w/1gzVbFGK0VRrYlwTNWKeOXoefQ1JWJViG7kj4Pzj0NbQrdznnR7GpRUUM8cvQ8+hqXvXQmmYtNbhRmiiqEFFHeigAooooAKKP96igBKKWkoAKKPxooAWilbpSUAJS0UUAFFFFACUtFC0AJS0UnagAooooAKKWigBKWk6UUALSUdRS0AJRRRQAtFJS96AE70UUetAB+tHWiloASiiigAoo6iloASiil4oAKP96kpelACUtFFABRQ1FACUv/oVFFABRRRQAUUUUAFFJ2pf96gAopP/AEGigApaSloAKO9FFABRRRQAUUdaKACiiigAooooAKKKKACiiigBFpaSloASihaKAClpKKAFo/GikoAWhaKMUAH+9RmiigBKKWhqAEpaGpKACloooAPqKSlooAKS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ACijq1HSgAopKWgBKWikoAO9LRRQAlFLSUAFLRR/vUAJS96FpKAD/dpaSigBe1FFFACUtJRQAd6KWk60AFLSUvegApO1FGaAFpKKKACiil/3aAE70tFFABR0oooAKTiiloASlopKAFzSUv8A6DRQAlLRSfQ0AL1opKKABqWiigBKWihqACk60UtACUvakpaACko6UtABRRRQAlHeis/X9TTR9JnvJOqDEa+rHoKASucX8S9c3SppVu3yJ88xHr2Fef55pbmeS5mkmmYvJIS7E+pqMH8qymz18PT5ETocmpVPIqulTpWLOtIspU61Xj/WrCfjWLNCdOtTJx7/AEqFOamT+E1mwJ06e5qUfyqJKnTqKgRIg6VKnpUSdPapk5zSEyVelPXryajXr1qZef8ACghki/5FSL/Sox6VIDxTJZIlSj3qJe2akQnNNEMlT61ImfTmogT1qRTx9KozZKPSpB61Ev1qROvStESyUHmpF6VGpGelPX61aMWSL+hpyn0qMdqkB6ba0RLHjGM09aYp5xTx6ZqyRy0f+g0n49KXnNWjMdS570gPt8tGeKBB3+tH8X+1R3470duetADW7UhBzT/T9KYeBg1DGRsO9Rkc1K3amsOPWs2i0V2pjVK1RMK55o1QykpWpGqCxKuadNhvKPQ9PrVFqcpwRjrVU5cjuROHOrG7R2qK2lE0Qbv3qVa9KLurnA1Z2FpOlFLmqEFFFFACUtJRQAtH4UlLQAUZpKWgBKKWigBKX2xRRQAUUlFABRRR/SgAooooAKWikoAWkoo9qACilooAOBRRRQAUlLRQAUelFFACUUdKWgA/3aSiigBaKPaigAooo70AH+7SD2oooAWiiigAoopKAFox9aKKAEpaRqKAF/3aKKKACjvRRQAlFFLQAlLRRQAUUUe9AB1o60UUAJ3opaSgBaKVelJQAUlL+FJ3oASlx60lLQAUUUYoAKO1HeigAopaSgBetJS/pSdaACijpRQAUtJS0AHeiiigAoopOKAFopKKACjrRRQAUUZ9KKACij8aKAFpKP6UUALRSUv4UAGaP92ikoAO1FFFABRRS0AJRRRQAUtJR2oAKKKO9AB0paSloAKKSloAKKKKACikpaAEo7UveigAopP92igBWopKKAClpP8AdpfwoASlpKKAFo60UUAJ/u0tFFACdKKKWgAo/Gk7UtABXlXxO1j7XqosYm/cWv3sd5D1/KvR9b1BNL0i5vH/AOWS5A9T2H514HcTNNK8sjbnkJcn1JpnThoXdw70oPNRZpwzmudnqQROhqwhqun41On+RWbN0WE/hFWU7ZqtH+dWU681kyydKmT6dKhT7v8AhVhKyYiVPrU6etQJ6HpmpUqAJ0+vapV6+tRJnHvUq9OtIkkT8RipB2qNT3HTFSDIOKZJID+lSDr6iowaetBDJV6evpUinjr0qIGnr0qiGTL3qRT79KjXnFcR8R/FM+gzraWMXmXCqC7E4AJ7e9a04ObsiN3Y78HI6+9SA8cV5V4C+ID6vqJ0++i8q4xlTnINepxnp781U6cqbtIhtdCwvB605ajhya474meMG8L28UNnB593Mu8Z6IvqaumnN2RFrux26GpFOa8U8GfFSe91dLHVIhGZThWByK9niO5Aw6EZrWVOUNzOVuhYB4pR0xio1OcU9T2FBDJB/wCPUuem36UxTyKdz+PpTEO7fNxTs5pinI49aF69aZA/NHejP5U3rzmgA/HmkalzSNj8KQCMe9RtUnf61GeazZaIXqM8d+lTPzUbCsWaIhamtTmprdKyZoNpM0UmaRRcsJvLm2no/Fav+9XPKcHity2l82JG7nrXZQnpY48RDW5NRSdaWuo5hKWiigApKX1pKACiiigBaSiloASil70lABS0UUAFGaSloASiil60AJ1oozRQAtFJ70UALRmkpaACijNJQAdfpS0n/oVLQAlFLRQAd6Sij/eoAOKKKWgBKXvSUvegA/3aKKKACk60tHWgApKWigAooopAFFFFMBO3rS0UUAFJRRQAf+g0tJ3paAE60tFJQAtHSkpaAEpaKKAEpaKKACijikoAWiiigApKKKAChaVqKAEooooAKKKKACilooASil/3qKADFDUlFABS0n+7RQAv6UUUdKACijNJQAUtJ/u0ZoAKWkooAXvSUtFACUtJR3oAOtFFFABRRRQAUelFFABRRS0AJ3opaSgAopaKAEooo/pQAUUUUAFFFFABRR3ooAKKWigAopOtLQAf7tFFFABRR1ooASilooASloooAKOgoooAKPeiigBKWk60tABSUtFACUtH+7RQAUlFFMDzz4taltitNOjb7376T+Q/rXmLnJra8Y6j/aXiC9nzlA2yP/dHArDzzUvY9LDwsh4NSJ/KoBwamQ+1Ys7kWENWIj6VVSrEVZs1RaiHSrCH8c1XSrCegrJjLKVKn3h/KoUxUrSrHgORzwKzYFlB3qeJc9Ac1SN7BCg3kE+ppF1OWXP2eEkep4qLMRsQ2s0oO1CQO1IvBx79Koaff6jHNlhEE+tXvMLsWc/MTk0NEakg6jIp6E/jUYP8qcv4/wCNIRMv41ID0+lQrT1PI/lQJk69e9OU4x71EDzS9u9UQ0W7Zgroc9DXC/FXQbm7vJLu3V5IpeQVGccdDXaoT+dSrIce2ela06nI7mfLZ3PIvhv4Nvl19NTvYjBBDkRhuC5/wr2YcBR7VCjkGpFOSK1q13V3MlTUdizA3PNcV8V9Bm1S3S6tozLtj8tgoyRg5Bx+NdghOamVuuemaVOpyO4bO584+D/BGq3viS3k+ySxW0ModpZFIHH86+kYV8uFF9BSbz+NKvWt6ld1NzFU0tiUN/eFPUmolPr3FSZ46/lWaY2iQNS9celRg9PSlBPX/IqrkWJs9aGIx6GmZ6/1FC5B5p3FYfknrR5ikfeGfrVe+WSS1kEH+sxxzWMNR1K3AE+n7lHdKiVSxUYc2x0WQw+Ug0jevpWLb6zZTPtk3QSf7XFaAmKgEMJY/wC8OtJVEwdNon5FIf8A9VCSLIu5DkU08+1NisNPvULVIf161GfSsmWiNqjapGqNqxZohrUZoam1BYVo6VL8zxHvyKzaktpfLmRvQ1rSnaVzOpG6OgzRSUteieeLRRRTEFFFJ0piCilooAKSl4o6UAJSrRSUALSUtFIBPxpaSimAUf71FFABRRRQAUtJ0ooAKKKX/doAKSiigApfWiigA/3qKRqWgBKKKWgBKWkWloAKKKKACiiigBKKKWgApKKVutACUtJ7UtABRSUtABSUrUdOKACkpaSgBaPwopKABaKWigA7UUUUAJmlpKWgAo7UUUAH4UlLRQAUd6KO9ABRSUUAFFFFABRRRQAUUUYoAWikooAWikpf4v8AZoAKM0UUAJS0e9JQAUtJ04ooAKKVqSgAo/SiigApaSigBaPakpaACk/GlpPagAopaSgAooo6UAFHaiigApaSigA7UtJ70UALSUtJQAelFFFAB/6DR2oooAPxoopaAEpaTtRQAUtJS0AGaKKKACiijNABRRRQAUUUUAFJ+FLRQAUf7tFJQAtFFFABRRRQAUmaWigBKP8AdpaKAErN8SXv9naDe3OcGOI7fqeB/OtKuI+LF55GhW9uDzcTfoOf8KZUFd2PJZTnvUdDnmmZqWerTRIDUielQL1qVD+NZM6kWkOasRHkHrVZKsJ/kVkzRFqLr06VaiPP+FVIz0zmrKHnrWTGWEzjioryxN3LHIszx7RjAqWI9Mmp4z0z1qNgILbT4Ijkje/q3NaAAXHGKjQ8e9SL1/T61LAmQ4/+t2qVP1qBM8HJ6VMCfpj8qRJMp6HmnqenWolP1x2pw7c9akROv4jFPzx7fyqEH/8AXUg77uKCSRT+Jpyn3qMGnd81QiZCc4FSoarA1IjDb34oIaLO6pFPHWqwbv8AlUqMPxqiWiwp69aepBGag3D8O9PV+xpozaLGfU1IG9earhhn2zSrKM8mtEQ0WR6g5pyn61CrZ6n8ak3Yx6GrIJM88dqdnnp9KjX6/hSqfwHpTTJsSAnNKDzUanPrinbuetO4rEmffI9aXPHao935mlz/APXoEQ3dlb3S4mhR89yKxptFuLd92m3JQd45DkVv9e9Jxn0qXFMuM2iCwhe3tQszb5OpI9anY9KTNNbjtRtoLd3EP8qY1OPemN+dZsaI2NRtUhPWo2rJmiGNSZpWptQWGaKbmkzQhHQWcm+2jPfGDVhaztHkzE6+hrRWvTpu8UzzaitJoWiiitTMKSjiloAKKKKACk/3aWigBKWiigAopKWgBM0UfjRQAUUUUALSUUUAFFHeigBaSlpM0ALRSUvegA6UfrRRQAUf7tJ/vUtABSN0paKACkzS0lABS0lFAC0UUUAFJS0UAJS/hSUv40AJS0UUAFJS0UAFFJS0AJS0lFAB/u0tJRQALRRRQAtJS0UAHekpaKACiiigApKKKAFozSUUALSUtJ+tABSrRSUAFH/oNH40UAKtJRRSsAUtJRTAKKWkoAKKKKACilbrSZoAKKKKACilpKAClpKKACjvRS0AFFJRQAUtFJQAtJR/u0UAGaKKKACiiigAooooAO9FFFAB/vUUf+hUUAFL3pOlFAA1FLSUAFH60tFABSUUtABSUtFACUd6KWgBOlLR2ooAKKSj69KAFoopKAFopKKAD/0KjtR/vUUALSUUtABSdqWigApKWkpIBaKKFqiQryf4v3W7WLO3B4ih349yf/rV6xXiPxJnM3i2854j2x/kKSN6K945QnmmdaGozUs9SA8GpUPNQg81KhrNnRAspjFWEPPrVZO1ToayZoi1Fnj+tWoz/wDqIqmn8varKHptNZsZbQnPXNWEOfw61URqnQgnrWbAsA/r0FSA5/rUCcGpUPTtSAnHXof8KkU9O/rUSHmnA8Z54pCJ0PzevvUgPWoAenOalXp8ucZpCJR2/wAKkU+1Qg+//wBepA/P8qBEinFTIu8gZxnioB2PNSpwfrQQzl/F2sX2jamkC2hkgZQ/mg9aNO8VW82BMTE/owxXY3NvbapbC3vVzj7r9wa5PVvCNxCC0Ci4j7Y61ulFocJp6SNeDUoJBlJU5q9HdxsOJE/OvOX08wPiSGSI9xgipEiUf8tZR/wI0vZ+ZfJFno32tAcmRPeo5tUtYR+8nQfjXApHER8xkP1Y1btrVZJFEFt5j+u3NCpk+yibeo+KYYo2Noslw+eMDA/OqfhPXtU1PU3huLeNIBzlc8Vds9AuLj/j7Iii9B1robGxt9Ph8q3UAdz3P1ra8FHzMJ76F9DxyfzqVCM1CnGOakQnj+VZXMGiQdv6U5Tk+9RKePT1p+ef6VVyCRT+HHSlz36io888mgHJ/pTCxLn0NCn3qPPTP6U7OTzxQTYdk/8A16M/Wm7vqaM47/WgLDs9qbnim/n9aRjnGalsqwMcUxuo/lTs0xv4vSpYDGqNjink/jUbGs2aoGpjU5jTKzGFJRmm0IZpaPJi5dfVa2VrnNPbbeRfXFdHXo4d+6cGJVpCrRRRW5zB60lLRQAUlLRQAneilooAKKKKAEo60vSigBOtFLSUAFHpRRQAUf8A6qM0e9ABRRzRQAuaTpS0lAC0Z9KSigA/SiiigA/3qKKWgBKKKKACilooAKShqWgApKKWgApKWigApKVqKACj86SloAKKSjpQAtJ2paSgAooooAWjFJRQAtFJRQAUUtFABwaKKTrQAUUd6KADvS0lFAC0lFLQAlFH+7S0AJS96SigAooo/wDQaACiiigApaKKACk70UUAHWiiigApfaiigBOlFLSd6AFo60lGaAClpKXvQAlLRRQAlFHt1ooAWkoo/wB6gApaKKAEopaSgAooo70AFFLRQAUlLSUAFLSUUAFLSUtACUUtFACUUvWkoAXvRSUtAB/F/s0lLRQAUlFK1ACUUUUAFLSUtABSUtFACUUUUAFFLRQAnrS0UUAFFFHWgAooooAKKKKABetfP3i6bzvEmpv63DD9a+gV6184au3m6jdt/fmY/qaZvhtyi1IDStTKlnpQJFqZD2qAGpUNZM3RYQ9O9WEPYnNVkPSp0J2jtWbNUWoj0NWIj021VQ8ntVhD0/QVmxlqM9f1qZD79fWq6NxyalRunNQxlkHPfiph2z+VVweeTUqE7uB1qRFgEcE8ipAefWq6HHqKnU4b0qREqn8TUinvnv1qBOMDvUgPGeeKQEwPNSL1PBqAH347CpEPTrQSToTnjv2qQHHtUCk5HSnoaCSyjYP8qsQzuvQn6GqaHPTp/KpEPTmgloutIkwxJGD9RULWdjIcvbR/98imK3PpUgPPocfnTuRsCafYjlLeL/vmrKBY+I40QemMVXUnr/OpAcnDc07iJMg9/wAKcMdelR5yefpSgn5c00QSqefan5+b0IqLp0H4UoP4VQiXJzinq2T1qIHg9aXPPPNNCsS5/L3o3dOcj3qPd/td6ep5yCf8aZFh+fTmjJqPP/18d6VW9qLhYkzjp+VGfbFR5x/9ejj6UXFYfnuDTS2On5U0nPf8KaT7/WlcdhxPODTCc9aM+hpjVDY0gY01jQx96ZmpZaQNSUZprGsxg1IxozTGoQya3bbNGfRhXU1yAPI5rrl5Arvw2zOLFboctFJS11HGDUd6M0UAFFL/AIUlABRRSUALR3o9qSgBaSlpKAClpP8AdooAPwo6UUUAFFFFABRRRQAUUUc0AHWjrRRQAZooooAP96lpKKAClpKWgA9KOlC9aKACiiigA70UUUAFFFFACUtFFACUUtFACfhS0dqKAEpe9FFABSelLSUAFFLRQAUUNRQAUdqKKACik/OloATtRS0e1AB2pKKO1ABS0UlAB1paSigApaSloASiiigAzzRRRQAUUe2aKAF60UUUAJxRRRmgApaSigAopaRqACiiigBaKSloAKKSloAKSij9aACjpS0lABRRS0AJS0UUAJRS0jUALRRRQAUUUUAFFFFAB9TRRRQAf7tFFJ3oAWiikoAWikpaACiiigBKKWigA/3qKKSgA7UtFFACc0Uf71LQAlLSUtABRRRQAUUdqKAEo70tFABRRRQAUUUUAFfNuo/8fUv/AF0P86+lF61836qNt/cr6SsP1NM6cN1M9qbTmpv4VDPSQ8GpEqKnIalmqLCVOhyarIamBrNlItIferCH6+vFVEbmp4zgdTis2jQuIenapUY/hVRCcjpU6Htz9KhjLiE7vSpEORVRGHX39KsKeRznFSBYU9D2qZCRx6+1VVPXH5VMpB75FQ0IsD/aHSpAc45zVdCOvUVIDyMdaQiwDz+H0qRT65qqh7fzqZTnBzSETBsH2Pang+vOKgU47mpFJ+hFAidT7/jipAeB1Oe1V0OehxjtipARg85FBLRYRvm65p4Of8KgDDgk5FPVuB3oJZYB9/anA9O5quDjvzTwaZNicfX/AOvS5981Fu45NO3dP0pk2Jlbnr7805SM89/yqJT+HY0qnpzj1pisTKc888d6dn1/DFRKehpQaomxMCD3+tHpz9BUffOeaM9Ow9aYiXP40b8YyT9KjyT3yRShu2cilcVh+4Dp/wDqoJx3Bpitx1pM9CxNFwsPZvxoz2FMZjTM+vWpuFh7GmMc0ZprH3qWVYVj60xjSZxSZ/OoZVhaRjTc0magdhWNJmkzTaoLDu1ddH/q0+grj8812SfcH0ruw2zOHF9B1FFC11nEH+7RRRQAUUUf7tABSUdKWgBKWijigApKWk9qACilpKACijpRQAUUUUAHeiiloAT8KKWkoAOaKKKADrRRS0AJStSUtABxR2pMcUtABmjNJRQAtFFFABSf71LRQAUUUnagBaPakooAX/dpKKWgA70UfhRQAUdqKKACjvRRQAUdaKO1ACUtFKvSgBKT/eoo96AFpP8AdpaSgAoo70UALRSUf7tABRRRQAf+hUUUdqACiiigAoozRQAUUUvegBKXpSUvagBO1FFLQAUlFFABRRRQAZpaSigApaKT8KAFpOlFFAC0mKOtLmgAooooASilooATvS0maKADtRS0UAFHSikoAKWkpaACkpaKACijFFAB60dqKKADvRRSUAC0e1LSUAFLRRQAlL/6DRSUALSUUtABSUUvSgApKXmigApKWk70AFLSUUALRRRQAd6O9FFABRRRmgAooo/pQAUUZooAFr598Vw+R4h1GPGMXEn86+hMV4b8SLfyPFt7xxJiQfiBTOjDP3rHJOKZUzCo6hnpwG08GmU4GpZqiVD71OhquDUinvUMssoeTzUqE1WDY+lSoffpUNFItofxqwjev51TQ9M//rqdD0P8J6VLQy0p5/8ArdanRuPXNU0Y5x1qdD/+qs2MuBvc1ICc+mKqofrUgJz1/KpAtIemD25FSBvwqqjAkZ4qYN69+1SImVuec8VIpJ2nNVw3I5zTwfyPf0pAWVb8R6U8Hnk1Arc9ee9PQ9DnB+lIViwDwMnJ9ak3HIquCc+nt609WwDQIsBsHr+NSA888H+dVVbp3+tPV/xFBFiyG6Zx9Kep9/xqupx61IH7/wBKBWLAPvil9qr56d/QU8NQKxOp79fwpyucj0xxUIb/AOtTlPXnFO5FicE9uPalU+vNQ7sfT3pwb3NO4mibPPU7vpS5P4ntUW7px+FGcGi4rEin3P0p27PvUW7sKM4PuaLhYkye5H50bs+1R7gPWjdjpRcLD8jt+Zo3+nFR5+v0FNzzSuFiRj60maZnikz2FQ2Ow/NMY0meKbmoHYcx+lNpM0maBi0ZpM03NUBJF88qD1IFdmPSuQ08br6Af7Qrr678MtDzcXugpaKK6jkCiiigAoo/CigAopKWgAoopKAFpKP1pfagBKWk60vvQAlFFFAC0UnejvQAUtFFACUUUdaAClpKKACilpFoAWiijHagApKWigBKKWjNACUUtFACUUtJQAtJS0lAC0UlLQAUZoooAKKKSgBaKKTvQAv4UdqSigApelJRTAWj/epOtLSAKO9HaigBOvWjNFLQAlFFLQAlFLSUAFFFHpQAUUdaWgBKKKO9ABRRRQAUtJmigBaKKKAE9qWj/dooASloooAKPSkpaADtSUtJQAtFFFABQfeiigBKWiigAoaij1oAKKO9JQAUtJz/AMCpaAE7UtFFACUtJxRQAveikpaACiiigAoo7UUAHbFGeaKO3FAB/wDrpKWkoAX/AHqF60UUAJ6UtJStQAUUUUAHSk7UtFACUUUtACUtJRQAtHWiigA/3aSiloAKKKSgBc0UUUAGaKKKAD8qKOaO9ABRRR/u0AFeU/F+18vWLS4HSWHZ+IP/ANevVq4n4sWfn6DBcgcwTc/R+P54pmlF2kjxxxUbVO9QsKyPXRHQtPxzSUjRC5qQGo1p60iiUH/69SofrVcH+9UinkUmNFtDUqGqqNzUqMfWs2iy4hyfWpUboapof8+tTo3Q8/lUNFFtG6DNSq3y5qoD2/SpEbBqWgLat71IjflVYN0qRWz1OR61FgLKN0/zmpA3vkVUD9Py4qYHp14pAWQ3vkU9WBxk1VRvwqQNx3FIRaVj6/8A16crY9iKrhuenHtT1f3zSFYsKeeuD/OnhuQc4qurH6H3pyN6H2oEWlb/APVT1bnrxVUN7mpA3P170E2LCsc8ce1PVunbFV1b1NO3DI7UCsWA3PNPDHiq4k96eH/n0oFYn3ccn/69O3c9fwqBT+Hr704N79aBWJ1fHAJFLuwOv9ahDe/PpRnFK5Nibd8o4o3Ef4VCpHv707NFwsSq/pSbuPUVDn1yaM570rhYm3cU3NR5/wAmk3f/AK6LhYkz9KGPrUbGjNILD8+9NY01jTc1JViRjSMaZmkzQA/NGaZnHHakzVpAavh+PzNQB/ugmuorB8LR/LPJ9FFby9K9KirRPHxMrzFoo6UVsYBRRRQAlLRRQAfjSUtFACNRR+FLQAlLSUtABRRRQAZpKP8AeooAKWkooAWik/3aKACilpKAFpKWigBO9FFLQAYo7UlLQAUUUUAFFFFABSUvekoAWjtRSUALxRRRQAUUUUAFHSijNABRRSUAFLRRQAlLRSUAHej/AHaKKYBS0UlIBaSlpOnagApcUUlAC0UUUAFJRRQAdKKKKAFpKKWgAoWko/i60AFGfyoooAKKKFoAWikpaACjr9KSloAKO9JS0AFHaiigAxRRRQAf7tFHWk96AFooozQAUUUUAFFFFACdaKX8KTNAC0UnSl5oAKKSigBaO9JmloAKKKKACiiigAoo/wB2j8KAE7UtFFABSUtFACdqKKKAFoo9qKACikpaAEpaKSgBe1JRR/WgAooooAO1FLRSAKKKT8aYC0UUUAFFFFABRRRQAZzR2pKWgAoo6UdqACqOvWQ1LRryzYf62IgfXt+tXs+lFMI6O583SKVcqRgg4NQOBXV+P9M/s7xJchFxFcHz4/x6/rmuXcVmz2aTurkDCkxUjCkYVJsMxSrRiikUPWng0xaXNAEwNSIRxUCn0qQGpZaLKnp1qZG461UB5qUH86ixRaBqUNVQNxUgPFQ0MtqcN6VIG5GeDVQNz6ipkb3yKmwFkP8AXHpUiN+NVgffp2qQHmlYCyrdqer+lVQ3A61IGO7r+lTYC0snX3pwb9Paq6nOfX0p6sfcipEWVbHU8GnA9ATVdW+b605W/H+lFgLQbv0BpytjrwarBx68+tSBvpzSEWRJzz07U9W9TVZW75OacrYI560CsWlbH09KcG6d6rBvqKfu9ePagmxYDZNOD8dSarBs96fu6VIrFgN7/mKXd0/lVcN+XpilVvTFAWJ9340u7/8AVUO7/Jo3djQFibcfXrRmoc4ozQKxLmjNRbsdKN3vzSCxJn3o3YqHOeooz6UDsSbxijNR5ozigqxJmkzTM0maETYexoBqPNWtMh+1XscXqefpW1NXM6j5Vc6/R4fI06JT1I3n8au5pAMcdulFeilZHhzd3cXFH/oVFFUIKKO1HtQAUUd6SgBaKKKACiiigBOaWkpe9ABRSdqWgBKKKKAClak6UUALSdKWkoAWhaSloASl6UUUADUUlL2oAKKKKAD/AHaTtS0UAHtRSUtABRRQ1ABR2opKACiiloASl/8AQqSigAopaKAD/dpO2KO9GKAFopKPSgBaO1FFACUUUtABRRRQAUUZooAKSlooAKKKKACijNFACUtJS0AFFFFACUtFFACUetFFAB/vUc0UUAFFKeKKAEpc0n+7S0AFFJRQAdqWkpaADNHtRRQAlFLSYoAKP/QaKKACilpKAFpKKWgBKKKKADvRRRQAdaKWk4oAWj/eoooAKKM9aPagAooooAKKKSgA7UtJR+NAC0UUUAFFFFABRRRQAnSilpM0AFKtJS0AFJR1ooAKO9LSUALRRRQAUf3jSe1LQAdKKP8AdooATrS0neigBaTtS0UAJRS0UAJS0UlAC+9JilopgcX8TtK+2aMLyNcy2hycf88z1/oa8jYV9GTRRzRSRSAGNwUYeorwbxDpjaTrFxZSZIjb5T6r2NZyO/CVPsmOwpm2rDAU1hUHoogxRipGFJikMbiinYoxQAtKDSUq0FD1qRcj+lRA04GkMnBqRW96gBp6ntUMZZVuetSI34VWVhUinjmoaKLCNkdalVh+FVQfm6VIDjHNKwFkN0p4bn1qsGxx0NPDfhSsBaDc804Nz1xVYN+Qp6tgcH6ClYCyG+op6t7VXVvrinKfepsBYDZGc5+tPU/XbVdW+b608N79aVgLIJJ9aeG/CqqsDT91IViyG5p4bpiqqv75p27GPSiwrFnec09W96rK3tmlDehpBYt7/f8ASjd0zVcN+FLuxjv9KAsT7qXdjv8AWoFb3p2fSpCxNu980ZqHdRuoFYm3cdqN1Q7s96N1AWJt1Jmos+9GfegLEuc0Z9KiY0bjRYCXNG/3qLdRmmkSyTeM10/hK1wkly46/Iv9a5m1ha4uY4Yx87HFeh2cC29tHCnRBiuyjDqefi6llYlWloWius80KOlFA9qACiiigAoopPSgAoox+dK1ACUUtJQAUUd6KAFooopAFJS96SgA4ooopgFFFFABQxxRRQAUZpaKAEoozRQAtFFFABSdKWigBP8AdpaTFLQAUf7tFJQAtFFFABRRRQAlFHWjrQAUUUtAB3pPalpKACilo70AFHSk7UtABRRRQAUdqKKACkzRS+tABRRRQANRRRmgAooooAKKKGoASloooAKKKSgAooo6UAFFFHvSAKKKKYBS0UUAGaKSloASloooAKKKKACijpR3oASl60Un+9QAUUtJQAtJS0UAJRS0UAJ3o60f7tLQAUlLRmgAooooAKKM0UAFFFFIBP8AdopaKYBR04oooAGpKWigAo/3qKP1oAKKSloAKSlzSUAFFFFAC0lFLQAUUlFABRS0lAC0UlLQAUUlLQAUUUUAJ2paSl70AJRRS0AJ+FFLSUAHTpS0lLQAVw/xM0b7ZYJqEC5ntxiTA6x//WruKbKqyI6yAFCMEHoRSauVTlyTuj51ao2FdB4w0NtE1eSIA/Zpfnhb29PwrCasZHuU5KauiPHtRin47UY96RtYjwKMVJj2ox7UAR4xRipMUYoAjxzTlzRinAUDBacDSYpRxQA9fyqQHioh6U4GoGTA1Ire1QZp/wCFQMmUmng9PSoFPvT1PPpQBOGpwbJ+tQg8UuaVgLStz7+1KG/DFV1Pb0p24/WlYCxuxT1bntVdT2p4alYCwJMdeacJBmq4anKeetTYCzupVbtVYNT1bFKwFlW7Uuarq3HFOWSiwFndml3/AN2q4brijdiiwFrf70u/+9VdX980u6lYRPu/KjcTUW6jf70WAl3fU0uah3Uu6psBLuoycVFuNG6qsIlzTs4qDdS7s0CJt1KpzUWa0NHsn1C8SEZCdWPoK0grszqTUFdm94SscBruQf7Eef1NdOtMijSKJEjGEUYA9qf2rvhGyseHVqOpK4tH+7RR0qjMKKKKAChqKKACko/3aWgBFooooAWkpaKACkozS0AFJS0UAHejtRRQAUlLSUALRSUtACUUtJQAtJS0UAGaSlooAKKSigBaSlooASl4pKWgBKWihaACjNFFAB/u0UUlABS0nSigAoWjpS0AJ2o7UtJQAUUdaPwoAWjrRRQAlLRRQAUnalooASilzRQAlHelooAKKKKACikpaAEpaKKACikpfegA6ULR+VC0AJRRR2oAWikooAWkpaSgBe9FFFABRRRQAUUlLmgAoooWgA7UdqKPegApKWigApKWkoAWiiigA7UnSlooAO9FFFABRSddtLQAYo7UUlAC0UUUAFFHtSUALRRRmgAzSUtFAB39aSlpKAFo/wB2ijrQAUUUUAFFHeigApGoooAKOlL/AOhUlAC0lFLQAUn+7Rn/AApaAD/dopKP92gBc0UlFAC0UUUAH+7R3oooASilpKAF/GiiigBKWiigAooooAx/FWix67pbW5wJk+eJ/Rv8DXh9zBLa3MkFwpjljJRlPY19EVxHxC8M/wBowNqFin+mRD94o/5aqP6iokjswtfkfK9jymlxSZpQaxPZQYoxT80VNx2GYoxT8UuKLhYjxxRjmpMUmKdxDKdinbaMUXARaF6UuKdikMRetPyaT/dpaQDgeeKctR0+gB6k0oNMWnZqQJAacp9Kiz/hSg0DJs07PaoVOKdnikBMGpc1FmnZ9KVgJgfypQ1RA/3qXdRYCcHpSg1FuzS5pWAnVjS7qg3c9aduz3qbATbuadnPtUG6l3UWAn3YFLv/ALtQ5/Cl3UCJd2Kdn05qHdQDRYCbPFGajz6mlosIk/3aXPNR5p61VhORPEjSSBUBLk4AHevQtB01dOswrAGZ+ZD/AErO8K6N9mRby6X98w/dqf4R6/WukrqpU7K7PHxWI53yrYKX8KKK3OMKKKKACihqKACijpR/u0AFFJRQAdKWikoAKWj/ANBpKAFpKWigBFpaKSgAoopaAEpaKKACkpaKACkpaSgBaSlpKAFo60n+eKWgBKKKKAFopKKAFpKKWgA5opKX2oASl/3aKTNABS/71HbmigBKWij8aAEoopaAEooooAKKKWgAooopgJS0dqKQBRRSdqAFo4xSt0ptACtRSUUALmkalpO1AC9aKKKAD8aKKKACiikoAWj8aKKAEooooAWkpaSgBc0UUUAFFFFABSdqWjpQAUd6TvS0AFFFFAB1ooooAKRjS0UAJRRS0AJRRS0AFFJS5oAKSiloAM0lFFABRS0lABQtLRQAlFFLQAlLR7UlAC0lFHtQAvWjNFFABRR1aigAooopAHekpaKYBRxSHmjNABj86KWkoAKKKKACloooASiil70AJ0paKKACiiigAopKWgApKX/dooAKKKSgBaKKOlACUtFFABRRRQB5p8QvCexpNV0xOOs8Kj/x8f1rzwHivo0jPXpXmfjrwYYzJqOjJuT78sCjp7p/hWc49j0sLivsSOABp9QBqkDVgerGRItP/CowaeDSNBaMUq0UXIsJijFPWjFFwsNxzRjB4p+OfWjFAhMelNxT8etLipAaBS0uKdiqEN6UKDzTsUYoGFL3o60q1IBThxTelOoActOBpmKeufakIWlpFpfSgY4GnA02lpAPzSg0xfpTh/OgB3OKdTFpc0hD6M+9JS96AFzTgf0ptO9qBDh7U6m09Bngc5oE5CrXYeFdBxsvb1feOM/zNHhrw7tK3V+vPWOI/wAzXX100qXVnlYrFX92IUtFJXQcAtFFFIBKKKM0wFpKKKAFpKWigApKWjtQAUUUUAJ7UtFJQAtJRS0AFFHekoAO1HelooAPxooWk9qAFopKWgAooooATrR+NFDUAFFLSUAFFFFABS96KSgBaKOtFABRRRQAUlLSUAFFFFAC0lFL/wCg0AFFJS0AJS0UjUALSUUtACUUUtABRRRQAlL+NJmigAooooAKWkpaACiiigAooo9OaADrQeKFooAKT/dpaKAExS0UUAJ/6DR/vUUUAFFFFABS0UUAJS96Sl7UAFJS0UAHtRSUtABRRRQAUUdqPwoAKKKKAEpe1FHWgAoopKAFpKWkoAP92ilpPwoAKKKKACloooASloooAKKSloASilooAKKM0jUAFLR/6DSUALSUUUALSUtFABSUUUAFLRRQAlL6UUUAJRmiigAzmlpKKACiiigBaKKKACiikoAXvRSUtABijvRRQAlLRRQAUUUdqACiiigBM0tFFABRRRQBwXjTwOt80l9o4SK76tD0ST3Hoa8smSWCZ4Z0eOVDhlYYINfSH48Vz/irwrY+IIt8g8m8A+WdRz9D6iolTud2Gxbp6S2PEQ1SBqsa/ol/oVz5d/CQh+7KvKyfQ/0rPDVztWPYhVjNXRcBpwNVlkqRWFQbFjrS1EGp4NImxJRTc+tOoCwUuKKX8KLisJS4p1GOaAsNxRin4oxRcLCYpcUuKMUXFYTFGKfS4ouISlxS4/Oii4BRTse1LSATFLS0YouAfhTu9AH86WkADtT8U2nYzQIP/QaXBpV69Kd160ANAp60VqaPo1zqkn7ldsXeRug/xqkrmU6igrspW0EtxKkUCl5G6AV3fh7w4ljtnu8SXPYdk/8Ar1paPpFvpcWIBvkP3nPU/wD1q0K6adK2rPKxGKc9I7B1pe1FFbHGFFGaKACkpaGoASiiloASlopKACiiloAKKKSgBaSlooASloaigBKWiigAooooAKKM0d6ACkpaSgBaSlooASil/wB6igA70ZpKKAClpKWgApf8ab+FLQAUUUn+9QAtJS0UAFFFFABR3opKACil/wB2koAKWikoAWko/GloAO9JS0dqACkzS0dqACijrSUALRSUtABRRRQAUlLRQAULSUd6AFo/3aKKACiiigA7Ue1FFABRRRQAZpM0tHegBKFoooAKKKWgAopKWgAooopAFFFFABRRRTAKKSloAKKKKACiiigAooWkoAXvSUUtABSdKKKAF60lFFABRS0lAC9qSiigBaSiloAT2paSjvQAtFJS9aAEooooAKO9FLQAlFLSUALSUZooAKKKKAFopKKAF/3aSiigAooozQAUUUZoAP8AdooozQAvek6UZ/OjNAC+1FJmigBaGpKKAFopKD7UALRSUZFAC0UmaP8A0KgBaOtJmjNABRRmjNAC0Ud6KAHdaKbmnZpgQXdrBeW7wXUMc0TjmOQZBrzXxP8ADd0L3Ggtx1NtIf8A0A/0Neo0rYqWkzSlWlTeh81XMU9ncGC7hkhlXqsgwRQktfQmsaJp+sw+VqFtHKOzH7y/Q9RXnGv/AAxuocyaHcCZP+eMxw34HoaydJ9D1KOPi9J6HDiWpFkqpf2l3ptwYb+3lt5M9JFxn6etRpNWTg0ejCop7GmslSBqzlm96lWb3qGjQv5pwNUxL71IJfepCxaBpagWSn7/AHpBYloqNW7U5ZM0E2JKX2pm6jdzQKw/8aWm5FG6gLEnrRTN1LuoCw+n1Huo3UBYkpcVHuo3ipFYk/Wlpm4Um6gCal4qLdmrVhZ3N9LstIJJT7DgfU1ajcznNR3I6sWttNdTCO3ieSQ9lFdZpXgs8PqU3/bKI/zNdZZ2dvZReVawpGn+yOv1rWFJ9Tgq42K0hqcxovhJExJqTBm/55KePxNdXHGsUYSNQiAcADAFSfhzRXQoJHm1KsqjuxKWiirMwooooAKKKKACk6UtFABRRRQAUUdaSgBaKKKAEpaKKACikpaACiiigApKKWgBPwoope9ABRR/6DR/u0AFFJS0AFFJ/vUUALSUZpaACjpR2pKAFo9qKKACkpc0lABS0UZoAKKT/wBCpaACiijvQAUUZooAKKKSgBe9FFFABSe1FLQAUUlLQAUn8PSilznmgBKP92lpP1oAKWikoAWkpaT2oAKKM0UAHvRS0UAFJ7UUtABRRSUAL+NFJS0AJS0Un+9QAtFJS0AJRRRzQAUtJ7UUALRRRmgAooopAFFFFABRRRTAKKKKACiiikAUUlLTAKKKKACkopf92gA/9CooooAT2paTtR7UALRRRQAlH+7RRQAUv/oVJRQAtFFJQAUvak60tACULS9KRaACjvQ1FABRRRQAUUUUAFJRRmgAo/3abmjNADutGaZmkzQBJmm5pu6m7qAJM0ZqEtRuoAmyKTdUBak8ykMsbqN1V9/vSebSuBZ3UbqrebTfNpgW91JvFVGmpGmoCxc8yjeKo+dSefTCxoeZSeZVDzxSef70BY0N4o8ys/z6b59ILGl5lN3+9Z/nij7QPWgLGl5lG/3rN+0D1p32kUXCxoeZS+ZWd9pFL9oHrTCxo+ZR5lZwuB60vn0BY0lkpd1Zy3FO88UrhY0N1ODVnrP707z6dxWJ761tr+3MF7bxTxHqsi5FcNrXwx0q8YyadNLYSH+EfvI/yPIrtPO96cs1G5VOpOm/dZ4nq3w88Q6dloIkvoh3gbn8jzXKzrcWcrRXcMsMg/gkUof1r6YWUVDd29rfReVeW8U8Z7SqCKl00ztp5hUXxHzclx71Otx717FqXw88OXuTHbyWjHvA+B+RyK5i/wDhLLknTdYUjslxF/Uf4Vm6R2wzCD3OJW496kW4961Lz4deKbXPl28N0PWGYfyOKxbrQNftP+PjSL5QO4iJH6VPsmdKxlJ9Sys4pyzisN5J4DiWKWM/9NIyP50z7cv94fnUeyL9vBnRLOKeswrnVvgTwf1p4vfej2RSqxZ0HnUeeKwvtnvSfbfdaXsh+0ib3nijzx61gfbQD94fnUkU8kxxCskn+6pNHsiHXgbnnj1pPtA9agtNG1q7x5Gl3zr6+SQP1rbs/APiO6wXto7cH/ntKB+gzVexZDxVJbsymuh60faq7Ww+F9wcG/1KNR6Qx5P5mul0/wCH2h2eDIk10w/57ScfkMU/YHNPMacdtTyeFpp5BHBHJI56KoJP6V0uleEdYvcGSEWsZ/imOD+XWvV7WztbOPZaW8UKekagVN0q1RRx1MwlL4VY5LSvBFhbYa8druT0PC/lXUQxRQRiOKNI1HRVGBUtNrRJLY451JT3YUfjRmiqMw/SiiigBKWhqKACjvR7UUAFFFFIAooopgJRS0lABS0lLQAUUUlAC0UUUAJS0UlAC0ZpKWgAooooAKSjFFAC/wC7RQtFABRRRQAlLRSUALRSUUALSUUf71ABRRS0AJS0UUAFFJ0paACjiiigAopKWgAoWikoAWkpaKAD0ooxRQAUUUlABRRS0AGaSiigBaSj0ooAKWiigBKWiigBKWkooAPelopKACloooASijNFAC5o6UUlABRRRQAUtJS0AJRRRQAUv60fhRQAUUUUAFGaM/nRQAZoo/3aKACiiigAopKWgA6UUUUAFFFFABSUUtABRRRQAd6OKTtS+1ACUtJRQAvakpaSgAooaigApaSigBc0maOtLQAUUlFABRS0lABRRRQAUlLRQAlFFDUANaiikagAak60NTaADNNY0vWo2pDDNIWprU1qAFLUwtTXqNqCiTzKa0lRMaYxqbjsTNLTfNqFiajYmlcLFlpqjaaqzMajLU0Fi403vTGnqmzGmNIaoLFxp6a09UWkNNaSgdi99opv2iqDSUjS0BYvfaKRris9paZ5tAWNL7QfWj7RWZ51J53vQOxqfaPej7UfWsvzvem+f70BY1vtVL9r96x/Po8+gLGx9r96X7X71jfaPej7RQFjZ+108XfvWH9opftFAchvC896X7b71gfaPenfaKA5DoBee9SC8rnPtXvSi7x3phyHSC896et4K5sXfvSi896Bch063g9akW8HrXLLe4705b/HekHIdULz3qRbw+tcouoj1qRdRHrQHszqDcLIMOEce4zVaSy0yf8A19haSf70K/4VhrqQH8VSDUx3ai4crLz+H/D0n39FsD/2wT/Co/8AhFfDZ/5glh/36FV11JfWpF1Ff71F2Hvky+FfDf8A0BrH/v0Klj8OaBH9zR7Af9sRVddRX1qRdQB71QvfNCHTNKi/1enWSY9IV/wq7EYYhiOKOMf7KgVirfD1py3wPelcTTZued70nm1jreD1p63Q9aLk8preZRurLW6HrUguB60BY0dwpd1UFnHrT1mFArFriiq4lp6yUAS5oqMNTs/nQA7rSUZooAX/AHaP/QqSlzQAdqKKKACkpaKACkoooAKWkpaACiiikAUUUUwCiiigAoopKAFpP96iloAKKKKAEopfaigAoopKAFo6UUdKAEopaSgAopaSgA/CiiigAooooAPelpKPxoAKXvRRQAUUUUAC0UUUAJS59+KRqKAFY0UUnSgApaKKACij8aSgBWpKWigApKWigApKKKAF6Uf7tJ/u0dqACiilbrQAUnXtS0UAFJRS/wBKAEooooAGooo/3aACij/0KigAoo4ooAWikpaAEooo/wB6gBaSjvRQAtFFJQAvFFJS0AFFFFAB7UUUUAJS0UUAFFFFAB+FFHakoAWiij8aACijNJQAUrUlFAC0nWlpKAClopKACij9aKACilpKACilpKAFpKXrR2oASilooASijvRQAUUetH4UAJRS0UAJTWp1FADKSnYpMUARsKRhUmKawzQBEwphXmp8UhWkMqlaaVqyVpNtIoplajK1daOmNFUjTKRWo3Wr7RUwxe1Fh3M8rURWtFoajaCgDOYVGwNaLQVG0BqwM5gajatFrf2qNrf2qBmc1RtWi1uaia1PpVgZ7E0xiavtamo2tT6UrgUGJpjMavNan0qM259Koq5TZjTWkq0bc+lRm3PpQBX8ym+bUzW5qNoG9KAGNLSedStA1RtC1IsXz/ejz6jaFqjaJvSgCx9o96Rrr3qt5TUxo29KALf2r3pn2sjvVNlb0pjKaBl5r33pPtx9aoMpqNgaYGj/AGgfWk/tA+tZmDSMDTA1P7Rb1pP7Rb1rKYGkw1AGuupN60v9pH1rHw1HzUCsbK6k3rUi6mfWsNd1O5pDsby6ofWpl1b3rnQGqRQ3vQOyOjTVj61Omq+9c2garEavQTZHRJqZ9asJqOe9c9FG9W442oJaRvJfe9WI73PesOKJqtwxsKRNkbKXee9WEuM96yo1arcamoEaKTVOkuaoxqasIDxVk2LaSVIGqsgINTAUEk4NKDUYFPWmSPzS0i0UALR1opaAEpaSigBfajHFFFABRRRQAUcUUUAFFHeigAo6UUe1ACUv60UlAC+9FHekoAWk/wB6lpKACloooASlopOtAC0lFLQAUlFH+TQAtJR0paADq1JS0n+7QAUUtJ2oAM0UtHTrQAUnal96KAD/AHaKKKACiiigAoopOlAB1opaSgBf1ooooAKSlzRQAUUUlAC9KKKKACkpaKACiiigAoopKAClopM+9AC0lFFAC96KKSgBaSiigApaT/dooAKKP/QqKAClzSdqOlABRRRigAooopAFFFFMApaT/dooAX9aKSigBaKKKACik7+tLQAUUlLTAKSlopAFFHWigAzRmkpaAE7UtI1FABS0lL3oASlpKPwoAKKKWgAopP4utFAC0UUZoASlo7UdKAD2ooooAKKSloATtRS9aSgAoopaAExRRRmgBKPwpaKAGY5oxT6GoAjxSYqXFJigCPFNx7VNgUYoAh20m2p9tG2gCvs9qPLqxim7fzqbBcrbBSNEPSrW2k20x3KjQ+1NaD2q7tpNtAXM9oBTfIrS203Z7UBczjbj0qNrUelanl0bBQO5lNa1GbT2rY8oUeUPSgLmIbT2phs63PKFJ5I9KAuYDWPtTWsfaug8kU3yfagOc55rH2ph0/2rpfIHpTfs49KA5zmjp/tUbad7V1P2celJ9mHpTK5zlDpvtUZ032rrfsw9KPsw9KQc5xzaZ7UxtM9q7P7IPSkazHpQP2hxLaX/ALNNbST6V3H2MelN+xD0ph7Q4VtJP92mNpB9K777EvpTfsKelA/aHANo59KT+xj/AHK9A+wp6UfYF9KA9oeeNox9KP7FPpXof2BfSl/s5PSmHtDz1dGPpSroZ9K9B+wL6U77CnpRYPaHn/8AYZ/u05dDPpXfrZL6U77EvpSF7Q4JNDPpUy6L7V3IswO1L9kX0oD2hxSaNjtVhNI/2a6/7IvpSraqO1Ae0OWTScfw1MmmY7V0ywL6UqwigXOYCadjtU6WOO1baxAdqVYx6Uiecyks8dqlS1rR8sCjbigXMUxBUiw1awKXAoC5XEVPC1LiimK4zFGKkpKADpRS9qP/AEKgBKKWigBKX8aKSgBaTNLSUAFKtJ3ooAVaSilpADUlLRTAOtJR1ooAWikooAWiiigAooooAKKKSkAtJ0paKYBRRR0oASilzxRQAUlLRQAUUUUAJmloooAKOlGaKABaKKKACiiigAooooAKKKSgAzS0UlABRS0lAC0fhSUtABRRRQAUUUlAC0UUlAC9aKKKACikpaACiiigApKWk7UAFFFLQAlLSUUAFLR70UAJRRRQAUUdKKADmjpRRSAKOtFFMAooooAKWhqSgBVo7UUUAFFHNJQAtFJS9qAEoopaACj9aKKACiijNACUUtFACUtFFACe9FFLQAUlLSUAFFH4UUAL1pKWigBP92l69aSloAKSlooAKP1oooAKOtFFACUUtHegBKKWj2oAT/doo/8AQqKACiiigAo/OiigBaSiigAailooASlooxQAn+7RS0UAJRS0UAJxR7ClpKACjFFLQAnH/AqMUUUAGBRjvRRQAmBRsHal70tADcCjaKWigBMCjbmndKKAG7RRtFOooAbtFG3ine1FADdoo2ilooATaPSjaKWloAbto2gU6igBu0UbRS0tADdooxS0tADce1GBTqKAG4pcDFLRQAmKMClooATFFLRjNACUUv40UgExRS0UwCiiigAoo7UUAFFH+7RQAUUUUAJS0UlABRSrRQAUUZooAKTvS0UAI1FK1FABRRRSAKKKOlMAopKWgAoopKACijNLQAlLRSUALSUtHegBKKKGoAKWikoAPeloooAKKKKACij86SgAooooAWkopaACkpaKADtRRRQAn4UUtFACcUv+9R+NFABRRSUALRmkpaACikpaAD2ooooAPSkoooAKWikoAWiikoAWiiigApKWk70ALmkpaSgBaTtS0UAJRmlpKAF6UlFFAC0maKKACj/do/3qKACiiikAtJ+dL3opgJRRRQAq0UlFAC0UUlABS0lFABS0lLQAUUUUAFFFFABRmiigBO1FLSUAFLSUUALRR3pPwoAKWikoAP8Aeo/3aWkoAWj2pO9FABS0lLQAUUUUAFFJStQAlLRRQAlLRR7UAHSiijvQAUlLR2oASilooASilpO9AC0lFFABS0UfhQAUUUnbFABSr1pKKAFooooAO1FFFAB1oajrRQAUUlGaAF70UlLQAlFFFAC0UUUAB5pKKWgAzSUUUALmikpaACik7UvagAoo70lAC0lHtRQAtFFFACUtJS0AFFJS/rQAUUUUAFFFHSgAozSdqWgA9qKKT8aAF70UUUAFJS0UAFFFFABR1pKKAFpKKWgBKX/doooAKKKP4v8AaoASiiigAoo/WigA70ULS0ADUlLRQAUUlFAC0UUUAJS0lFAB0FL+NC0lABmj/dpaKACkopc0AJRRmigApaSigA70tJRQAtJ/u0tJQAtHekpaAEopaKACj8KKKADvRRRQAUUUUAFJS0dKACiiigAopKWgBKWikoAVqO9JS0AJS0lFABS0lLQAq9KSij/doAT8KWk96XtQAUUlLQAUlLQvWgBOnSloakoAWihqKAEaj2oooAKWkooAOtH+9R3ooAPSj8aP1pe9ACUtJSrQAUf+g0lLQAlLSUq0AFJS0UAFFHSigBKWiigAooooAKTilooAKKKKAEpaKKACikooAKKKKAFooooASilpKAFooxmkoAWkpaKAEpaKKACikpaACikpfagAoo60UAFFJwaWgAozSUtACdqKKWgBKKX8KSgBaKTrS0AJRS0lABRRS0AFJ1oo/CmAUUUUgClpP92loAKKPWjpQAUNSUtABRR/SigApKO1L7UAJRS0lABS0lLmgBP60daKKABaKKKACiiloAOtFJS0AFJmiloASihqPxoAWiiigAoox60UAJS9qKKADtSUtFABRRRQALRRRQAUUUUAFFFJQAtFFFABRR/u0UAFFFFACUUUtABRRR7UAHak60rUUAJS0lFABRR2paAEo9qWkoAWiikoAWiijrTAKKKP/QqQB2oopKAFooooAKKKKACjvRRQAf7tJS0UAFFFFABSUtJ2oAWkoooAKKP/AEGigBf92iijvQAlFLSUALRRR2oAKKKKAEpaKKAEpT6UUUAFFFFABSUtH/oVABRRRQAUUlLQAUlLRQAUlLRQAUUUUAFJS0UAFFFFABRmjtRQAn+7RRS0AH9KSiloASj2paSgAo60UUAFFFFABR+tFFABS0lLQAUUlLQAdKTr2paKAD8KKSloAKKKPxoAKKKKAD2oo/WigApKKKAFopKWgAopKWgAo7UUUAFFFFACUtJS0AJS0UUAFJS0UAFFFJQAtFFFAA1JS9aKACiikoAWikpaACjtRR3oAKKSigAooooAKXo1JRQAUtFJ/wChUAHaloooAT2ope9JQAUUNRQAtFFJQAUUUUAL/u0lFLQAlFFFABR0o/CigAoopfxoAM0naijvQAUtJS0AJS0UUAJ7UtFFABRSUuaACkpaKACko70UALRRRQAUlLSUALRRRQAdaKKM0AFFHejNABR2oooAKKTrS0AFFGaKACiiigAoopKAFzSe1FGaYBRS0f4UgCikpc0AH/oNJS0nagAoajrR+NAC0daO1JQAUtFFAB3oo7UlAC0UUUAFFGKSgBaT2opaACkpelFABR2oo69aACkpf96koAKXvR1pKACilooAPbFJRRQAfrRRRQAtJR+FLQAnNL7Ufw9KKAE5paKSgBetFFJQAtH+7RRQAUUUUAFJS+1FABRSUtABRR+NFABRRRQAUUlFAB04paSl70AFFFFABRRRQAUUUUAFFDUUAFFH/oVFABSUtFABRRR2oAP92kpWpKACiiigA/3aXpQtJQAUe1FFABRRRQAdaKWk/wB6gBaKP60UAFFFFACUtFJ2oAWijrR0oASiiigBWooo7UAFFFJQAUUtFACUtFJQAUtFFABRSUtABSUtFABRRRQAUlLR3oASjNLSUALSUUUAFLRRQAUUUUAHtQ1FFABmk6UtJQAtFFFAB1pKKWgA/wB2koooAKKKKAClpKWgBKWko6UAFFH+7RQAUUUUAFFLSUALRSUtABRR2ooAKOlGKSgAzmlzSUtABRRRQAUUUUAFHaj/AHqP/QaACiikoAWjNHWigABpKXpRQAUn+7S0daACkoxS0AJS4oooAKOtHSigBKKWigApKWigAopKX/0KgA/3aKKKADNFFFABR3oozQAlLRRQAlHWiloASlpKOlABjiiiigAoaiigApaKTrQAUUc0UAL3oopKAFpOOlL/AOhUUAGaKMUlAC0UlLQAUUlH60ALSUtJQAUtFJQAtFFJQAtJS0lABRR2ooAP92iiigA6UUUUAFFFFABS0UUAJS0UUAFJS0UAHFFHeigApPal4o/9CoAKSiigBaKKKAEpaSloAT9aXrRRQAUnalpPegApaKKACiiigA69aM0UfhQAH0ooooAKKKKAD2ooooASlpKKAFaiiigApOlHSigA6NS0lFABRR/vUfhQAUUdqKACiiigBaSiigBaKKKACj3o/WigAooooASloooAKM0UUAFFGaSgBaSiloASloooAKKSigApaKKACiiigA/CiijFABRRR+FACUtFFACUUtFABRRRQAUUUUAFFFFABRRRQAdaO1HeigApKWigAoo9qKAEozS0lAC0UlFAB2pc0lFAB2pe9JS9qAE/9CopaSgBaPwo7UUAJS0UUAJRRS96ACiiigApKPve1LQAUUUUAFFFFABRmiigA7UUelFABmhaKKACkpaKACkoooAWikpaAEpaKKAD2ooo/i6UAJS0ULQAUn40UUAL70UUUAJ7UtHSigAoo9KKQBRRRQAUUUUwEpaSloAOlFJ70tACUUtJQAd6KWigBKWikoAWiik7UAHWloooAO9JS96KADrSdaWigBKWj1pP96gBaKKRaAFo9qSloAKM0UNQAlLRSUALRR/u0UAI1FFFABR2oooAWkopaAEooooAKXpRSdaAF/WijpRQAdaSlo/3aADpRRRQAUUUZoAKSlpKAFooooAKKKAaACiiigAooooAKKTNLQAUUdaM0AFFFFABzRRRQAUd6KKACiijrQAlFK1FAB3ooooAKSlpKAFpKPaloASlpKWgBPwozS0UAJRS0UAFFFFABRRRQAUdKKKACiiigAooooAM0UUYoAKKTvS9qACiikoAWij2ooATpRS0UAJ2o6UUUALRSUUALRRRQAUUUUAJS0d6KACj9aKKADvRRR0oAKKSl7UAFFJS0AFFFFABRRRQAUdaP96igAooooAKKKKACj/doo6igBKKWkoAWk6UtFAB3ozSUtABRSUNQAtFJS0AJS0UlAC96SlooAO9FH+9RQAUUUdBQAcUUZooAKPxo/CkoAXNJS0d6ACik7UtABRRSUALRRSNQAUtHekHpQAtFHekoAWiiigAooooAKPaiigApKWigAooooAKKKKACijtRQAUUUUAFFGaKACjtRSZoAO1L/u0UUAFFHeigAo6UUUAFJS9uaO9ABRRRQAUUUUAGaSlzRQAUlFLQAUlLRQAdaKKKAChaKKAEpaKKACkopaAEpaKKAEopaKAE60tJRQAtFJRQAUUtFACZpVopKAFopO9LQAUUUUAFFFHtQAUUUUAJRS0UAFFFFABRRRQAUUmKVqACiiigAooooAKKKKACikpaACiiigAxiiiigA60dqKKACjtRRQAlFL3ooAKKSloASlpPxo60gFooooAP8A0GkpaKYBRSUtAB1o60NRQAnaloooAF60lFFAC0lH40tABRSUv4UAJ/6FRS9aSgAozR7UUALSUtFABSNS0lAC0lL2ooAKSiloASlpKWgAoooWgA96Sl70lAB3waKWj+HrQAd6SlooASlopKAFooooAKKKO9ABRRR/D/tUAFFJS0AJS0UnvQAtFFJ70ALRxRRQAUnWlooAOtFDUfhQAUUUlAC0UUlAC0ZoooASlopKAFooWigAopKWgA60UUUAHaij8KKAE9qWkpetAA1HaijpQAUc4ooxQAUlLRQAUUUlABS0UUAFFFJQAtFHeigApM0tGaACiiigApKWjNABSUtFABRRRQAUUlFAC0UUUAFFFFABRRSUALRSUdKAF70UZpKAF4opKWgAooo6UAFFHtRQAe1FJRQAtFFFABSUtFIBKWiimAUUUUAFFFFABRRRQAdetFJS0AFFFJQAUvTrRSZoAKWkpaACikpaAEo7UUUAFL3opKAFpP8AepaKACiiigAo7c0UUAFFHrSUAK1FFFABRR70UAFFDUUAFDUUUAFFFFABRRmigAoo60lAC0UUUAFHSiigAooooASl9qKFoAP92ijoKSgAopc0dKAEpaSlX60AJRRR3pALSUtFMAopKWgAooooAOlFFFABRRRQAUUUlAB70e9LSUALSUtFABSUe1LQAUUUUAJRR/u0UALR60lLQAUZ4pKXpQAUlLRQAlHSlpKAF/3aKSj3oAWikooAWikpaACiiigAo9KKKACihqKACjNJ3pf92gBKKKKAFopM0tAB0oopKAFzRQ1JQAtFFFACYopc0n+7QAtFJS0AHvSUUtABRRRQAe1FJS0ADUlLRQAUlLRQAUUlKDQAUd6KKACiijvQAUUUUAJ+opaKPagBKWkpaAD1pOnOaWk6UALmk/Cl7UUAJRR1paAEoopc0AGaKSigBe1FJS5oATPtS0maWgAo9qKKACikooAWiiigAoo6UUAJS0d6KAEpaKSgBaSlooASlpKKACjpS0lAC0UUlAC+9FJml70AFFFFAB3opKWgBOtLRRQAUUUUAFFJmloAPeikpaACjNGaKACiijrQAlLSdKWgAooooAKKKKAE/wB2iiloATilopKAFpKX/dooAKKOlJQAUtJS0AFFFFABRRQtAB/vUUUUAFHSikoAWiiigAozRRQAdqKKTvQAuKKD7UUAFFFFABRRxRQAUd6KKAD/AHaKKFoAKO9FFABR/wCg0dKKACiijpQAUUUdaAEopfeigBKKM0dKACiil70AJRS0lAC0UUYoAKKKKACj3opKACloooAKO9FFAB1o60UUAJ/u0tFFABRRRQAUlFLQAUlFFAC/7tFC0nWgBaSlooAO9JS+1J0oAFooooAWik96KAF70UUUAFJS0UAFFFFACUtFJQAUuaT3paAEopaSgApaSloAKKOtFABSUdaKAFooooASlo/KigAopO1LQAUUUetABRR3opAFFFFMAooo70AFFDUd6ACiiigAo9KKPSgAooooAKKKKACiiigA7Ue1FH+7QAUdqKSgBaTrS0lABRRS0AFJRR6UALRSUUAL3oopKAClopKAFooooATtRRxRQAvej0oooAKT2paSgApaKOlABRRRQAUUUUAFJRRQAUUtFAB3pKWkoAWikpaAEpaKSgBaO1C0UAFFFC0AJRRS0AFFJS0AJS0Z9aKACiikoAWiiigAooooAKKP/QaKAEopelFABRSdKKAClpOtLQAUUi0UAFLR/wCg0UAFFHSigA/3aKOtFAB3ooooAKKKSgBaTFLSUALSUtJQAtFFH+9QAdWooooAKGooWgAooooAKKKKACiiigAoo/CigAooooAKO9DUUAFJS9aM0AGaKKAaADNH40d+aKAEooo7UAFHrRQ1ABS0f7tFABRRRQAUUfrRQAfjRR/vUUAFFFFACUtFFABmiiigAWiiigAopKWgApKWigApKWigBKOtLRQAUUUUAFFFFABR/wChUUUAJS0UUAHaik/3qP8AdoAWkopf/QaACkpaPyoAKKSloAKT/dpaKAD1pKWigAooooAKKPeigAoo/wB2koAKWiigAooooAKM0UUAFJS0elAB1ooooAKKKKADP50UUUAFDUdqKACikooAWiiigAWiikoAWiiigBKWiigAooooAKKKKACjvRR1oAKSiigApaSigBaTNLSUAFLSUUALRRRQANSd6KKACloxRQAUn/oVLRQAUUUlABS0UlAC0UmaWgAopKX1oAP60UNRQAUlLSUALRRSe9ABRS0lAB0o70UtABRRR/6FQAUUUUAHWjNFFABSUtFABmjvR/6FSUALRRRQAUUe1FABRRRQAUULRQAUUUUAFJS0lABRS0UAFJS0lABS0lLQAlFLRQAUdaKKACijvRQAUUUUAGaKKSgBaKP96j+lABRRRQAUdKPwooAKKKOlABRRR/u0AFFFHrQAUUUUAC0e9FFABRRRQAUfQUdqKACijpRQAlL3+lFJQAtFJRQAUUc0D2oAO9FFFAC0UUUAFHWikoAWjrRRQAUUUYoAKKPoKKACiiigAopPeloAKKSloAKM80lLQAf7tFJS0AHeg8UlFAC0maKKAFpKKWgAo/3qSloAKKKSgBaKKKACko/CloAKKPeigAooxSUALRRQtABRRRQAdaKP92igBKWijmgAoopKAFoo78UYoAO1FFFABRR3oxQAUf71FFACZpaKKACjpSUtABSUUUAGaWkoWgBaKKKACikpaACiiigApKKWgBOtLSUtAB2o/wDQqKKADrQxo/CigAoPvxRQ1ACUtGKKACk6UtJQAtFJRQAtJmiloASloxSUAFFFFABS0neloAKSjFFAC0UUUAJS0fhRQAUlL/u0YoATPpRS0UAJS0UUAFFFFABRiikoAKKKKAClpKKAClpKKAFooooAKKKKACiiigApKWjtQAlLRSUALRSUtABRRSUAL1ooooATrS96KSgBaSiigBaKSimAuaKKMUAJRRStSAKSlooAKKKSgBaKKMUAFFFFABR0oooAKP8Aeoo70AFFFFABRRSUALRRSdqAFooooAKMZoozQAZooooAKKSj/wBBoAWik/3aWgA/3qKFooAKKSl5oAKGoooASjrRRQAUmaVqTHtTA//Z" />
       </div>
-
-      <!-- APP 英文副標名，不想要可以刪掉這行 -->
       <div class="app-name">Food Adventure</div>
-
-      <!-- 主標題 -->
       <div class="home-question">你今天想吃什麼？</div>
-
-      <!-- 副標說明 -->
       <div class="home-sub">讓命運決定，中山區美食隨機報到</div>
-
-      <!-- 主要按鈕文字 -->
       <button class="roll-btn" onclick="doRoll()">隨便</button>
     </div>
-
   </div>
 
-  <!-- =====================================================
-       🎯 推薦結果頁
-       ===================================================== -->
   <div class="screen" id="screen-result">
     <div class="header">
-      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
-      <div class="page-title">今日推薦</div>
+      <div class="header-left">
+        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="page-title">今日推薦</div>
+      </div>
+      <div class="emoji-card" id="emoji-box"></div>
     </div>
 
     <div class="result-area">
-      <!-- 分類一標題 -->
       <div class="result-label">✦ 對自己好點</div>
       <div class="restaurant-card">
-        <div class="card-top">
-          <div class="card-name" id="good-name"></div>
-        </div>
+        <div class="card-name" id="good-name"></div>
         <div class="card-addr" id="good-addr"></div>
         <div class="card-meta">
           <span class="badge badge-rating" id="good-rating"></span>
@@ -439,12 +273,9 @@
         </div>
       </div>
 
-      <!-- 分類二標題 -->
-      <div class="result-label" style="margin-top: 4px;">✦ 簡單吃頓飯</div>
+      <div class="result-label" style="margin-top:4px;">✦ 簡單吃頓飯</div>
       <div class="restaurant-card">
-        <div class="card-top">
-          <div class="card-name" id="simple-name"></div>
-        </div>
+        <div class="card-name" id="simple-name"></div>
         <div class="card-addr" id="simple-addr"></div>
         <div class="card-meta">
           <span class="badge badge-rating" id="simple-rating"></span>
@@ -453,134 +284,1976 @@
       </div>
     </div>
 
+    <div class="reroll-row">
+      <button class="roll-btn" onclick="doRoll()">隨便</button>
+    </div>
   </div>
 
 </div>
 
 <script>
+const FOOD_EMOJIS = ['🍜','🍱','🍣','🍛','🥩','🍖','🦐','🍝','🥗','🍲','🥘','🍤','🦑','🍙','🍚','🥟','🍗','🫕','🍢','🧆','🥚','🦞','🦀','🐠','🫔','🌮','🌯','🥙','🧇','🥞','🧈'];
+
 const GOOD = [
-  {name:"AN-Burger(漢堡)",addr:"中山北路二段36巷17號",rating:4.2,price:"$$"},
-  {name:"Burger Bae 寶貝漢堡",addr:"中原街136-1號",rating:4.9,price:"$$"},
-  {name:"Buttermilk 餐廳",addr:"中山北路二段57-1號1樓",rating:4.2,price:"$$"},
-  {name:"DOUBLE SINGLE",addr:"南京西路18巷26-1號",rating:4.4,price:"$$"},
-  {name:"源本家燒肉火鍋",addr:"民生西路66巷11號",rating:4.6,price:"$$"},
-  {name:"阿城鵝肉",addr:"吉林路105號",rating:4.6,price:"$$"},
-  {name:"Rendezvous Burger & Bar",addr:"中山北路二段137巷45號",rating:4.5,price:"$$"},
-  {name:"TakeOut Burger&Cafe 民權店",addr:"富順街11號1樓",rating:4.7,price:"$$"},
-  {name:"燒。肉爆拳｜ShoRyu",addr:"南京東路一段132巷23號",rating:4.9,price:"$$"},
-  {name:"Uncle Laymen 美式餐廳",addr:"松江路313巷1號",rating:4.1,price:"$$"},
-  {name:"POPINA 餐酒館",addr:"中山北路一段歐風街區",rating:4.2,price:"$$"},
-  {name:"Aye Taipei Bar & Restaurant",addr:"中山北路二段",rating:4.7,price:"$$"},
-  {name:"BFLO Restaurant",addr:"中山北路二段",rating:4.3,price:"$$"},
-  {name:"乾杯燒肉 中山店",addr:"南京西路25巷2-1號",rating:3.9,price:"$$$"},
-  {name:"乾杯 南西店",addr:"南京西路12號7樓",rating:4.2,price:"$$$"},
-  {name:"暮烟muyan yakiniku",addr:"中山北路二段77巷12-5號",rating:5.0,price:"$$$"},
-  {name:"Smith & Wollensky 牛排",addr:"中山北路二段",rating:4.4,price:"$$$$"},
-  {name:"CHAMONIX 鐵板燒",addr:"中山北路二段",rating:4.5,price:"$$$"},
-  {name:"Itamae Wagyu Teppanyaki",addr:"中山北路二段52號",rating:4.8,price:"$$$"},
-  {name:"56 Teppanyaki",addr:"民權東路三段56號",rating:4.4,price:"$$$$"},
-  {name:"ROBIN'S Grill",addr:"中山北路二段39巷3號2樓",rating:4.4,price:"$$$"},
-  {name:"地中海牛排",addr:"林森北路646號1樓",rating:4.7,price:"$$$"},
-  {name:"Danny's Steakhouse",addr:"樂群三路58號",rating:4.2,price:"$$$$"},
-  {name:"王品牛排",addr:"中山北路二段33號2F",rating:4.8,price:"$$$"},
-  {name:"N°168 Prime Steakhouse",addr:"中山區",rating:4.5,price:"$$$$"},
-  {name:"欣葉台菜",addr:"雙城街34-1號",rating:4.2,price:"$$$"},
-  {name:"三燔本家 晶華酒店",addr:"中山北路二段39巷3號B3",rating:4.0,price:"$$$"},
-  {name:"濱松屋",addr:"林森北路119巷12號",rating:4.0,price:"$$$"},
-  {name:"初魚 鮨 晶華酒店",addr:"中山北路二段39巷3號B2",rating:4.4,price:"$$$"},
-  {name:"品司和食",addr:"天祥路48巷1號1樓",rating:4.8,price:"$$"},
-  {name:"旬采鮨處 中山店",addr:"中山北路二段",rating:4.5,price:"$$$"},
-  {name:"龍軒傳承 粵式料理",addr:"新生北路二段38號2F",rating:4.5,price:"$$$"},
-  {name:"晶華軒 Silks House",addr:"中山北路二段39巷3號3樓",rating:4.4,price:"$$$"},
-  {name:"紅玉 新飲茶 林森店",addr:"林森北路263號2F-1",rating:4.5,price:"$$"},
-  {name:"好市多涮涮鍋 雙城店",addr:"雙城街19巷5號",rating:4.6,price:"$$"},
-  {name:"武鶴和牛火鍋 吉林總店",addr:"吉林路228號",rating:4.6,price:"$$"},
-  {name:"牛燉溫體牛肉火鍋",addr:"建國北路二段86號1樓",rating:4.8,price:"$$"},
-  {name:"Wagyu Shabu 和牛涮涮鍋",addr:"林森北路",rating:4.8,price:"$$"},
-  {name:"Old Sichuan 老四川 南京店",addr:"南京東路二段45號",rating:4.5,price:"$$"},
-  {name:"Old Sichuan 老四川 長安店",addr:"長安東路二段112號",rating:4.4,price:"$$"},
-  {name:"慶花椒 Chin Huajiao",addr:"中山北路一段137號",rating:4.7,price:"$$"},
-  {name:"New Mala Hot Pot 中山店",addr:"南京東路一段2號2樓",rating:4.4,price:"$$$"},
-  {name:"麻辣火鍋 Mala Hot Pot",addr:"南京西路22號B1",rating:4.5,price:"$$"},
-  {name:"八條老宅麻辣鍋",addr:"林森北路133巷3號",rating:4.4,price:"$$$"},
-  {name:"麻凡麻辣火鍋 松江店",addr:"松江路437號",rating:4.6,price:"$$"},
-  {name:"食令 shabu 涮涮鍋",addr:"中山區",rating:4.7,price:"$$$"},
-  {name:"五燈獎精選鍋物 中山店",addr:"中山北路二段36-1號",rating:4.3,price:"$$$"},
-  {name:"So Veg 素食",addr:"農安街263號",rating:4.8,price:"$$"},
-  {name:"Monday 蔬食料理",addr:"錦州街439號",rating:4.9,price:"$$"},
-  {name:"Bencotto 義大利麵",addr:"中山區",rating:4.4,price:"$$"},
-  {name:"青沐 中山店",addr:"中山站附近",rating:4.5,price:"$$"},
-  {name:"Golden Son Korea Pasta 金孫韓廚",addr:"中山北路二段26巷15-1號",rating:4.6,price:"$$"},
-  {name:"Ginto Soup Curry",addr:"中山北路一段140巷23號",rating:4.5,price:"$$"},
-  {name:"通安咖哩 中山店",addr:"中山北路二段77巷3號",rating:4.5,price:"$$"},
-  {name:"奇跡咖哩 KiseKi Curry",addr:"中山北路一段126巷12號",rating:4.5,price:"$$"},
-  {name:"稲町家香料咖哩 中山本舖",addr:"中山北路二段42巷20號",rating:4.2,price:"$$"},
-  {name:"Moni 餐廳",addr:"南京西路21號B1",rating:4.3,price:"$$"},
-  {name:"隱家拉麵 晴光店",addr:"雙城街15-5號",rating:4.4,price:"$$"},
-  {name:"Ajito 拉麵",addr:"南京西路25巷28號",rating:4.3,price:"$$"},
-  {name:"麵屋武藏 神山",addr:"中山北路一段121巷18號",rating:4.3,price:"$$"},
-  {name:"博多長濱一幸舍拉麵",addr:"中山北路一段109號",rating:4.4,price:"$$"},
-  {name:"麵屋壹 中山店",addr:"中山北路二段61巷15號",rating:4.5,price:"$$"},
-  {name:"山頭火拉麵 中山店",addr:"中山北路二段71號",rating:4.1,price:"$$"},
-  {name:"風見雞拉麵",addr:"錦州街89號",rating:4.6,price:"$$"},
-  {name:"麵場 田所商店",addr:"松江路158巷1號",rating:4.3,price:"$$"},
-  {name:"横濱家系拉麵",addr:"林森北路293號",rating:4.5,price:"$$"},
-  {name:"博多幸龍 中山北路店",addr:"中山北路二段66號",rating:4.7,price:"$$"},
-  {name:"彩頤拉麵",addr:"民生東路三段131號",rating:4.4,price:"$$"},
-  {name:"定置漁場三代目 The Fishery",addr:"中山北路二段附近",rating:4.4,price:"$$"},
-  {name:"二屋牡蠣拉麵",addr:"中山站附近",rating:4.3,price:"$$"},
-  {name:"麒麟創作拉麵坊",addr:"中山北路一段",rating:4.7,price:"$$"},
-  {name:"京都柚子豚骨拉麵",addr:"中山北路二段附近",rating:4.4,price:"$$"},
-  {name:"萊寶鐵板燒",addr:"錦州街212號1樓",rating:4.9,price:"$$"},
-  {name:"NEST 巢 TEPPANYAKI",addr:"伊通街87巷10-1號",rating:4.8,price:"$$"},
-  {name:"滾厚炙燒熟成牛排",addr:"復興北路69號",rating:4.5,price:"$$"},
-  {name:"長浜魚屋 南西店",addr:"南京西路21號B1",rating:4.3,price:"$$"},
-  {name:"藏壽司 くら寿司 南西店",addr:"南京西路57號2樓",rating:4.0,price:"$$"},
-  {name:"米達人壽司 南西店",addr:"南京西路12號B1",rating:4.2,price:"$$"},
-  {name:"稻町家洋食喫茶",addr:"赤峰街85號",rating:4.1,price:"$$"},
-  {name:"村亭咖啡",addr:"中山北路一段105巷11號2F",rating:4.3,price:"$$"},
+  {
+    "name": "AN-Burger(漢堡)",
+    "addr": "中山北路二段36巷17號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "Burger Bae 寶貝漢堡(漢堡)",
+    "addr": "中原街136-1號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "Buttermilk 餐廳(美式)",
+    "addr": "中山北路二段57-1號1樓",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "DOUBLE SINGLE(美式)",
+    "addr": "南京西路18巷26-1號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "源本家燒肉火鍋",
+    "addr": "民生西路66巷11號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "阿城鵝肉",
+    "addr": "吉林路105號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "Rendezvous Burger & Bar",
+    "addr": "中山北路二段137巷45號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "TakeOut Burger&Cafe 民權店",
+    "addr": "富順街11號1樓",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "燒。肉爆拳｜ShoRyu",
+    "addr": "南京東路一段132巷23號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "Uncle Laymen 美式餐廳",
+    "addr": "松江路313巷1號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "butcher jr. 中山(漢堡)",
+    "addr": "中山北路一段140巷2-2號1樓",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "waku waku burger 中山店(漢堡)",
+    "addr": "南京西路14號5AF",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "女王漢堡 民族店(漢堡)",
+    "addr": "民族東路2號",
+    "rating": 3.9,
+    "price": "$$"
+  },
+  {
+    "name": "女王漢堡 雙城店(漢堡)",
+    "addr": "雙城街38-1號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "103 串燒、酒飲",
+    "addr": "長春路103號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "炙り庵steak牛排-台北民權店",
+    "addr": "民權東路三段60巷3弄1號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Yong Ren Yakitori 庸人串燒 松江店",
+    "addr": "松江路22號1樓",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "一起烤串 林森店",
+    "addr": "中山北路一段121巷34-1號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "串在一起平價串燒 中山店",
+    "addr": "民生西路132號1樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "串燒殿 中山分店",
+    "addr": "民權東路二段13號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "傯串串燒",
+    "addr": "金洲街170號1樓",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "先發燙人（中山串燒居酒屋）",
+    "addr": "吉林路127號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "大河屋 燒肉丼 串燒-微風南京",
+    "addr": "南京東路三段337號B2",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "梘息地串燒居酒屋 長春店",
+    "addr": "長春路128-1號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "梘息地串燒居酒屋長安總店",
+    "addr": "長安東路一段46-1號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "焦糖籤串燒連鎖 林森加盟店",
+    "addr": "林森北路285號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "燒識願（中山店）無油炸現烤串燒",
+    "addr": "新生北路二段58巷51號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "疆毒串烤 南京店",
+    "addr": "南京東路二段214巷4號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "Chin Huajiao 慶花椒 中山北路",
+    "addr": "中山北路一段137號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "Mala Hot Pot 麻辣火鍋",
+    "addr": "南京西路22號B1",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "Nancy Hotpot",
+    "addr": "南京西路5-1號B1",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "Old Sichuan 老四川",
+    "addr": "長安東路二段112號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "富鷹砂鍋粥 南京店",
+    "addr": "南京東路一段44號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "好市多涮涮鍋 雙城店",
+    "addr": "雙城街19巷5號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "Old Sichuan 老四川 南京店(麻辣燙)",
+    "addr": "南京東路二段45號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "Syabu-yo 新光南西店(火鍋)",
+    "addr": "林森北路247號2樓",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "Wagyu Shabu Taipei 林森北路店(火鍋)",
+    "addr": "林森北路258號2樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "丰明殿 第一涮涮鍋殿堂",
+    "addr": "民權東路一段63號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "和田PLUS+ 南西店(火鍋)",
+    "addr": "南京西路25巷2-1號2樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "川之流精研涮涮鍋 長安店",
+    "addr": "長安東路一段8號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "手工殿麻辣鍋物 條通店",
+    "addr": "長安東路一段53巷1-1號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "撒麼TOGO小火鍋",
+    "addr": "長安東路一段53巷22號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "欣葉涮涮鍋 雙城店",
+    "addr": "雙城街26號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "武鶴和牛火鍋 吉林總店",
+    "addr": "吉林路228號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "站前傳統石頭火鍋（長安店）",
+    "addr": "長安東路二段184-1號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "肉老大頂級肉品涮涮鍋 台北中山",
+    "addr": "錦西街11號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "半沢日本料理",
+    "addr": "撫順街2號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "威尼斯義大利餐廳",
+    "addr": "松江路235巷19號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "食客三千火鍋專賣",
+    "addr": "民生東路二段137號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "辣吉點正宗成都串串香 承德店",
+    "addr": "承德路一段77巷10號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "隱鍋 台北林森北路店",
+    "addr": "林森北路353巷20號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "魚擄擄重慶火鍋",
+    "addr": "長安東路一段87號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "麻凡麻辣火鍋 松江店",
+    "addr": "松江路437號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "老東北家鄉特色料理",
+    "addr": "民權東路一段12巷13號1樓",
+    "rating": 4.0,
+    "price": "$$"
+  },
+  {
+    "name": "Creative Ramen Yuuzen(拉麵)",
+    "addr": "林森北路487號1樓209室",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Grandma's Kitchen 中山店(拉麵)",
+    "addr": "中山北路二段62巷38號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Menya Teru Taipei",
+    "addr": "伊通街8-1號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Ramen Chikumo 林森店",
+    "addr": "林森北路105-1號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "Tokunoya",
+    "addr": "中山北路二段77巷22號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "定置漁場三代目 The Fishery",
+    "addr": "中山北路二段附近",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "二屋牡蠣拉麵",
+    "addr": "中山站附近",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "麒麟創作拉麵坊",
+    "addr": "中山北路一段",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "一風堂(拉麵)",
+    "addr": "中山北路一段85號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "京都柚子豚骨拉麵 中山本店",
+    "addr": "中山北路二段附近",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Tonchin Taipei 中山(拉麵)",
+    "addr": "中山北路一段141號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Totto Ramen 中山",
+    "addr": "中山北路一段105巷7號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "Tonchin Taipei 中山(拉麵)",
+    "addr": "林森北路105號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "風見雞拉麵",
+    "addr": "錦州街89號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "隱家拉麵 晴光店",
+    "addr": "雙城街15-5號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "仁王家（原烹星）",
+    "addr": "中山北路二段59巷67號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "博多幸龍 伊通店",
+    "addr": "伊通街116號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "恬霜 拉麵專賣",
+    "addr": "長安東路一段48號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "滿雞輦｜麵魚",
+    "addr": "中山北路二段84巷37號",
+    "rating": 3.8,
+    "price": "$$"
+  },
+  {
+    "name": "烏龍派出所 松江店",
+    "addr": "松江路361號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "雞湯桑 Torisan 中山店",
+    "addr": "民生西路10號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "雞湯桑 Torisan 行天宮店",
+    "addr": "松江路273號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "鸞鳳創作拉麵坊",
+    "addr": "中山北路一段140巷25號1樓",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "燒肉政宗",
+    "addr": "民生東路二段121號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "胖肚肚燒肉",
+    "addr": "建國北路一段74號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "麵大廚 四平店",
+    "addr": "南京東路二段115巷18-1號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "麵屋德家",
+    "addr": "民權西路70巷41-1號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "博多長濱一幸舍拉麵",
+    "addr": "中山北路一段109號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "麵屋武藏 神山",
+    "addr": "中山北路一段121巷18號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "麵屋壹 中山店",
+    "addr": "中山北路二段61巷15號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "博多幸龍 中山北路店",
+    "addr": "中山北路二段66號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "山頭火拉麵 中山店",
+    "addr": "中山北路二段71號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Ajito 拉麵 中山店",
+    "addr": "南京西路25巷28號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "麵場 田所商店",
+    "addr": "松江路158巷1號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "横濱家系拉麵",
+    "addr": "林森北路293號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "彩頤拉麵",
+    "addr": "民生東路三段131號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Gandou 中山店",
+    "addr": "民生東路一段52號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Second Floor 貳樓中山南西店",
+    "addr": "中山北路二段16巷22號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "First One Bistro佛斯特旺餐酒館",
+    "addr": "南京西路18巷6弄5號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "六堆伙房 中山南西店",
+    "addr": "B1, No. 2號中山北路二段",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "世紀正宗牛肉麵",
+    "addr": "四平街19號",
+    "rating": 3.9,
+    "price": "$$"
+  },
+  {
+    "name": "佳佳小吃店",
+    "addr": "林森北路67巷121號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "將町牛肉麵館",
+    "addr": "建國北路三段113巷11號1樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "小巷子清燉牛肉麵 四平店",
+    "addr": "四平街40號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "小平廚房",
+    "addr": "中原街130號",
+    "rating": 4.0,
+    "price": "$$"
+  },
+  {
+    "name": "Felice饗樂 Pasta&Dessert &鍋物",
+    "addr": "中山北路二段59巷16號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "尚麵牛肉麵",
+    "addr": "長春路76號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "康莊傳統滷肉飯",
+    "addr": "吉林路436號1樓",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "廖牛肉麵",
+    "addr": "中原街41號",
+    "rating": 4.0,
+    "price": "$$"
+  },
+  {
+    "name": "志明牛肉麵 錦州店",
+    "addr": "吉林路413號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "李掌櫃功夫製麵 中山店",
+    "addr": "南京西路18巷6弄3號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "椰兄泰式料理餐廳 中山店",
+    "addr": "南京西路18巷6弄8-2號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "富鼎砂鍋粥",
+    "addr": "南京東路一段44號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "東關牛肉麵",
+    "addr": "南京東路三段109巷15號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "牛棚牛肉麵",
+    "addr": "雙城街10巷7號",
+    "rating": 3.9,
+    "price": "$$"
+  },
+  {
+    "name": "老外牛肉麵",
+    "addr": "吉林路403號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "老東牛肉麵",
+    "addr": "民生西路35號",
+    "rating": 3.8,
+    "price": "$$"
+  },
+  {
+    "name": "四米大石鍋拌飯專賣",
+    "addr": "中山北路二段20巷23號2樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "胖老闆誠意肉粥",
+    "addr": "長春路89-3號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "金喝彩熱炒",
+    "addr": "長春路119-9號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "難得一面 牛肉麵",
+    "addr": "中山北路二段59巷41弄3號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "鮮定味生猛海鮮",
+    "addr": "金洲街25號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "鳳德殿牛肉麵 台北南京",
+    "addr": "南京東路一段138號1樓",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Angelo Kitchen 安吉樂叔叔",
+    "addr": "吉林路299巷6號",
+    "rating": 5.0,
+    "price": "$$"
+  },
+  {
+    "name": "永心鳳茶",
+    "addr": "南京西路15號三樓",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "無限廚房 - 中山店",
+    "addr": "吉林路20號1F",
+    "rating": 3.4,
+    "price": "$$"
+  },
+  {
+    "name": "美術系壽司",
+    "addr": "民權西路36-1號1樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "Casa Della Pasta 中山",
+    "addr": "中山北路二段11巷7-1號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "品川蘭",
+    "addr": "中山北路二段78-2號",
+    "rating": 3.7,
+    "price": "$$"
+  },
+  {
+    "name": "Crazy MaMa",
+    "addr": "中山北路一段140巷14號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "銀兔湯咖喱中山店",
+    "addr": "中山北路一段140巷23號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "義麵坊 中山店",
+    "addr": "中山北路二段11巷7之1號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "家常飯朴老師",
+    "addr": "中山北路二段96巷28號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Felice 菲樂 Pasta&Dessert",
+    "addr": "中山北路二段59巷16號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "Golden Son Korea Pasta 中山",
+    "addr": "中山北路二段26巷15-1號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "Leone 餐酒館",
+    "addr": "林森北路353巷20號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "Loma Kitchen",
+    "addr": "雙城街13巷7號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "Men Biyori",
+    "addr": "南京東路一段13巷6弄8號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "Miacucina 南西店 義式蔬食",
+    "addr": "南京西路12號2樓",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "Pasta & Co.",
+    "addr": "南京東路三段9號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Rosemary",
+    "addr": "南京西路12巷13弄9號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "SAPORI 義品味小餐屋",
+    "addr": "長春路376號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "WOW Bistro",
+    "addr": "中山北路二段42巷34號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "久居小廚",
+    "addr": "中山北路二段96巷36號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "吃肥義大利麵專門",
+    "addr": "合江街59號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "麗芳老樓",
+    "addr": "雙城街18巷15號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "Don Shang He Shi 頓上和食",
+    "addr": "南京東路二段140號B1",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "Ginto Soup Curry",
+    "addr": "中山北路一段140巷23號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "Mon wo",
+    "addr": "農安街10巷18-23號1樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "Ootoya 行天宮站",
+    "addr": "松江路276號2樓",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "川渝小吃坊",
+    "addr": "南京西路18巷6弄8之1號",
+    "rating": 3.9,
+    "price": "$$"
+  },
+  {
+    "name": "THE·Spring 長春分店",
+    "addr": "中山北路三段23號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "Yo Sushi",
+    "addr": "中山北路一段126巷14-1號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "KATSU鑫 熟成豬排蓋飯",
+    "addr": "南京西路64巷16-3號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "傳鮨日本料理",
+    "addr": "松江路259巷2號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "半澤日本料理",
+    "addr": "中山北路二段59巷67號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "吉松和漢日本料理",
+    "addr": "中山北路二段50巷3號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "品司和食",
+    "addr": "天祥路48巷1號1樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "稻町家洋食喫茶",
+    "addr": "赤峰街85號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Moni 餐廳",
+    "addr": "南京西路21號B1",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "小六食堂",
+    "addr": "吉林路252號",
+    "rating": 4.0,
+    "price": "$$"
+  },
+  {
+    "name": "御壽司屋",
+    "addr": "民生東路二段115巷38號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "心KOKORO食堂",
+    "addr": "松江路297巷21號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "旨壽司 行天宮店",
+    "addr": "民權東路二段64號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "東嘉祥 丼飯",
+    "addr": "南京東路二段115巷1-3號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "源屋匠和食",
+    "addr": "雙城街17巷5-3號1樓",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "滾厚炙燒熟成牛排 台北復北店",
+    "addr": "復興北路69號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "稻町家香料咖哩 中山本鋪",
+    "addr": "中山北路二段42巷20號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "米匠 Mi Jian 中山店",
+    "addr": "中山北路一段140巷3號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "村亭咖啡",
+    "addr": "中山北路一段105巷11號2F",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "藏壽司 くら寿司 南西店",
+    "addr": "南京西路57號2樓",
+    "rating": 4.0,
+    "price": "$$"
+  },
+  {
+    "name": "米達人壽司 南西店",
+    "addr": "南京西路12號B1",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "奇跡咖哩 KiseKi Curry",
+    "addr": "中山北路一段126巷12號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "葦稻食堂",
+    "addr": "民生東路二段115巷2弄2號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "藝奇日式料理 南京東店",
+    "addr": "南京東路二段67號2-3樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "通安咖哩 中山店",
+    "addr": "中山北路二段77巷3號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "金の緒日本料理 雙城店",
+    "addr": "雙城街21-1號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "陶板屋 南京東店",
+    "addr": "南京東路二段178號2樓",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "ATITHI INDIAN CUISINE 復興店",
+    "addr": "復興南路一段71號2樓",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "Bonchon Chicken 本村韓食炸雞 中山",
+    "addr": "中山北路二段76號1樓",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "Egg. Milk. Tree",
+    "addr": "中山北路一段33巷26號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "Gold Pig 韓式燒肉",
+    "addr": "南京東路一段29號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "Idu 原住民料理",
+    "addr": "新生北路二段149巷40號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "Jee Aayan Nu Indian Restaurant",
+    "addr": "龍江路331巷15號",
+    "rating": 5.0,
+    "price": "$$"
+  },
+  {
+    "name": "Luckstar 24Hr HK Style Restaurant",
+    "addr": "南京東路一段92號2樓",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Monday 蔬食料理 錦州店",
+    "addr": "吉林路439號",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "Orchid Indian Restaurant",
+    "addr": "長安東路一段19號2樓",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "Safranbolu 番紅花城 土耳其",
+    "addr": "南京東路二段60號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "So Veg 素食",
+    "addr": "農安街263號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "Tandoor Indian Food Restaurant",
+    "addr": "合江街73巷10號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "Thai Ho Thai Restaurant",
+    "addr": "吉林路402號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "Uncle Kamjatang Uncle-K",
+    "addr": "合江街188巷1號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "Veer Jee's Indian Restaurant 維傑",
+    "addr": "復興北路432號1樓",
+    "rating": 5.0,
+    "price": "$$"
+  },
+  {
+    "name": "Yache 韓式蔬食 松江店",
+    "addr": "松江路128號1樓",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "中央市場熱炒",
+    "addr": "長安東路一段52-1號",
+    "rating": 3.6,
+    "price": "$$"
+  },
+  {
+    "name": "小紐約披薩 中山店",
+    "addr": "中山北路一段140巷7號號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "享食齋蔬食料理",
+    "addr": "林森北路67巷38號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "享點港式飲茶",
+    "addr": "長安東路一段8-2號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "Heisei 19 海鮮丼烤魚燒肉",
+    "addr": "南京西路18巷6弄8號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "何城越南河粉",
+    "addr": "合江街119號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "十味蔬食",
+    "addr": "民生東路二段147巷12弄2號1樓",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "哈泰 泰式料理",
+    "addr": "中山北路二段183巷2-4號2樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "路邊烤肉WildBBQ",
+    "addr": "中山北路二段183巷4號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "焼肉LIKE",
+    "addr": "南京東路二段95號1樓",
+    "rating": 3.8,
+    "price": "$$"
+  },
+  {
+    "name": "肥前屋",
+    "addr": "中山北路一段121巷13號",
+    "rating": 3.8,
+    "price": "$$"
+  },
+  {
+    "name": "番紅花城土耳其餐廳",
+    "addr": "南京東路二段60號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "唐太盅養生燉品甜湯 行天宮店",
+    "addr": "民權東路二段77號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "富氣水產 龍江店 海鮮台菜",
+    "addr": "龍江路298巷23號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "廉食港式茶樓",
+    "addr": "新生北路一段9號1樓",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "心粵小廚",
+    "addr": "長春路147-3號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "春川家",
+    "addr": "松江路108巷3號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "梨泰院 Itaewon 韓式料理 台北華山",
+    "addr": "長安東路一段56巷1弄65號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "歐巴OBLIGI 首爾餐桌",
+    "addr": "林森北路130號2樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "洪飯天生猛海鮮",
+    "addr": "吉林路239號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "玉越南美食館 興安街",
+    "addr": "興安街42號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "異鄉食堂",
+    "addr": "民生西路45巷3弄25號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "矽餐酒館 泰式料理",
+    "addr": "新生北路一段66號1樓",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "禾花素食",
+    "addr": "天祥路48巷8號1樓",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "臨洋港生猛活海鮮 長安店",
+    "addr": "長安東路一段99號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "逸香樓 北京烤鴨",
+    "addr": "南京東路二段69號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "金春喜韓廚 台北南京店",
+    "addr": "南京東路一段24號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "鐘路大多力韓雞湯",
+    "addr": "南京西路81號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "阿里巴巴的廚房 印度料理 南京店",
+    "addr": "南京東路二段56號2樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "雲鶯阿二麻辣食堂 長春店",
+    "addr": "伊通街102號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "韓宮正宗韓式料理",
+    "addr": "長安東路二段",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "韓藏 行天宮",
+    "addr": "建國北路二段25巷25號",
+    "rating": 4.8,
+    "price": "$$"
+  },
+  {
+    "name": "韓鑾閣韓國烤肉料理",
+    "addr": "林森北路119巷61號1樓",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "高朋海鮮餐廳",
+    "addr": "新生北路三段49號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "魚港生猛海鮮",
+    "addr": "天祥路8號",
+    "rating": 4.0,
+    "price": "$$"
+  },
+  {
+    "name": "鮮定味生猛活海鮮 長安店",
+    "addr": "長安東路一段67號",
+    "rating": 4.0,
+    "price": "$$"
+  },
+  {
+    "name": "麵屋千雲 林森店",
+    "addr": "林森北路105-1號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "木麒麟拉麵",
+    "addr": "中山北路一段140巷18號1樓",
+    "rating": 4.9,
+    "price": "$$"
+  },
+  {
+    "name": "鳥人拉麵 中山店",
+    "addr": "中山北路一段105巷7號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "新田鰻味屋",
+    "addr": "中山北路二段77巷45號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "勝王",
+    "addr": "中山北路二段59巷67號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "辣麻味噌沾麵 鬼金棒 中山店",
+    "addr": "中山北路一段92號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "Hasila哈喜拉原住民餐廳",
+    "addr": "中山北路二段77巷19號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "通庵 熟成咖哩 中山店",
+    "addr": "中山北路二段77巷3號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "黔東萊私房料理小吃店",
+    "addr": "民族東路26號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "采岩堂抄手麵食館",
+    "addr": "南京西路12巷13弄7號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "雲夢軒台泰創意料理",
+    "addr": "民權東路二段152巷5弄1—1號",
+    "rating": 3.9,
+    "price": "$$"
+  },
+  {
+    "name": "金の箸日本料理",
+    "addr": "雙城街21-1號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "HALOA POKE 夏威夷拌飯",
+    "addr": "南京西路18巷4弄4號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "搖滾披薩 中山店",
+    "addr": "中山北路一段140巷12號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "二月半",
+    "addr": "中山北路二段20巷1-1號",
+    "rating": 3.9,
+    "price": "$$"
+  },
+  {
+    "name": "大膽牛腩麵",
+    "addr": "遼寧街222號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "魁力屋拉麵台北本店",
+    "addr": "南京西路15號B1",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "東京油組總本店 台北林森組",
+    "addr": "林森北路126號",
+    "rating": 4.7,
+    "price": "$$"
+  },
+  {
+    "name": "蔚稻食堂",
+    "addr": "民生東路二段115巷25弄2號",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "屯京拉麵",
+    "addr": "中山北路一段141號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "赤鐵廣島燒專賣店",
+    "addr": "撫順街12號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "大師兄銷魂麵舖-中山店",
+    "addr": "中山北路二段42巷36號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "笑月小館",
+    "addr": "新生北路二段141巷58號",
+    "rating": 4.1,
+    "price": "$$"
+  },
+  {
+    "name": "東嘉祥 丼飯",
+    "addr": "南京東路二段115巷3弄1-3號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "雞湯榮麵食館",
+    "addr": "錦州街14號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "一日彡食 濃厚雞湯",
+    "addr": "天祥路2號1樓",
+    "rating": 4.6,
+    "price": "$$"
+  },
+  {
+    "name": "池音 雞白湯ラーメン",
+    "addr": "赤峰街23巷25號",
+    "rating": 4.5,
+    "price": "$$"
+  },
+  {
+    "name": "小主廚鐡板料理",
+    "addr": "中山北路一段83巷5-3號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "厚野雞排",
+    "addr": "中山北路二段116巷43號",
+    "rating": 4.4,
+    "price": "$$"
+  },
+  {
+    "name": "葫蘆小郭鐵板燒",
+    "addr": "錦州街166號",
+    "rating": 4.2,
+    "price": "$$"
+  },
+  {
+    "name": "大鼎昌吉街豬血湯",
+    "addr": "吉林路319號",
+    "rating": 3.9,
+    "price": "$$"
+  },
+  {
+    "name": "夢鹿咖啡 中山店",
+    "addr": "南京西路18巷6弄6號",
+    "rating": 4.3,
+    "price": "$$"
+  },
+  {
+    "name": "鯨寶港式海鮮",
+    "addr": "吉林路321號",
+    "rating": 4.4,
+    "price": "$$"
+  }
 ];
 
 const SIMPLE = [
-  {name:"新欣眾小火鍋 林森",addr:"林森北路259巷9-47號",rating:4.7,price:"$"},
-  {name:"ONE GOOD 烤肉飯",addr:"遼寧街141號",rating:4.6,price:"$"},
-  {name:"麵線傳奇",addr:"天祥路39號",rating:4.4,price:"$"},
-  {name:"偵鎂水餃",addr:"長安西路3號中山市場38號位",rating:4.0,price:"$"},
-  {name:"如香小炒店",addr:"金洲街177號",rating:4.2,price:"$"},
-  {name:"中山牛肉麵館",addr:"長安西路3號",rating:4.3,price:"$"},
-  {name:"愛加倍餐廳",addr:"中山北路二段137巷8號",rating:4.6,price:"$"},
-  {name:"清海食堂",addr:"林森北路399巷14號",rating:4.1,price:"$"},
-  {name:"香滿園",addr:"萬全街8巷",rating:4.4,price:"$"},
-  {name:"黃記燉煮滷肉飯",addr:"中山北路二段183巷28號",rating:4.2,price:"$"},
-  {name:"裕城牛肉麵",addr:"中山北路二段116巷2-7號",rating:4.4,price:"$"},
-  {name:"難得一面 牛肉麵",addr:"中山北路二段59巷41弄3號",rating:4.6,price:"$"},
-  {name:"將町牛肉麵館",addr:"建國北路三段113巷11號1樓",rating:4.8,price:"$"},
-  {name:"尚麵牛肉麵",addr:"長春路76號",rating:4.7,price:"$"},
-  {name:"小巷子清燉牛肉麵",addr:"四平街40號",rating:4.8,price:"$"},
-  {name:"犇牛堂",addr:"合江街102巷15號1樓",rating:4.8,price:"$"},
-  {name:"面線町",addr:"赤峰街",rating:4.2,price:"$"},
-  {name:"金仙魚丸店",addr:"龍江路342巷25號",rating:4.1,price:"$"},
-  {name:"33區熱炒生猛海鮮",addr:"長安東路一段63-1號",rating:4.0,price:"$"},
-  {name:"富野丼飯（FULL YEAH）",addr:"天祥路17號",rating:4.5,price:"$"},
-  {name:"潮丼日式定食",addr:"民生西路45巷21號",rating:4.4,price:"$"},
-  {name:"和風咖哩",addr:"雙城街10巷21號",rating:4.3,price:"$"},
-  {name:"禾花素食",addr:"天祥路48巷8號1樓",rating:4.7,price:"$"},
-  {name:"京園素食館",addr:"松江路330巷22號",rating:4.4,price:"$"},
-  {name:"女王漢堡 雙城店",addr:"雙城街38-1號",rating:4.6,price:"$"},
-  {name:"榕美樹館 豆花",addr:"赤峰街附近",rating:4.5,price:"$"},
-  {name:"芋艿川豆花 誠品南西",addr:"南京西路12號",rating:4.3,price:"$"},
-  {name:"鳥貴族 Torikizoku 南西店",addr:"南京西路12號5F",rating:4.2,price:"$"},
-  {name:"一起烤串中山店",addr:"中山北路二段",rating:4.3,price:"$"},
-  {name:"長田本庄軒 南西店",addr:"南京西路15號B1",rating:4.6,price:"$"},
-  {name:"螺絲瑪莉義麵坊",addr:"中山站附近",rating:4.4,price:"$"},
-  {name:"waku waku pasta 赤峰店",addr:"赤峰街附近",rating:4.5,price:"$"},
-  {name:"新丼",addr:"中山北路一段",rating:4.3,price:"$"},
-  {name:"鬍鬚張",addr:"中山北路二段59號",rating:4.1,price:"$"},
-  {name:"Sukiya すき家",addr:"民權西路75號",rating:3.9,price:"$"},
-  {name:"肯德基 KFC",addr:"民生西路9號",rating:3.5,price:"$"},
-  {name:"漢堡王 Burger King",addr:"林森北路247號1樓",rating:4.0,price:"$"},
-  {name:"八方雲集",addr:"林森北路271號",rating:3.3,price:"$"},
-  {name:"阿城鵝肉",addr:"吉林路105號",rating:4.6,price:"$"},
+  {
+    "name": "新欣眾小火鍋 林森（外帶）",
+    "addr": "林森北路259巷9-47號",
+    "rating": 4.7,
+    "price": "$"
+  },
+  {
+    "name": "樂香小火鍋 中山總店",
+    "addr": "合江街103號",
+    "rating": 3.8,
+    "price": "$"
+  },
+  {
+    "name": "阿國切仔麵",
+    "addr": "天祥路1號",
+    "rating": 3.8,
+    "price": "$"
+  },
+  {
+    "name": "ONE GOOD烤肉飯（南京復興）",
+    "addr": "遼寧街141號",
+    "rating": 4.6,
+    "price": "$"
+  },
+  {
+    "name": "麵線傳奇",
+    "addr": "天祥路39號",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "偵鎂水餃",
+    "addr": "長安西路3號中山市場38號位",
+    "rating": 4.0,
+    "price": "$"
+  },
+  {
+    "name": "如香小炒店",
+    "addr": "金洲街177號",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "中山牛肉麵館",
+    "addr": "長安西路3號",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "愛加倍餐廳",
+    "addr": "中山北路二段137巷8號",
+    "rating": 4.6,
+    "price": "$"
+  },
+  {
+    "name": "清海食堂",
+    "addr": "林森北路399巷14號",
+    "rating": 4.1,
+    "price": "$"
+  },
+  {
+    "name": "萊寶鐵板燒",
+    "addr": "錦州街212號1樓",
+    "rating": 4.9,
+    "price": "$"
+  },
+  {
+    "name": "山雞王",
+    "addr": "吉林路103號",
+    "rating": 3.6,
+    "price": "$"
+  },
+  {
+    "name": "蚵之鄉",
+    "addr": "伊通街46號",
+    "rating": 4.6,
+    "price": "$"
+  },
+  {
+    "name": "府城小吃店",
+    "addr": "民生東路二段93巷6號",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "煙大王",
+    "addr": "吉林路352號",
+    "rating": 3.8,
+    "price": "$"
+  },
+  {
+    "name": "福德涼麵",
+    "addr": "興安街76號",
+    "rating": 3.6,
+    "price": "$"
+  },
+  {
+    "name": "九條麵食",
+    "addr": "林森北路138巷46號",
+    "rating": 4.1,
+    "price": "$"
+  },
+  {
+    "name": "阿田麵",
+    "addr": "赤峰街44巷20號",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "小良絆-涼麵專門店",
+    "addr": "赤峰街81號之一",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "朱遊記小吃店",
+    "addr": "撫順街39號",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "面線町",
+    "addr": "赤峰街",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "田佳涼麵",
+    "addr": "林森北路399巷1號",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "很唰嘴a鵝肉",
+    "addr": "四平街66號",
+    "rating": 4.8,
+    "price": "$"
+  },
+  {
+    "name": "紅燈籠",
+    "addr": "中山北路二段59巷36號",
+    "rating": 4.0,
+    "price": "$"
+  },
+  {
+    "name": "齊亨燒臘",
+    "addr": "合江街77號",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "赤峰雞肉町",
+    "addr": "34號, No. 34號承德路二段1巷",
+    "rating": 3.7,
+    "price": "$"
+  },
+  {
+    "name": "七喜排骨",
+    "addr": "中原街20號",
+    "rating": 4.1,
+    "price": "$"
+  },
+  {
+    "name": "名家魯肉飯",
+    "addr": "民生東路一段50號",
+    "rating": 4.0,
+    "price": "$"
+  },
+  {
+    "name": "赤峰街無名排骨飯",
+    "addr": "赤峰街4號",
+    "rating": 3.7,
+    "price": "$"
+  },
+  {
+    "name": "百里香小吃",
+    "addr": "民生東路二段147巷2弄2號",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "胡家臺灣小吃 中山旗艦店",
+    "addr": "林森北路283號",
+    "rating": 3.6,
+    "price": "$"
+  },
+  {
+    "name": "裕城牛肉麵",
+    "addr": "中山北路二段116巷2-7號",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "金仙魚丸店",
+    "addr": "龍江路342巷25號",
+    "rating": 4.1,
+    "price": "$"
+  },
+  {
+    "name": "啊興阿滷肉飯",
+    "addr": "林森北路133巷74號1樓",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "雙連街滷肉飯",
+    "addr": "雙連街5號",
+    "rating": 3.6,
+    "price": "$"
+  },
+  {
+    "name": "長春二號 土雞湯",
+    "addr": "中山北路三段19號",
+    "rating": 4.8,
+    "price": "$"
+  },
+  {
+    "name": "香滿園",
+    "addr": "萬全街8巷",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "香而廉小館",
+    "addr": "合江街17巷2號",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "鱻魚熱炒 吉林總店",
+    "addr": "吉林路254號",
+    "rating": 4.1,
+    "price": "$"
+  },
+  {
+    "name": "天津雞肉飯",
+    "addr": "天津街63號1 樓",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "小菜館韓式拌飯",
+    "addr": "中山北路二段128巷17號之1",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "福大蒸餃館",
+    "addr": "中山北路一段140巷11號",
+    "rating": 4.0,
+    "price": "$"
+  },
+  {
+    "name": "黃記燉煮滷肉飯",
+    "addr": "中山北路二段183巷28號",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "Vicoli 弄義大利麵",
+    "addr": "中山北路一段140巷2號",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "waku waku pasta 赤峰店",
+    "addr": "赤峰街附近",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "義利坊現炒義大利麵",
+    "addr": "民生西路13號2樓",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "義麵盒子",
+    "addr": "富順街10-1號",
+    "rating": 4.6,
+    "price": "$"
+  },
+  {
+    "name": "東引快刀手-南西店",
+    "addr": "中山北路一段140巷9號",
+    "rating": 4.1,
+    "price": "$"
+  },
+  {
+    "name": "高。嘉義涼麵",
+    "addr": "林森北路153號",
+    "rating": 4.9,
+    "price": "$"
+  },
+  {
+    "name": "33區熱炒生猛海鮮",
+    "addr": "長安東路一段63-1號",
+    "rating": 4.0,
+    "price": "$"
+  },
+  {
+    "name": "Kanokwan Thai Noodle",
+    "addr": "四平街21號1樓",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "長田本庄軒 南西店",
+    "addr": "南京西路15號B1",
+    "rating": 4.6,
+    "price": "$"
+  },
+  {
+    "name": "台越越南美食",
+    "addr": "義江街52號",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "清水越南河粉",
+    "addr": "林森北路285號",
+    "rating": 4.6,
+    "price": "$"
+  },
+  {
+    "name": "OLiA 吃飯 伊通",
+    "addr": "伊通街106巷8號",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "異鄉食堂",
+    "addr": "民生西路45巷3弄25號",
+    "rating": 4.7,
+    "price": "$"
+  },
+  {
+    "name": "和風咖哩",
+    "addr": "雙城街10巷21號",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "富野丼飯（FULL YEAH）",
+    "addr": "天祥路17號",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "郁誠牛肉麵",
+    "addr": "中山北路二段116巷2-7號",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "日禾町 丼飯專門店",
+    "addr": "松江路226巷10-1號1樓",
+    "rating": 4.7,
+    "price": "$"
+  },
+  {
+    "name": "燕山湯圓",
+    "addr": "民生西路45巷9弄12號",
+    "rating": 3.9,
+    "price": "$"
+  },
+  {
+    "name": "赤峰小吃舖",
+    "addr": "赤峰街4-2號",
+    "rating": 4.0,
+    "price": "$"
+  },
+  {
+    "name": "潮丼日式定食",
+    "addr": "民生西路45巷7弄21號",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "冠鼎雞肉飯",
+    "addr": "錦州街252號",
+    "rating": 4.5,
+    "price": "$"
+  },
+  {
+    "name": "新丼",
+    "addr": "中山北路一段",
+    "rating": 4.3,
+    "price": "$"
+  },
+  {
+    "name": "黃記魯肉飯",
+    "addr": "中山北路二段183巷28號",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "亞當炒飯",
+    "addr": "德惠街3巷1-1號",
+    "rating": 4.4,
+    "price": "$"
+  },
+  {
+    "name": "虹越小館越南美食",
+    "addr": "南京東路一段132巷21-1號",
+    "rating": 4.2,
+    "price": "$"
+  },
+  {
+    "name": "韓食村",
+    "addr": "南京東路二段115巷6弄6號",
+    "rating": 4.2,
+    "price": "$"
+  }
 ];
 
 let currentGood = null;
@@ -598,14 +2271,19 @@ function showScreen(id) {
 function doRoll() {
   currentGood = rand(GOOD);
   currentSimple = rand(SIMPLE);
+
   document.getElementById('good-name').textContent = currentGood.name;
   document.getElementById('good-addr').textContent = currentGood.addr;
-  document.getElementById('good-rating').textContent = '★ ' + currentGood.rating;
-  document.getElementById('good-price').textContent = currentGood.price;
+  document.getElementById('good-rating').textContent = '★ ' + (currentGood.rating || '-');
+  document.getElementById('good-price').textContent = currentGood.price || '-';
+
   document.getElementById('simple-name').textContent = currentSimple.name;
   document.getElementById('simple-addr').textContent = currentSimple.addr;
-  document.getElementById('simple-rating').textContent = '★ ' + currentSimple.rating;
-  document.getElementById('simple-price').textContent = currentSimple.price;
+  document.getElementById('simple-rating').textContent = '★ ' + (currentSimple.rating || '-');
+  document.getElementById('simple-price').textContent = currentSimple.price || '-';
+
+  document.getElementById('emoji-box').textContent = rand(FOOD_EMOJIS);
+
   showScreen('screen-result');
 }
 </script>
