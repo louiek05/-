@@ -57,7 +57,7 @@
   .card-meta { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
   .badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-full); border: 1px solid transparent; }
   .badge-price { background: var(--color-surface); color: var(--color-text-sub); border-color: var(--color-border); }
-  .badge-kind { background: #F5E4CC; color: #7A3E1A; border-color: #D9C9A8; }
+  .badge-kind { background: var(--color-primary); color: var(--color-primary-text); border-color: var(--color-primary); }
   .badge-area { background: #EDE0C4; color: #5A3D20; border-color: #C8A878; }
   .badge-hours { background: #E8F0F8; color: #2B5BA8; border-color: #B0CDE8; }
   .map-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 9px; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-text-sub); cursor: pointer; text-decoration: none; transition: background 0.12s; margin-bottom: 8px; }
@@ -341,7 +341,7 @@
       </div>
     </div>
     <div class="result-area">
-      <div class="result-label" id="adv-result-label"></div>
+      <div style="text-align:center; font-size:13px; color:var(--color-text-hint); margin-bottom:10px;">不知道要吃什麼，一直抽就對了</div>
       <div class="restaurant-card">
         <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">加入清單</button>
         <div class="card-name" id="adv-name"></div>
@@ -578,7 +578,7 @@ function pickAdvOne() {
   const finalPool = available.length > 0 ? available : pool;
   currentAdv = finalPool[Math.floor(Math.random() * finalPool.length)];
   advRecent.push(currentAdv.name);
-  document.getElementById('adv-result-label').textContent = currentAdv.cat === '我不在乎錢' ? '✦ 我不在乎錢' : '✦ 我得省點錢';
+
   document.getElementById('adv-name').textContent = currentAdv.name;
   document.getElementById('adv-addr').textContent = currentAdv.addr;
   document.getElementById('adv-price').textContent = currentAdv.price || '';
