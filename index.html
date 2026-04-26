@@ -6,6 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>美食冒險者</title>
 <script src="data.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <style>
   :root {
     --color-primary: #7A3E1A;
@@ -27,26 +30,30 @@
   .screen.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* 通用元件 */
+  /* 通用 */
   .home-hero { padding: 56px 28px 32px; text-align: center; }
   .app-icon { width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 24px; overflow: hidden; }
   .app-icon img { width: 72px; height: 72px; object-fit: cover; object-position: center; display: block; border-radius: 20px; }
   .app-name { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-text-hint); margin-bottom: 12px; }
   .home-question { font-size: 26px; font-weight: 700; color: var(--color-text-main); line-height: 1.35; margin-bottom: 10px; }
   .home-sub { font-size: 14px; color: var(--color-text-sub); line-height: 1.6; margin-bottom: 40px; }
-
   .roll-btn { width: 100%; padding: 17px; background: var(--color-primary); color: var(--color-primary-text); border: none; border-radius: var(--radius-lg); font-size: 16px; font-weight: 600; cursor: pointer; letter-spacing: 0.5px; transition: opacity 0.15s, transform 0.1s; }
   .roll-btn:hover { opacity: 0.88; }
   .roll-btn:active { transform: scale(0.98); opacity: 0.75; }
   .roll-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
   .secondary-btn { width: 100%; padding: 15px; background: none; color: var(--color-primary); border: 2.5px solid var(--color-primary); border-radius: var(--radius-lg); font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 12px; transition: background 0.15s; display: block; text-align: center; }
   .secondary-btn:hover { background: var(--color-surface); }
-
   .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 0; }
   .header-left { display: flex; align-items: center; gap: 10px; }
   .back-btn { width: 36px; height: 36px; background: var(--color-surface); border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 18px; color: var(--color-text-sub); display: flex; align-items: center; justify-content: center; transition: background 0.12s; flex-shrink: 0; }
   .back-btn:hover { background: var(--color-border); }
   .page-title { font-size: 17px; font-weight: 600; color: var(--color-text-main); }
+
+  /* 登入頁 */
+  .login-input { width: 100%; padding: 15px; font-size: 16px; border: 2.5px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text-main); outline: none; text-align: center; margin-bottom: 12px; font-family: var(--font); }
+  .login-input:focus { border-color: var(--color-primary); }
+  .login-error { color: #c0392b; font-size: 13px; margin-bottom: 12px; min-height: 18px; text-align: center; }
+  .login-hint { font-size: 12px; color: var(--color-text-hint); text-align: center; margin-bottom: 20px; line-height: 1.6; }
 
   /* 結果頁 */
   .result-area { padding: 16px 20px 0; }
@@ -59,31 +66,44 @@
   .badge-price { background: var(--color-surface); color: var(--color-text-sub); border-color: var(--color-border); }
   .badge-kind { background: #F5E4CC; color: #7A3E1A; border-color: #D9C9A8; }
   .badge-area { background: #EDE0C4; color: #5A3D20; border-color: #C8A878; }
-  .badge-cat-good { background: #FFF0E0; color: #7A3E1A; border-color: #D9A878; }
-  .badge-cat-simple { background: #E8F0E8; color: #3A6A3A; border-color: #A8C8A8; }
-  .map-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 9px; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-text-sub); cursor: pointer; text-decoration: none; transition: background 0.12s; }
+  .map-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 9px; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-text-sub); cursor: pointer; text-decoration: none; transition: background 0.12s; margin-bottom: 8px; }
   .map-btn:hover { background: var(--color-border); }
+  .add-list-btn { width: 100%; padding: 9px; background: none; border: 2px solid var(--color-primary); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-primary); cursor: pointer; transition: background 0.12s; }
+  .add-list-btn:hover { background: #F5E4CC; }
+  .add-list-btn.added { background: #F5E4CC; color: var(--color-primary); border-color: var(--color-primary); }
   .reroll-row { padding: 12px 20px 36px; }
+  .price-note { text-align: center; font-size: 11px; color: var(--color-text-hint); margin-top: 10px; }
 
-  /* 剩餘次數 */
+  /* 清單頁 */
+  .list-area { padding: 16px 20px 32px; }
+  .list-section-title { font-size: 13px; font-weight: 700; color: var(--color-text-hint); margin: 16px 0 8px; letter-spacing: 0.5px; }
+  .list-item { background: #FFFDF7; border: 3px solid var(--color-border); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 10px; }
+  .list-item-name { font-size: 15px; font-weight: 600; color: var(--color-text-main); margin-bottom: 4px; }
+  .list-item-addr { font-size: 12px; color: var(--color-text-sub); margin-bottom: 10px; }
+  .list-item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .action-btn { padding: 6px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; cursor: pointer; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text-sub); transition: all 0.12s; }
+  .action-btn.active-visited { border-color: #3A7A2B; background: #E8F0E8; color: #3A7A2B; }
+  .action-btn.active-like { border-color: #c0392b; background: #fde8e8; color: #c0392b; }
+  .action-btn.active-dislike { border-color: #7A3E1A; background: #F5E4CC; color: #7A3E1A; }
+  .delete-btn { padding: 6px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; cursor: pointer; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text-hint); transition: all 0.12s; margin-left: auto; }
+  .delete-btn:hover { border-color: #c0392b; color: #c0392b; }
+  .empty-state { text-align: center; padding: 48px 20px; color: var(--color-text-hint); font-size: 14px; line-height: 1.8; }
+  .user-info { display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; font-size: 12px; color: var(--color-text-hint); }
+  .switch-btn { font-size: 12px; color: var(--color-text-hint); background: none; border: none; cursor: pointer; text-decoration: underline; }
+
+  /* 進階 */
   .chances-bar { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px 0; }
   .chance-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-primary); transition: background 0.2s; }
   .chance-dot.used { background: var(--color-border); }
   .chances-text { font-size: 12px; color: var(--color-text-hint); margin-left: 4px; }
-
-  /* 密碼頁 */
   .pw-input { width: 100%; padding: 15px; font-size: 16px; border: 2.5px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text-main); outline: none; text-align: center; margin-bottom: 12px; font-family: var(--font); }
   .pw-input:focus { border-color: var(--color-primary); }
   .pw-error { color: #c0392b; font-size: 13px; margin-bottom: 12px; min-height: 18px; text-align: center; }
-
-  /* 進階首頁 */
   .adv-btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 28px 32px; }
   .adv-big-btn { padding: 28px 12px; border: 3px solid var(--color-border); border-radius: var(--radius-lg); background: #FFFDF7; cursor: pointer; text-align: center; transition: all 0.15s; }
   .adv-big-btn:hover { border-color: var(--color-primary); background: var(--color-surface); }
   .adv-big-emoji { font-size: 32px; margin-bottom: 10px; }
   .adv-big-name { font-size: 14px; font-weight: 700; color: var(--color-text-main); }
-
-  /* 地圖 */
   .map-area { padding: 16px 20px 0; }
   .map-grid { display: grid; grid-template-columns: 5fr 7fr; border: 2.5px solid var(--color-primary); border-radius: var(--radius-lg); overflow: hidden; }
   .map-left { display: grid; grid-template-rows: 1fr 1fr; border-right: 2px solid var(--color-primary); }
@@ -103,8 +123,6 @@
   .map-right-bottom-divider-line { flex: 1; width: 1px; background: var(--color-border); }
   .map-right-bottom-divider-label { font-size: 9px; color: var(--color-text-hint); writing-mode: vertical-rl; letter-spacing: 1px; }
   .map-confirm-btn { margin: 16px 20px 32px; }
-
-  /* 種類選擇 */
   .kind-area { padding: 16px 20px 0; }
   .kind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
   .kind-btn { padding: 16px 10px; border: 2.5px solid var(--color-border); border-radius: var(--radius-lg); background: #FFFDF7; cursor: pointer; text-align: center; transition: all 0.15s; }
@@ -116,15 +134,32 @@
 <body>
 <div class="app">
 
+  <!-- 登入頁 -->
+  <div class="screen active" id="screen-login">
+    <div class="home-hero">
+      <div class="app-icon"><img id="login-icon" /></div>
+      <div class="app-name">美食冒險家</div>
+      <div class="home-question">歡迎光臨！</div>
+      <div class="home-sub" style="margin-bottom:24px;">輸入你的暱稱和 PIN 碼開始冒險</div>
+      <div class="login-hint">第一次使用？輸入暱稱和 4 位數 PIN 碼即可建立帳號</div>
+      <input class="login-input" type="text" id="login-name" placeholder="暱稱" maxlength="20" />
+      <input class="login-input" type="password" id="login-pin" placeholder="4 位數 PIN 碼" maxlength="4" inputmode="numeric"
+        onkeydown="if(event.key==='Enter') doLogin()" />
+      <div class="login-error" id="login-error"></div>
+      <button class="roll-btn" onclick="doLogin()">開始冒險</button>
+    </div>
+  </div>
+
   <!-- 首頁 -->
-  <div class="screen active" id="screen-home">
+  <div class="screen" id="screen-home">
     <div class="home-hero">
       <div class="app-icon"><img id="home-icon" /></div>
-      <div class="app-name">Food Adventure</div>
+      <div class="app-name">美食冒險家</div>
       <div class="home-question">你今天想吃什麼？</div>
-      <div class="home-sub">讓命運決定，中山區美食隨機報到</div>
+      <div class="home-sub">就把千古難題交給命運之神吧!👀</div>
       <button class="roll-btn" onclick="doRoll()">隨便</button>
-      <button class="secondary-btn" onclick="showScreen('screen-password')">⚔️ 進階冒險者</button>
+      <button class="secondary-btn" onclick="showScreen('screen-mylist')">📋 我的清單</button>
+      <button class="secondary-btn" onclick="showScreen('screen-password')">🎒 進階美食冒險者</button>
     </div>
   </div>
 
@@ -147,6 +182,7 @@
           <span class="badge badge-area" id="good-area"></span>
         </div>
         <a class="map-btn" id="good-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
+        <button class="add-list-btn" id="good-list-btn" onclick="toggleList('good')">＋ 加入我的清單</button>
       </div>
       <div class="result-label" style="margin-top:4px;">✦ 我得省點錢</div>
       <div class="restaurant-card">
@@ -158,10 +194,29 @@
           <span class="badge badge-area" id="simple-area"></span>
         </div>
         <a class="map-btn" id="simple-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
+        <button class="add-list-btn" id="simple-list-btn" onclick="toggleList('simple')">＋ 加入我的清單</button>
       </div>
     </div>
     <div class="reroll-row">
       <button class="roll-btn" onclick="doRoll()">隨便</button>
+      <div class="price-note">*價位標籤：$（~200元）、$$（200~600元）</div>
+    </div>
+  </div>
+
+  <!-- 我的清單頁 -->
+  <div class="screen" id="screen-mylist">
+    <div class="header">
+      <div class="header-left">
+        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="page-title">我的清單</div>
+      </div>
+    </div>
+    <div class="user-info">
+      <span id="user-display"></span>
+      <button class="switch-btn" onclick="switchUser()">切換帳號</button>
+    </div>
+    <div class="list-area" id="list-area">
+      <div class="empty-state">載入中...</div>
     </div>
   </div>
 
@@ -169,9 +224,9 @@
   <div class="screen" id="screen-password">
     <div class="home-hero">
       <div class="app-icon"><img id="pw-icon" /></div>
-      <div class="app-name">Advanced Food Adventure</div>
-      <div class="home-question">你是冒險者嗎？</div>
-      <div class="home-sub">輸入密碼解鎖進階模式</div>
+      <div class="app-name">Advanced 美食冒險家</div>
+      <div class="home-question">偉大的冒險者!<br>我給你帶來了禮物🎁</div>
+      <div class="home-sub">輸入密碼獲得更強大的能力</div>
       <input class="pw-input" type="password" id="pw-input" placeholder="輸入密碼"
         onkeydown="if(event.key==='Enter') checkPassword()" />
       <div class="pw-error" id="pw-error"></div>
@@ -184,13 +239,13 @@
   <div class="screen" id="screen-adv-home">
     <div class="home-hero" style="padding-bottom:24px;">
       <div class="app-icon"><img id="adv-icon" /></div>
-      <div class="app-name">Advanced Food Adventure</div>
-      <div class="home-question">今天想怎麼選？</div>
+      <div class="app-name">Advanced 美食冒險家</div>
+      <div class="home-question">恭喜你獲得了更強大的美食之力!</div>
       <div class="home-sub" style="margin-bottom:24px;">選一個方式，讓命運更精準</div>
     </div>
     <div class="adv-btn-grid">
       <div class="adv-big-btn" onclick="showScreen('screen-adv-area')">
-        <div class="adv-big-emoji">🗺</div>
+        <div class="adv-big-emoji">🌏</div>
         <div class="adv-big-name">選區域</div>
       </div>
       <div class="adv-big-btn" onclick="showScreen('screen-adv-kind')">
@@ -211,6 +266,7 @@
         <div class="page-title">選區域</div>
       </div>
     </div>
+    <div style="text-align:center; font-size:14px; font-weight:600; color:var(--color-text-sub); padding:12px 20px 0;">冒險者，你現在在哪一區？</div>
     <div class="map-area">
       <div class="map-divider-h" style="margin-bottom:6px;">
         <div class="map-divider-line"></div>
@@ -354,19 +410,40 @@
           <span class="badge badge-area" id="adv-area"></span>
         </div>
         <a class="map-btn" id="adv-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
+        <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">＋ 加入我的清單</button>
       </div>
     </div>
     <div class="reroll-row">
       <button class="roll-btn" id="adv-reroll-btn" onclick="doAdvReroll()">再抽一次</button>
+      <div class="price-note">*價位標籤：$（~200元）、$$（200~600元）</div>
     </div>
   </div>
 
 </div>
 <script>
+// Firebase 設定
+const firebaseConfig = {
+  apiKey: "AIzaSyBLtUHG69XT0Q6sMM4PGchI0Fhteaa26Po",
+  authDomain: "food-adventure-2231c.firebaseapp.com",
+  databaseURL: "https://food-adventure-2231c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "food-adventure-2231c",
+  storageBucket: "food-adventure-2231c.firebasestorage.app",
+  messagingSenderId: "994006316943",
+  appId: "1:994006316943:web:a413d4dad411d33d64fdfa"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
 // 初始化圖示
 window.addEventListener('DOMContentLoaded', () => {
   const src = 'data:image/jpeg;base64,' + IMG_B64;
   document.querySelectorAll('.app-icon img').forEach(img => img.src = src);
+  // 檢查是否已登入
+  const savedUser = localStorage.getItem('fa_user');
+  if (savedUser) {
+    currentUser = savedUser;
+    showScreen('screen-home');
+  }
 });
 
 const FOOD_EMOJIS = ['🍜','🍱','🍣','🍛','🥩','🍖','🦐','🍝','🥗','🍲','🥘','🍤','🦑','🍙','🍚','🥟','🍗','🫕','🍢','🧆','🥚','🦞','🦀','🐠','🫔','🌮','🌯','🥙','🧇','🥞','🧈'];
@@ -374,8 +451,174 @@ const ALL = [...GOOD.map(r => ({...r, cat:'我不在乎錢'})), ...SIMPLE.map(r 
 
 const recentGood = [], recentSimple = [];
 const AVOID = 8;
+let currentUser = null;
+let myList = {};
+let currentGood = null, currentSimple = null, currentAdv = null;
 let advMode = null, advFilter = null, advChances = 3, advRecent = [];
 let selectedArea = null, selectedKind = null;
+
+// ── 登入 ──
+async function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  const pin = document.getElementById('login-pin').value.trim();
+  const error = document.getElementById('login-error');
+
+  if (!name) { error.textContent = '請輸入暱稱'; return; }
+  if (!/^\d{4}$/.test(pin)) { error.textContent = 'PIN 碼必須是 4 位數字'; return; }
+
+  error.textContent = '驗證中...';
+
+  try {
+    const snap = await db.ref('users/' + name).once('value');
+    if (snap.exists()) {
+      // 已有帳號，驗證 PIN
+      if (snap.val().pin !== pin) {
+        error.textContent = 'PIN 碼錯誤！';
+        return;
+      }
+    } else {
+      // 新帳號，建立
+      await db.ref('users/' + name).set({ pin, createdAt: Date.now() });
+    }
+    currentUser = name;
+    localStorage.setItem('fa_user', name);
+    error.textContent = '';
+    document.getElementById('login-name').value = '';
+    document.getElementById('login-pin').value = '';
+    showScreen('screen-home');
+  } catch(e) {
+    error.textContent = '連線失敗，請稍後再試';
+  }
+}
+
+function switchUser() {
+  currentUser = null;
+  myList = {};
+  localStorage.removeItem('fa_user');
+  showScreen('screen-login');
+}
+
+// ── 清單 ──
+function loadMyList() {
+  if (!currentUser) return;
+  document.getElementById('user-display').textContent = '👤 ' + currentUser;
+  db.ref('lists/' + currentUser).on('value', snap => {
+    myList = snap.val() || {};
+    renderList();
+    updateAllListBtns();
+  });
+}
+
+function renderList() {
+  const area = document.getElementById('list-area');
+  const items = Object.values(myList);
+
+  if (items.length === 0) {
+    area.innerHTML = '<div class="empty-state">還沒有想去的店<br>去抽一抽加入清單吧！</div>';
+    return;
+  }
+
+  const notVisited = items.filter(r => !r.visited);
+  const visited = items.filter(r => r.visited);
+
+  let html = '';
+
+  if (notVisited.length > 0) {
+    html += '<div class="list-section-title">📌 想去的</div>';
+    html += notVisited.map(r => renderListItem(r)).join('');
+  }
+  if (visited.length > 0) {
+    html += '<div class="list-section-title">✅ 去過的</div>';
+    html += visited.map(r => renderListItem(r)).join('');
+  }
+
+  area.innerHTML = html;
+}
+
+function renderListItem(r) {
+  const key = r.key;
+  const visitedClass = r.visited ? 'active-visited' : '';
+  const likeClass = r.reaction === 'like' ? 'active-like' : '';
+  const dislikeClass = r.reaction === 'dislike' ? 'active-dislike' : '';
+  return `
+    <div class="list-item">
+      <div class="list-item-name">${r.name}</div>
+      <div class="list-item-addr">${r.addr || ''}</div>
+      <div class="list-item-actions">
+        <button class="action-btn ${visitedClass}" onclick="toggleVisited('${key}')">✅ 去過了</button>
+        <button class="action-btn ${likeClass}" onclick="setReaction('${key}','like')">🥰 喜歡</button>
+        <button class="action-btn ${dislikeClass}" onclick="setReaction('${key}','dislike')">🥵 討厭</button>
+        <button class="delete-btn" onclick="removeFromList('${key}')">刪除</button>
+      </div>
+    </div>`;
+}
+
+async function toggleList(type) {
+  if (!currentUser) return;
+  let r = type === 'good' ? currentGood : type === 'simple' ? currentSimple : currentAdv;
+  if (!r) return;
+
+  const key = r.name.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '_');
+  const btn = document.getElementById(type + '-list-btn');
+
+  if (myList[key]) {
+    // 已在清單，移除
+    await db.ref('lists/' + currentUser + '/' + key).remove();
+    btn.textContent = '＋ 加入我的清單';
+    btn.classList.remove('added');
+  } else {
+    // 加入清單
+    await db.ref('lists/' + currentUser + '/' + key).set({
+      key, name: r.name, addr: r.addr || '', kind: r.kind || '', area: r.area || '',
+      visited: false, reaction: null, addedAt: Date.now()
+    });
+    btn.textContent = '✓ 已加入清單';
+    btn.classList.add('added');
+  }
+}
+
+async function toggleVisited(key) {
+  if (!currentUser || !myList[key]) return;
+  await db.ref('lists/' + currentUser + '/' + key + '/visited').set(!myList[key].visited);
+}
+
+async function setReaction(key, reaction) {
+  if (!currentUser || !myList[key]) return;
+  const current = myList[key].reaction;
+  await db.ref('lists/' + currentUser + '/' + key + '/reaction').set(current === reaction ? null : reaction);
+}
+
+async function removeFromList(key) {
+  if (!currentUser) return;
+  await db.ref('lists/' + currentUser + '/' + key).remove();
+}
+
+function updateAllListBtns() {
+  [['good', currentGood], ['simple', currentSimple], ['adv', currentAdv]].forEach(([type, r]) => {
+    if (!r) return;
+    const btn = document.getElementById(type + '-list-btn');
+    if (!btn) return;
+    const key = r.name.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '_');
+    if (myList[key]) {
+      btn.textContent = '✓ 已加入清單';
+      btn.classList.add('added');
+    } else {
+      btn.textContent = '＋ 加入我的清單';
+      btn.classList.remove('added');
+    }
+  });
+}
+
+// ── 畫面切換 ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'screen-mylist') loadMyList();
+}
+
+function mapsUrl(name, addr) {
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ' ' + addr + ' 台北');
+}
 
 function rand(arr, recent) {
   if (!recent) return arr[Math.floor(Math.random() * arr.length)];
@@ -387,35 +630,27 @@ function rand(arr, recent) {
   return picked;
 }
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function mapsUrl(name, addr) {
-  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ' ' + addr + ' 台北');
-}
-
-// 普通版
+// ── 普通版 ──
 function doRoll() {
-  const g = rand(GOOD, recentGood);
-  const s = rand(SIMPLE, recentSimple);
-  document.getElementById('good-name').textContent = g.name;
-  document.getElementById('good-addr').textContent = g.addr;
-  document.getElementById('good-price').textContent = g.price || '';
-  document.getElementById('good-kind').textContent = g.kind || '';
-  document.getElementById('good-area').textContent = g.area || '';
-  document.getElementById('good-map').href = mapsUrl(g.name, g.addr);
-  document.getElementById('simple-name').textContent = s.name;
-  document.getElementById('simple-addr').textContent = s.addr;
-  document.getElementById('simple-price').textContent = s.price || '';
-  document.getElementById('simple-kind').textContent = s.kind || '';
-  document.getElementById('simple-area').textContent = s.area || '';
-  document.getElementById('simple-map').href = mapsUrl(s.name, s.addr);
+  currentGood = rand(GOOD, recentGood);
+  currentSimple = rand(SIMPLE, recentSimple);
+  document.getElementById('good-name').textContent = currentGood.name;
+  document.getElementById('good-addr').textContent = currentGood.addr;
+  document.getElementById('good-price').textContent = currentGood.price || '';
+  document.getElementById('good-kind').textContent = currentGood.kind || '';
+  document.getElementById('good-area').textContent = currentGood.area || '';
+  document.getElementById('good-map').href = mapsUrl(currentGood.name, currentGood.addr);
+  document.getElementById('simple-name').textContent = currentSimple.name;
+  document.getElementById('simple-addr').textContent = currentSimple.addr;
+  document.getElementById('simple-price').textContent = currentSimple.price || '';
+  document.getElementById('simple-kind').textContent = currentSimple.kind || '';
+  document.getElementById('simple-area').textContent = currentSimple.area || '';
+  document.getElementById('simple-map').href = mapsUrl(currentSimple.name, currentSimple.addr);
+  updateAllListBtns();
   showScreen('screen-result');
 }
 
-// 密碼
+// ── 密碼 ──
 function checkPassword() {
   const input = document.getElementById('pw-input').value;
   const error = document.getElementById('pw-error');
@@ -430,7 +665,7 @@ function checkPassword() {
   }
 }
 
-// 選區域
+// ── 進階 ──
 function selectArea(area) {
   selectedArea = area;
   document.querySelectorAll('.map-cell, .map-right-bottom-cell').forEach(b => b.classList.remove('selected'));
@@ -440,7 +675,6 @@ function selectArea(area) {
   btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
 }
 
-// 選種類
 function selectKind(kind) {
   selectedKind = kind;
   document.querySelectorAll('.kind-btn').forEach(b => b.classList.remove('selected'));
@@ -449,7 +683,6 @@ function selectKind(kind) {
   btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
 }
 
-// 進階抽籤
 function doAdvRoll(mode) {
   advMode = mode;
   advFilter = mode === 'area' ? selectedArea : selectedKind;
@@ -475,20 +708,19 @@ function pickAdvOne() {
     }
   });
   if (pool.length === 0) pool = ALL;
-
   const available = pool.filter(r => !advRecent.includes(r.name));
   const finalPool = available.length > 0 ? available : pool;
-  const picked = finalPool[Math.floor(Math.random() * finalPool.length)];
-  advRecent.push(picked.name);
+  currentAdv = finalPool[Math.floor(Math.random() * finalPool.length)];
+  advRecent.push(currentAdv.name);
   advChances--;
-
-  document.getElementById('adv-result-label').textContent = picked.cat === '我不在乎錢' ? '✦ 我不在乎錢' : '✦ 我得省點錢';
-  document.getElementById('adv-name').textContent = picked.name;
-  document.getElementById('adv-addr').textContent = picked.addr;
-  document.getElementById('adv-price').textContent = picked.price || '';
-  document.getElementById('adv-kind').textContent = picked.kind || '';
-  document.getElementById('adv-area').textContent = picked.area || '';
-  document.getElementById('adv-map').href = mapsUrl(picked.name, picked.addr);
+  document.getElementById('adv-result-label').textContent = currentAdv.cat === '我不在乎錢' ? '✦ 我不在乎錢' : '✦ 我得省點錢';
+  document.getElementById('adv-name').textContent = currentAdv.name;
+  document.getElementById('adv-addr').textContent = currentAdv.addr;
+  document.getElementById('adv-price').textContent = currentAdv.price || '';
+  document.getElementById('adv-kind').textContent = currentAdv.kind || '';
+  document.getElementById('adv-area').textContent = currentAdv.area || '';
+  document.getElementById('adv-map').href = mapsUrl(currentAdv.name, currentAdv.addr);
+  updateAllListBtns();
   updateDots();
 }
 
