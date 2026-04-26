@@ -58,7 +58,7 @@
   /* 結果頁 */
   .result-area { padding: 16px 20px 0; }
   .result-label { font-size: 16px; font-weight: 700; color: #3D2009; margin-bottom: 10px; padding: 0 2px; }
-  .restaurant-card { background: #FFFDF7; border: 5px solid var(--color-border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; text-align: center; }
+  .restaurant-card { background: #FFFDF7; border: 5px solid var(--color-border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; text-align: center; position: relative; }
   .card-name { font-size: 16px; font-weight: 600; color: var(--color-text-main); line-height: 1.4; margin-bottom: 8px; }
   .card-addr { font-size: 13px; color: var(--color-text-sub); margin-bottom: 10px; line-height: 1.4; }
   .card-meta { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
@@ -68,8 +68,8 @@
   .badge-area { background: #EDE0C4; color: #5A3D20; border-color: #C8A878; }
   .map-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 9px; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-text-sub); cursor: pointer; text-decoration: none; transition: background 0.12s; margin-bottom: 8px; }
   .map-btn:hover { background: var(--color-border); }
-  .add-list-btn { width: 100%; padding: 9px; background: none; border: 2px solid var(--color-primary); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-primary); cursor: pointer; transition: background 0.12s; }
-  .add-list-btn:hover { background: #F5E4CC; }
+  .add-list-btn { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: none; border: 2px solid var(--color-border); border-radius: var(--radius-full); font-size: 11px; font-weight: 600; color: var(--color-text-hint); cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+  .add-list-btn:hover { border-color: var(--color-primary); color: var(--color-primary); background: #F5E4CC; }
   .add-list-btn.added { background: #F5E4CC; color: var(--color-primary); border-color: var(--color-primary); }
   .reroll-row { padding: 12px 20px 36px; }
   .price-note { text-align: center; font-size: 11px; color: var(--color-text-hint); margin-top: 10px; }
@@ -182,7 +182,7 @@
           <span class="badge badge-area" id="good-area"></span>
         </div>
         <a class="map-btn" id="good-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
-        <button class="add-list-btn" id="good-list-btn" onclick="toggleList('good')">＋ 加入我的清單</button>
+        <button class="add-list-btn" id="good-list-btn" onclick="toggleList('good')">加入清單</button>
       </div>
       <div class="result-label" style="margin-top:4px;">✦ 我得省點錢</div>
       <div class="restaurant-card">
@@ -194,7 +194,7 @@
           <span class="badge badge-area" id="simple-area"></span>
         </div>
         <a class="map-btn" id="simple-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
-        <button class="add-list-btn" id="simple-list-btn" onclick="toggleList('simple')">＋ 加入我的清單</button>
+        <button class="add-list-btn" id="simple-list-btn" onclick="toggleList('simple')">加入清單</button>
       </div>
     </div>
     <div class="reroll-row">
@@ -410,7 +410,7 @@
           <span class="badge badge-area" id="adv-area"></span>
         </div>
         <a class="map-btn" id="adv-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
-        <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">＋ 加入我的清單</button>
+        <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">加入清單</button>
       </div>
     </div>
     <div class="reroll-row">
@@ -564,7 +564,7 @@ async function toggleList(type) {
   if (myList[key]) {
     // 已在清單，移除
     await db.ref('lists/' + currentUser + '/' + key).remove();
-    btn.textContent = '＋ 加入我的清單';
+    btn.textContent = '加入清單';
     btn.classList.remove('added');
   } else {
     // 加入清單
@@ -572,7 +572,7 @@ async function toggleList(type) {
       key, name: r.name, addr: r.addr || '', kind: r.kind || '', area: r.area || '',
       visited: false, reaction: null, addedAt: Date.now()
     });
-    btn.textContent = '✓ 已加入清單';
+    btn.textContent = '✓ 已加入';
     btn.classList.add('added');
   }
 }
@@ -600,10 +600,10 @@ function updateAllListBtns() {
     if (!btn) return;
     const key = r.name.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '_');
     if (myList[key]) {
-      btn.textContent = '✓ 已加入清單';
+      btn.textContent = '✓ 已加入';
       btn.classList.add('added');
     } else {
-      btn.textContent = '＋ 加入我的清單';
+      btn.textContent = '加入清單';
       btn.classList.remove('added');
     }
   });
