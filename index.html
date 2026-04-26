@@ -66,6 +66,7 @@
   .badge-price { background: var(--color-surface); color: var(--color-text-sub); border-color: var(--color-border); }
   .badge-kind { background: #F5E4CC; color: #7A3E1A; border-color: #D9C9A8; }
   .badge-area { background: #EDE0C4; color: #5A3D20; border-color: #C8A878; }
+  .badge-hours { background: #E8F0F8; color: #2B5BA8; border-color: #B0CDE8; }
   .map-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 9px; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-text-sub); cursor: pointer; text-decoration: none; transition: background 0.12s; margin-bottom: 8px; }
   .map-btn:hover { background: var(--color-border); }
   .add-list-btn { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: none; border: 2px solid var(--color-border); border-radius: var(--radius-full); font-size: 11px; font-weight: 600; color: var(--color-text-hint); cursor: pointer; transition: all 0.12s; white-space: nowrap; }
@@ -92,10 +93,6 @@
   .switch-btn { font-size: 12px; color: var(--color-text-hint); background: none; border: none; cursor: pointer; text-decoration: underline; }
 
   /* 進階 */
-  .chances-bar { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px 0; }
-  .chance-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-primary); transition: background 0.2s; }
-  .chance-dot.used { background: var(--color-border); }
-  .chances-text { font-size: 12px; color: var(--color-text-hint); margin-left: 4px; }
   .pw-input { width: 100%; padding: 15px; font-size: 16px; border: 2.5px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text-main); outline: none; text-align: center; margin-bottom: 12px; font-family: var(--font); }
   .pw-input:focus { border-color: var(--color-primary); }
   .pw-error { color: #c0392b; font-size: 13px; margin-bottom: 12px; min-height: 18px; text-align: center; }
@@ -180,6 +177,7 @@
           <span class="badge badge-price" id="good-price"></span>
           <span class="badge badge-kind" id="good-kind"></span>
           <span class="badge badge-area" id="good-area"></span>
+          <span class="badge badge-hours" id="good-hours"></span>
         </div>
         <a class="map-btn" id="good-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
         <button class="add-list-btn" id="good-list-btn" onclick="toggleList('good')">加入清單</button>
@@ -192,6 +190,7 @@
           <span class="badge badge-price" id="simple-price"></span>
           <span class="badge badge-kind" id="simple-kind"></span>
           <span class="badge badge-area" id="simple-area"></span>
+          <span class="badge badge-hours" id="simple-hours"></span>
         </div>
         <a class="map-btn" id="simple-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
         <button class="add-list-btn" id="simple-list-btn" onclick="toggleList('simple')">加入清單</button>
@@ -393,12 +392,6 @@
         <div class="page-title">進階推薦</div>
       </div>
     </div>
-    <div class="chances-bar">
-      <div class="chance-dot" id="dot-1"></div>
-      <div class="chance-dot" id="dot-2"></div>
-      <div class="chance-dot" id="dot-3"></div>
-      <span class="chances-text" id="chances-text"></span>
-    </div>
     <div class="result-area">
       <div class="result-label" id="adv-result-label"></div>
       <div class="restaurant-card">
@@ -408,12 +401,14 @@
           <span class="badge badge-price" id="adv-price"></span>
           <span class="badge badge-kind" id="adv-kind"></span>
           <span class="badge badge-area" id="adv-area"></span>
+          <span class="badge badge-hours" id="adv-hours"></span>
         </div>
         <a class="map-btn" id="adv-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
         <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">加入清單</button>
       </div>
     </div>
     <div class="reroll-row">
+      <div class="price-note">*抽到爽為止</div>
       <button class="roll-btn" id="adv-reroll-btn" onclick="doAdvReroll()">再抽一次</button>
       <div class="price-note">*價位標籤：$（~200元）、$$（200~600元）</div>
     </div>
@@ -454,7 +449,7 @@ const AVOID = 8;
 let currentUser = null;
 let myList = {};
 let currentGood = null, currentSimple = null, currentAdv = null;
-let advMode = null, advFilter = null, advChances = 3, advRecent = [];
+let advMode = null, advFilter = null, advRecent = [];
 let selectedArea = null, selectedKind = null;
 
 // ── 登入 ──
@@ -639,12 +634,14 @@ function doRoll() {
   document.getElementById('good-price').textContent = currentGood.price || '';
   document.getElementById('good-kind').textContent = currentGood.kind || '';
   document.getElementById('good-area').textContent = currentGood.area || '';
+  document.getElementById('good-hours').textContent = currentGood.hours ? '🕐 ' + currentGood.hours : '';
   document.getElementById('good-map').href = mapsUrl(currentGood.name, currentGood.addr);
   document.getElementById('simple-name').textContent = currentSimple.name;
   document.getElementById('simple-addr').textContent = currentSimple.addr;
   document.getElementById('simple-price').textContent = currentSimple.price || '';
   document.getElementById('simple-kind').textContent = currentSimple.kind || '';
   document.getElementById('simple-area').textContent = currentSimple.area || '';
+  document.getElementById('simple-hours').textContent = currentSimple.hours ? '🕐 ' + currentSimple.hours : '';
   document.getElementById('simple-map').href = mapsUrl(currentSimple.name, currentSimple.addr);
   updateAllListBtns();
   showScreen('screen-result');
@@ -686,7 +683,6 @@ function selectKind(kind) {
 function doAdvRoll(mode) {
   advMode = mode;
   advFilter = mode === 'area' ? selectedArea : selectedKind;
-  advChances = 3;
   advRecent = [];
   document.getElementById('adv-back-btn').setAttribute('data-back', mode === 'area' ? 'screen-adv-area' : 'screen-adv-kind');
   pickAdvOne();
@@ -694,7 +690,6 @@ function doAdvRoll(mode) {
 }
 
 function doAdvReroll() {
-  if (advChances <= 0) return;
   pickAdvOne();
 }
 
@@ -712,22 +707,17 @@ function pickAdvOne() {
   const finalPool = available.length > 0 ? available : pool;
   currentAdv = finalPool[Math.floor(Math.random() * finalPool.length)];
   advRecent.push(currentAdv.name);
-  advChances--;
   document.getElementById('adv-result-label').textContent = currentAdv.cat === '我不在乎錢' ? '✦ 我不在乎錢' : '✦ 我得省點錢';
   document.getElementById('adv-name').textContent = currentAdv.name;
   document.getElementById('adv-addr').textContent = currentAdv.addr;
   document.getElementById('adv-price').textContent = currentAdv.price || '';
   document.getElementById('adv-kind').textContent = currentAdv.kind || '';
   document.getElementById('adv-area').textContent = currentAdv.area || '';
+  document.getElementById('adv-hours').textContent = currentAdv.hours ? '🕐 ' + currentAdv.hours : '';
   document.getElementById('adv-map').href = mapsUrl(currentAdv.name, currentAdv.addr);
   updateAllListBtns();
-  updateDots();
 }
 
-function updateDots() {
-  for (let i = 1; i <= 3; i++) {
-    document.getElementById('dot-' + i).classList.toggle('used', i > advChances);
-  }
   const btn = document.getElementById('adv-reroll-btn');
   const text = document.getElementById('chances-text');
   if (advChances <= 0) {
