@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>美食冒險者</title>
 <script src="data.js"></script>
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <style>
@@ -29,8 +28,6 @@
   .screen { display: none; animation: fadeIn 0.18s ease; }
   .screen.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* 通用 */
   .home-hero { padding: 56px 28px 32px; text-align: center; }
   .app-icon { width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 24px; overflow: hidden; }
   .app-icon img { width: 72px; height: 72px; object-fit: cover; object-position: center; display: block; border-radius: 20px; }
@@ -48,14 +45,10 @@
   .back-btn { width: 36px; height: 36px; background: var(--color-surface); border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 18px; color: var(--color-text-sub); display: flex; align-items: center; justify-content: center; transition: background 0.12s; flex-shrink: 0; }
   .back-btn:hover { background: var(--color-border); }
   .page-title { font-size: 17px; font-weight: 600; color: var(--color-text-main); }
-
-  /* 登入頁 */
   .login-input { width: 100%; padding: 15px; font-size: 16px; border: 2.5px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text-main); outline: none; text-align: center; margin-bottom: 12px; font-family: var(--font); }
   .login-input:focus { border-color: var(--color-primary); }
   .login-error { color: #c0392b; font-size: 13px; margin-bottom: 12px; min-height: 18px; text-align: center; }
   .login-hint { font-size: 12px; color: var(--color-text-hint); text-align: center; margin-bottom: 20px; line-height: 1.6; }
-
-  /* 結果頁 */
   .result-area { padding: 16px 20px 0; }
   .result-label { font-size: 16px; font-weight: 700; color: #3D2009; margin-bottom: 10px; padding: 0 2px; }
   .restaurant-card { background: #FFFDF7; border: 5px solid var(--color-border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; text-align: center; position: relative; }
@@ -74,8 +67,6 @@
   .add-list-btn.added { background: #F5E4CC; color: var(--color-primary); border-color: var(--color-primary); }
   .reroll-row { padding: 12px 20px 36px; }
   .price-note { text-align: center; font-size: 11px; color: var(--color-text-hint); margin-top: 10px; }
-
-  /* 清單頁 */
   .list-area { padding: 16px 20px 32px; }
   .list-section-title { font-size: 13px; font-weight: 700; color: var(--color-text-hint); margin: 16px 0 8px; letter-spacing: 0.5px; }
   .list-item { background: #FFFDF7; border: 3px solid var(--color-border); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 10px; }
@@ -91,8 +82,6 @@
   .empty-state { text-align: center; padding: 48px 20px; color: var(--color-text-hint); font-size: 14px; line-height: 1.8; }
   .user-info { display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; font-size: 12px; color: var(--color-text-hint); }
   .switch-btn { font-size: 12px; color: var(--color-text-hint); background: none; border: none; cursor: pointer; text-decoration: underline; }
-
-  /* 進階 */
   .pw-input { width: 100%; padding: 15px; font-size: 16px; border: 2.5px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text-main); outline: none; text-align: center; margin-bottom: 12px; font-family: var(--font); }
   .pw-input:focus { border-color: var(--color-primary); }
   .pw-error { color: #c0392b; font-size: 13px; margin-bottom: 12px; min-height: 18px; text-align: center; }
@@ -131,7 +120,6 @@
 <body>
 <div class="app">
 
-  <!-- 登入頁 -->
   <div class="screen active" id="screen-login">
     <div class="home-hero">
       <div class="app-icon"><img id="login-icon" /></div>
@@ -140,14 +128,12 @@
       <div class="home-sub" style="margin-bottom:24px;">輸入你的暱稱和 PIN 碼開始冒險</div>
       <div class="login-hint">第一次使用？輸入暱稱和 4 位數 PIN 碼即可建立帳號</div>
       <input class="login-input" type="text" id="login-name" placeholder="暱稱" maxlength="20" />
-      <input class="login-input" type="password" id="login-pin" placeholder="4 位數 PIN 碼" maxlength="4" inputmode="numeric"
-        onkeydown="if(event.key==='Enter') doLogin()" />
+      <input class="login-input" type="password" id="login-pin" placeholder="4 位數 PIN 碼" maxlength="4" inputmode="numeric" onkeydown="if(event.key==='Enter') doLogin()" />
       <div class="login-error" id="login-error"></div>
       <button class="roll-btn" onclick="doLogin()">開始冒險</button>
     </div>
   </div>
 
-  <!-- 首頁 -->
   <div class="screen" id="screen-home">
     <div class="home-hero">
       <div class="app-icon"><img id="home-icon" /></div>
@@ -160,7 +146,6 @@
     </div>
   </div>
 
-  <!-- 普通結果頁 -->
   <div class="screen" id="screen-result">
     <div class="header">
       <div class="header-left">
@@ -171,6 +156,7 @@
     <div class="result-area">
       <div class="result-label">✦ 我不在乎錢</div>
       <div class="restaurant-card">
+        <button class="add-list-btn" id="good-list-btn" onclick="toggleList('good')">加入清單</button>
         <div class="card-name" id="good-name"></div>
         <div class="card-addr" id="good-addr"></div>
         <div class="card-meta">
@@ -180,10 +166,10 @@
           <span class="badge badge-hours" id="good-hours"></span>
         </div>
         <a class="map-btn" id="good-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
-        <button class="add-list-btn" id="good-list-btn" onclick="toggleList('good')">加入清單</button>
       </div>
       <div class="result-label" style="margin-top:4px;">✦ 我得省點錢</div>
       <div class="restaurant-card">
+        <button class="add-list-btn" id="simple-list-btn" onclick="toggleList('simple')">加入清單</button>
         <div class="card-name" id="simple-name"></div>
         <div class="card-addr" id="simple-addr"></div>
         <div class="card-meta">
@@ -193,7 +179,6 @@
           <span class="badge badge-hours" id="simple-hours"></span>
         </div>
         <a class="map-btn" id="simple-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
-        <button class="add-list-btn" id="simple-list-btn" onclick="toggleList('simple')">加入清單</button>
       </div>
     </div>
     <div class="reroll-row">
@@ -202,7 +187,6 @@
     </div>
   </div>
 
-  <!-- 我的清單頁 -->
   <div class="screen" id="screen-mylist">
     <div class="header">
       <div class="header-left">
@@ -219,22 +203,19 @@
     </div>
   </div>
 
-  <!-- 密碼頁 -->
   <div class="screen" id="screen-password">
     <div class="home-hero">
       <div class="app-icon"><img id="pw-icon" /></div>
       <div class="app-name">Advanced 美食冒險家</div>
       <div class="home-question">偉大的冒險者!<br>我給你帶來了禮物🎁</div>
       <div class="home-sub">輸入密碼獲得更強大的能力</div>
-      <input class="pw-input" type="password" id="pw-input" placeholder="輸入密碼"
-        onkeydown="if(event.key==='Enter') checkPassword()" />
+      <input class="pw-input" type="password" id="pw-input" placeholder="輸入密碼" onkeydown="if(event.key==='Enter') checkPassword()" />
       <div class="pw-error" id="pw-error"></div>
       <button class="roll-btn" onclick="checkPassword()">解鎖</button>
       <button class="secondary-btn" onclick="showScreen('screen-home')">← 返回</button>
     </div>
   </div>
 
-  <!-- 進階首頁 -->
   <div class="screen" id="screen-adv-home">
     <div class="home-hero" style="padding-bottom:24px;">
       <div class="app-icon"><img id="adv-icon" /></div>
@@ -257,7 +238,6 @@
     </div>
   </div>
 
-  <!-- 進階：選區域頁 -->
   <div class="screen" id="screen-adv-area">
     <div class="header">
       <div class="header-left">
@@ -265,7 +245,7 @@
         <div class="page-title">選區域</div>
       </div>
     </div>
-    <div style="text-align:center; font-size:14px; font-weight:600; color:var(--color-text-sub); padding:12px 20px 0;">冒險者，你現在在哪一區？</div>
+    <div style="text-align:center;font-size:14px;font-weight:600;color:var(--color-text-sub);padding:12px 20px 0;">冒險者，你現在在哪一區？</div>
     <div class="map-area">
       <div class="map-divider-h" style="margin-bottom:6px;">
         <div class="map-divider-line"></div>
@@ -327,7 +307,6 @@
     </div>
   </div>
 
-  <!-- 進階：選種類頁 -->
   <div class="screen" id="screen-adv-kind">
     <div class="header">
       <div class="header-left">
@@ -337,46 +316,16 @@
     </div>
     <div class="kind-area">
       <div class="kind-grid">
-        <div class="kind-btn" id="kind-澱粉" onclick="selectKind('澱粉')">
-          <div class="kind-emoji">🍜</div>
-          <div class="kind-name">不吃澱粉，怎麼會飽</div>
-        </div>
-        <div class="kind-btn" id="kind-掏寶" onclick="selectKind('掏寶')">
-          <div class="kind-emoji">🏪</div>
-          <div class="kind-name">小吃店，算是一種掏寶嗎</div>
-        </div>
-        <div class="kind-btn" id="kind-肉食" onclick="selectKind('肉食')">
-          <div class="kind-emoji">🥩</div>
-          <div class="kind-name">肉食性動物</div>
-        </div>
-        <div class="kind-btn" id="kind-把酒" onclick="selectKind('把酒')">
-          <div class="kind-emoji">🍺</div>
-          <div class="kind-name">把酒言歡</div>
-        </div>
-        <div class="kind-btn" id="kind-日式" onclick="selectKind('日式')">
-          <div class="kind-emoji">🍱</div>
-          <div class="kind-name">日式</div>
-        </div>
-        <div class="kind-btn" id="kind-韓式" onclick="selectKind('韓式')">
-          <div class="kind-emoji">🫕</div>
-          <div class="kind-name">韓式</div>
-        </div>
-        <div class="kind-btn" id="kind-東方" onclick="selectKind('東方')">
-          <div class="kind-emoji">🥢</div>
-          <div class="kind-name">東方菜</div>
-        </div>
-        <div class="kind-btn" id="kind-歐美" onclick="selectKind('歐美')">
-          <div class="kind-emoji">🍕</div>
-          <div class="kind-name">歐美情趣</div>
-        </div>
-        <div class="kind-btn" id="kind-東南亞" onclick="selectKind('東南亞')">
-          <div class="kind-emoji">🌿</div>
-          <div class="kind-name">東南亞的味道</div>
-        </div>
-        <div class="kind-btn" id="kind-驚喜" onclick="selectKind('驚喜')">
-          <div class="kind-emoji">🎁</div>
-          <div class="kind-name">驚喜寶箱</div>
-        </div>
+        <div class="kind-btn" id="kind-澱粉" onclick="selectKind('澱粉')"><div class="kind-emoji">🍜</div><div class="kind-name">不吃澱粉，怎麼會飽</div></div>
+        <div class="kind-btn" id="kind-掏寶" onclick="selectKind('掏寶')"><div class="kind-emoji">🏪</div><div class="kind-name">小吃店，算是一種掏寶嗎</div></div>
+        <div class="kind-btn" id="kind-肉食" onclick="selectKind('肉食')"><div class="kind-emoji">🥩</div><div class="kind-name">肉食性動物</div></div>
+        <div class="kind-btn" id="kind-把酒" onclick="selectKind('把酒')"><div class="kind-emoji">🍺</div><div class="kind-name">把酒言歡</div></div>
+        <div class="kind-btn" id="kind-日式" onclick="selectKind('日式')"><div class="kind-emoji">🍱</div><div class="kind-name">日式</div></div>
+        <div class="kind-btn" id="kind-韓式" onclick="selectKind('韓式')"><div class="kind-emoji">🫕</div><div class="kind-name">韓式</div></div>
+        <div class="kind-btn" id="kind-東方" onclick="selectKind('東方')"><div class="kind-emoji">🥢</div><div class="kind-name">東方菜</div></div>
+        <div class="kind-btn" id="kind-歐美" onclick="selectKind('歐美')"><div class="kind-emoji">🍕</div><div class="kind-name">歐美情趣</div></div>
+        <div class="kind-btn" id="kind-東南亞" onclick="selectKind('東南亞')"><div class="kind-emoji">🌿</div><div class="kind-name">東南亞的味道</div></div>
+        <div class="kind-btn" id="kind-驚喜" onclick="selectKind('驚喜')"><div class="kind-emoji">🎁</div><div class="kind-name">驚喜寶箱</div></div>
       </div>
     </div>
     <div class="map-confirm-btn">
@@ -384,7 +333,6 @@
     </div>
   </div>
 
-  <!-- 進階結果頁 -->
   <div class="screen" id="screen-adv-result">
     <div class="header">
       <div class="header-left">
@@ -395,6 +343,7 @@
     <div class="result-area">
       <div class="result-label" id="adv-result-label"></div>
       <div class="restaurant-card">
+        <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">加入清單</button>
         <div class="card-name" id="adv-name"></div>
         <div class="card-addr" id="adv-addr"></div>
         <div class="card-meta">
@@ -404,7 +353,6 @@
           <span class="badge badge-hours" id="adv-hours"></span>
         </div>
         <a class="map-btn" id="adv-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
-        <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">加入清單</button>
       </div>
     </div>
     <div class="reroll-row">
@@ -416,7 +364,6 @@
 
 </div>
 <script>
-// Firebase 設定
 const firebaseConfig = {
   apiKey: "AIzaSyBLtUHG69XT0Q6sMM4PGchI0Fhteaa26Po",
   authDomain: "food-adventure-2231c.firebaseapp.com",
@@ -429,50 +376,33 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 初始化圖示
 window.addEventListener('DOMContentLoaded', () => {
   const src = 'data:image/jpeg;base64,' + IMG_B64;
   document.querySelectorAll('.app-icon img').forEach(img => img.src = src);
-  // 檢查是否已登入
   const savedUser = localStorage.getItem('fa_user');
-  if (savedUser) {
-    currentUser = savedUser;
-    showScreen('screen-home');
-  }
+  if (savedUser) { currentUser = savedUser; showScreen('screen-home'); }
 });
 
-const FOOD_EMOJIS = ['🍜','🍱','🍣','🍛','🥩','🍖','🦐','🍝','🥗','🍲','🥘','🍤','🦑','🍙','🍚','🥟','🍗','🫕','🍢','🧆','🥚','🦞','🦀','🐠','🫔','🌮','🌯','🥙','🧇','🥞','🧈'];
 const ALL = [...GOOD.map(r => ({...r, cat:'我不在乎錢'})), ...SIMPLE.map(r => ({...r, cat:'我得省點錢'}))];
-
 const recentGood = [], recentSimple = [];
 const AVOID = 8;
-let currentUser = null;
-let myList = {};
+let currentUser = null, myList = {};
 let currentGood = null, currentSimple = null, currentAdv = null;
 let advMode = null, advFilter = null, advRecent = [];
 let selectedArea = null, selectedKind = null;
 
-// ── 登入 ──
 async function doLogin() {
   const name = document.getElementById('login-name').value.trim();
   const pin = document.getElementById('login-pin').value.trim();
   const error = document.getElementById('login-error');
-
   if (!name) { error.textContent = '請輸入暱稱'; return; }
   if (!/^\d{4}$/.test(pin)) { error.textContent = 'PIN 碼必須是 4 位數字'; return; }
-
   error.textContent = '驗證中...';
-
   try {
     const snap = await db.ref('users/' + name).once('value');
     if (snap.exists()) {
-      // 已有帳號，驗證 PIN
-      if (snap.val().pin !== pin) {
-        error.textContent = 'PIN 碼錯誤！';
-        return;
-      }
+      if (snap.val().pin !== pin) { error.textContent = 'PIN 碼錯誤！'; return; }
     } else {
-      // 新帳號，建立
       await db.ref('users/' + name).set({ pin, createdAt: Date.now() });
     }
     currentUser = name;
@@ -481,19 +411,15 @@ async function doLogin() {
     document.getElementById('login-name').value = '';
     document.getElementById('login-pin').value = '';
     showScreen('screen-home');
-  } catch(e) {
-    error.textContent = '連線失敗，請稍後再試';
-  }
+  } catch(e) { error.textContent = '連線失敗，請稍後再試'; }
 }
 
 function switchUser() {
-  currentUser = null;
-  myList = {};
+  currentUser = null; myList = {};
   localStorage.removeItem('fa_user');
   showScreen('screen-login');
 }
 
-// ── 清單 ──
 function loadMyList() {
   if (!currentUser) return;
   document.getElementById('user-display').textContent = '👤 ' + currentUser;
@@ -507,26 +433,12 @@ function loadMyList() {
 function renderList() {
   const area = document.getElementById('list-area');
   const items = Object.values(myList);
-
-  if (items.length === 0) {
-    area.innerHTML = '<div class="empty-state">還沒有想去的店<br>去抽一抽加入清單吧！</div>';
-    return;
-  }
-
+  if (items.length === 0) { area.innerHTML = '<div class="empty-state">還沒有想去的店<br>去抽一抽加入清單吧！</div>'; return; }
   const notVisited = items.filter(r => !r.visited);
   const visited = items.filter(r => r.visited);
-
   let html = '';
-
-  if (notVisited.length > 0) {
-    html += '<div class="list-section-title">📌 想去的</div>';
-    html += notVisited.map(r => renderListItem(r)).join('');
-  }
-  if (visited.length > 0) {
-    html += '<div class="list-section-title">✅ 去過的</div>';
-    html += visited.map(r => renderListItem(r)).join('');
-  }
-
+  if (notVisited.length > 0) { html += '<div class="list-section-title">📌 想去的</div>'; html += notVisited.map(r => renderListItem(r)).join(''); }
+  if (visited.length > 0) { html += '<div class="list-section-title">✅ 去過的</div>'; html += visited.map(r => renderListItem(r)).join(''); }
   area.innerHTML = html;
 }
 
@@ -535,40 +447,21 @@ function renderListItem(r) {
   const visitedClass = r.visited ? 'active-visited' : '';
   const likeClass = r.reaction === 'like' ? 'active-like' : '';
   const dislikeClass = r.reaction === 'dislike' ? 'active-dislike' : '';
-  return `
-    <div class="list-item">
-      <div class="list-item-name">${r.name}</div>
-      <div class="list-item-addr">${r.addr || ''}</div>
-      <div class="list-item-actions">
-        <button class="action-btn ${visitedClass}" onclick="toggleVisited('${key}')">✅ 去過了</button>
-        <button class="action-btn ${likeClass}" onclick="setReaction('${key}','like')">🥰 喜歡</button>
-        <button class="action-btn ${dislikeClass}" onclick="setReaction('${key}','dislike')">🥵 討厭</button>
-        <button class="delete-btn" onclick="removeFromList('${key}')">刪除</button>
-      </div>
-    </div>`;
+  return `<div class="list-item"><div class="list-item-name">${r.name}</div><div class="list-item-addr">${r.addr || ''}</div><div class="list-item-actions"><button class="action-btn ${visitedClass}" onclick="toggleVisited('${key}')">✅ 去過了</button><button class="action-btn ${likeClass}" onclick="setReaction('${key}','like')">🥰 喜歡</button><button class="action-btn ${dislikeClass}" onclick="setReaction('${key}','dislike')">🥵 討厭</button><button class="delete-btn" onclick="removeFromList('${key}')">刪除</button></div></div>`;
 }
 
 async function toggleList(type) {
   if (!currentUser) return;
   let r = type === 'good' ? currentGood : type === 'simple' ? currentSimple : currentAdv;
   if (!r) return;
-
   const key = r.name.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '_');
   const btn = document.getElementById(type + '-list-btn');
-
   if (myList[key]) {
-    // 已在清單，移除
     await db.ref('lists/' + currentUser + '/' + key).remove();
-    btn.textContent = '加入清單';
-    btn.classList.remove('added');
+    btn.textContent = '加入清單'; btn.classList.remove('added');
   } else {
-    // 加入清單
-    await db.ref('lists/' + currentUser + '/' + key).set({
-      key, name: r.name, addr: r.addr || '', kind: r.kind || '', area: r.area || '',
-      visited: false, reaction: null, addedAt: Date.now()
-    });
-    btn.textContent = '✓ 已加入';
-    btn.classList.add('added');
+    await db.ref('lists/' + currentUser + '/' + key).set({ key, name: r.name, addr: r.addr || '', kind: r.kind || '', area: r.area || '', visited: false, reaction: null, addedAt: Date.now() });
+    btn.textContent = '✓ 已加入'; btn.classList.add('added');
   }
 }
 
@@ -594,17 +487,11 @@ function updateAllListBtns() {
     const btn = document.getElementById(type + '-list-btn');
     if (!btn) return;
     const key = r.name.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '_');
-    if (myList[key]) {
-      btn.textContent = '✓ 已加入';
-      btn.classList.add('added');
-    } else {
-      btn.textContent = '加入清單';
-      btn.classList.remove('added');
-    }
+    if (myList[key]) { btn.textContent = '✓ 已加入'; btn.classList.add('added'); }
+    else { btn.textContent = '加入清單'; btn.classList.remove('added'); }
   });
 }
 
-// ── 畫面切換 ──
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -625,7 +512,6 @@ function rand(arr, recent) {
   return picked;
 }
 
-// ── 普通版 ──
 function doRoll() {
   currentGood = rand(GOOD, recentGood);
   currentSimple = rand(SIMPLE, recentSimple);
@@ -647,22 +533,13 @@ function doRoll() {
   showScreen('screen-result');
 }
 
-// ── 密碼 ──
 function checkPassword() {
   const input = document.getElementById('pw-input').value;
   const error = document.getElementById('pw-error');
-  if (input === 'foodie') {
-    document.getElementById('pw-input').value = '';
-    error.textContent = '';
-    showScreen('screen-adv-home');
-  } else {
-    error.textContent = '密碼錯誤，再試一次！';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
-  }
+  if (input === 'foodie') { document.getElementById('pw-input').value = ''; error.textContent = ''; showScreen('screen-adv-home'); }
+  else { error.textContent = '密碼錯誤，再試一次！'; document.getElementById('pw-input').value = ''; document.getElementById('pw-input').focus(); }
 }
 
-// ── 進階 ──
 function selectArea(area) {
   selectedArea = area;
   document.querySelectorAll('.map-cell, .map-right-bottom-cell').forEach(b => b.classList.remove('selected'));
@@ -689,18 +566,12 @@ function doAdvRoll(mode) {
   showScreen('screen-adv-result');
 }
 
-function doAdvReroll() {
-  pickAdvOne();
-}
+function doAdvReroll() { pickAdvOne(); }
 
 function pickAdvOne() {
   let pool = ALL.filter(r => {
-    if (advMode === 'area') {
-      return r.area && r.area.split(/[、,，]/).map(a => a.trim()).includes(advFilter);
-    } else {
-      const cat = KIND_MAP[r.kind] || '驚喜';
-      return cat === advFilter;
-    }
+    if (advMode === 'area') return r.area && r.area.split(/[、,，]/).map(a => a.trim()).includes(advFilter);
+    else { const cat = KIND_MAP[r.kind] || '驚喜'; return cat === advFilter; }
   });
   if (pool.length === 0) pool = ALL;
   const available = pool.filter(r => !advRecent.includes(r.name));
@@ -716,17 +587,6 @@ function pickAdvOne() {
   document.getElementById('adv-hours').textContent = currentAdv.hours ? '🕐 ' + currentAdv.hours : '';
   document.getElementById('adv-map').href = mapsUrl(currentAdv.name, currentAdv.addr);
   updateAllListBtns();
-}
-
-  const btn = document.getElementById('adv-reroll-btn');
-  const text = document.getElementById('chances-text');
-  if (advChances <= 0) {
-    text.textContent = '次數用完了';
-    btn.disabled = true; btn.style.opacity = '0.35'; btn.style.cursor = 'not-allowed';
-  } else {
-    text.textContent = `還有 ${advChances} 次機會`;
-    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
-  }
 }
 
 function goAdvBack() {
