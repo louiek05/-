@@ -58,7 +58,6 @@
   .badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-full); border: 1px solid transparent; }
   .badge-price { background: var(--color-surface); color: var(--color-text-sub); border-color: var(--color-border); }
   .badge-kind { background: var(--color-primary); color: var(--color-primary-text); border-color: var(--color-primary); }
-  .badge-area { background: #EDE0C4; color: #5A3D20; border-color: #C8A878; }
   .badge-hours { background: #E8F0F8; color: #2B5BA8; border-color: #B0CDE8; }
   .map-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 9px; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-text-sub); cursor: pointer; text-decoration: none; transition: background 0.12s; margin-bottom: 8px; }
   .map-btn:hover { background: var(--color-border); }
@@ -153,6 +152,7 @@
         <div class="page-title">今日推薦</div>
       </div>
     </div>
+    <div id="result-quote" style="font-size:11px; color:var(--color-text-main); text-align:center; padding:10px 20px 0; line-height:1.6; font-style:italic;"></div>
     <div class="result-area">
       <div class="result-label">✦ 奢華</div>
       <div class="restaurant-card">
@@ -162,7 +162,6 @@
         <div class="card-meta">
           <span class="badge badge-price" id="good-price"></span>
           <span class="badge badge-kind" id="good-kind"></span>
-          <span class="badge badge-area" id="good-area"></span>
           <span class="badge badge-hours" id="good-hours"></span>
         </div>
         <a class="map-btn" id="good-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
@@ -175,7 +174,6 @@
         <div class="card-meta">
           <span class="badge badge-price" id="simple-price"></span>
           <span class="badge badge-kind" id="simple-kind"></span>
-          <span class="badge badge-area" id="simple-area"></span>
           <span class="badge badge-hours" id="simple-hours"></span>
         </div>
         <a class="map-btn" id="simple-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
@@ -341,7 +339,7 @@
       </div>
     </div>
     <div class="result-area">
-      <div style="text-align:center; font-size:13px; color:var(--color-text-hint); margin-bottom:10px;">不知道要吃什麼，一直抽就對了</div>
+      <div id="adv-quote" style="font-size:11px; color:var(--color-text-main); text-align:center; padding:10px 20px 0; margin-bottom:10px; line-height:1.6; font-style:italic;"></div>
       <div class="restaurant-card">
         <button class="add-list-btn" id="adv-list-btn" onclick="toggleList('adv')">加入清單</button>
         <div class="card-name" id="adv-name"></div>
@@ -349,7 +347,6 @@
         <div class="card-meta">
           <span class="badge badge-price" id="adv-price"></span>
           <span class="badge badge-kind" id="adv-kind"></span>
-          <span class="badge badge-area" id="adv-area"></span>
           <span class="badge badge-hours" id="adv-hours"></span>
         </div>
         <a class="map-btn" id="adv-map" href="#" target="_blank">📍 在 Google Maps 查看</a>
@@ -382,6 +379,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const savedUser = localStorage.getItem('fa_user');
   if (savedUser) { currentUser = savedUser; showScreen('screen-home'); }
 });
+
+
+const QUOTES = [
+  '不被時間和社會束縛，幸福地填飽肚子的時候，你將變得隨心所欲，重獲自由。',
+  '美味的食物能瞬間讓人心情大好，忘卻煩惱',
+  '吃飯是一件大事，不能馬虎對待',
+  '孤獨不是懲罰，而是獎賞。因為它讓我有機會與自己對話，享受一個人的時光',
+  '食物不僅僅是滿足口腹之慾，它更是一種文化的傳承和情感的連結',
+  '每道菜都有它的故事，每一次品嘗都是一次旅行',
+  '在尋找美食的路上，我學會了欣賞不期而遇的美好',
+  '美食，是孤獨時最好的伴侶',
+];
+
+function randomQuote() {
+  return QUOTES[Math.floor(Math.random() * QUOTES.length)];
+}
 
 const ALL = [...GOOD.map(r => ({...r, cat:'我不在乎錢'})), ...SIMPLE.map(r => ({...r, cat:'我得省點錢'}))];
 const recentGood = [], recentSimple = [];
@@ -519,16 +532,15 @@ function doRoll() {
   document.getElementById('good-addr').textContent = currentGood.addr;
   document.getElementById('good-price').textContent = currentGood.price || '';
   document.getElementById('good-kind').textContent = currentGood.kind || '';
-  document.getElementById('good-area').textContent = currentGood.area || '';
   document.getElementById('good-hours').textContent = currentGood.hours ? '🕐 ' + currentGood.hours : '';
   document.getElementById('good-map').href = mapsUrl(currentGood.name, currentGood.addr);
   document.getElementById('simple-name').textContent = currentSimple.name;
   document.getElementById('simple-addr').textContent = currentSimple.addr;
   document.getElementById('simple-price').textContent = currentSimple.price || '';
   document.getElementById('simple-kind').textContent = currentSimple.kind || '';
-  document.getElementById('simple-area').textContent = currentSimple.area || '';
   document.getElementById('simple-hours').textContent = currentSimple.hours ? '🕐 ' + currentSimple.hours : '';
   document.getElementById('simple-map').href = mapsUrl(currentSimple.name, currentSimple.addr);
+  document.getElementById('result-quote').textContent = randomQuote();
   updateAllListBtns();
   showScreen('screen-result');
 }
@@ -583,9 +595,9 @@ function pickAdvOne() {
   document.getElementById('adv-addr').textContent = currentAdv.addr;
   document.getElementById('adv-price').textContent = currentAdv.price || '';
   document.getElementById('adv-kind').textContent = currentAdv.kind || '';
-  document.getElementById('adv-area').textContent = currentAdv.area || '';
   document.getElementById('adv-hours').textContent = currentAdv.hours ? '🕐 ' + currentAdv.hours : '';
   document.getElementById('adv-map').href = mapsUrl(currentAdv.name, currentAdv.addr);
+  document.getElementById('adv-quote').textContent = randomQuote();
   updateAllListBtns();
 }
 
