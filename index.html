@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小新的投資筆記</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2E8D6;
+    --card:#F9F2E3;
+    --line:#DFCDA5;
+    --border:#E2D2AC;
+    --ink:#2B2013;
+    --ink-soft:#6C5C41;
+    --ink-faint:#9C8E70;
+    --red:#AF3A2E;
+    --red-tint: rgba(175,58,46,0.10);
+    --rule: rgba(140,105,55,0.11);
+    --shadow: 0 1px 2px rgba(43,32,19,0.06), 0 10px 24px rgba(43,32,19,0.08);
+    --hole: #E7D8B2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#17130D;
+      --card:#1E1811;
+      --line:#362C1C;
+      --border:#3C3120;
+      --ink:#EEE4D2;
+      --ink-soft:#B4A487;
+      --ink-faint:#7C6E55;
+      --red:#E37864;
+      --red-tint: rgba(227,120,100,0.14);
+      --rule: rgba(210,180,120,0.06);
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 26px rgba(0,0,0,0.4);
+      --hole:#0D0A06;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#17130D;
+    --card:#1E1811;
+    --line:#362C1C;
+    --border:#3C3120;
+    --ink:#EEE4D2;
+    --ink-soft:#B4A487;
+    --ink-faint:#7C6E55;
+    --red:#E37864;
+    --red-tint: rgba(227,120,100,0.14);
+    --rule: rgba(210,180,120,0.06);
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 26px rgba(0,0,0,0.4);
+    --hole:#0D0A06;
+  }
+
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{
+    margin:0;
+    background-color:var(--paper);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 39px, var(--rule) 39px 40px);
+    color:var(--ink);
+    font-family:'Noto Sans TC', 'Space Mono', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Noto Serif TC','Noto Sans TC',serif; text-wrap:balance; margin:0;}
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .num{font-family:'Space Mono','Noto Sans TC',monospace; font-variant-numeric:tabular-nums;}
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--red);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .spiral{
+    height:16px;
+    background-color:var(--ink);
+    background-image: radial-gradient(circle at 10px 8px, var(--hole) 4px, transparent 4.5px);
+    background-size:28px 16px;
+    background-repeat:repeat-x;
+  }
+
+  .shell{
+    max-width:760px;
+    margin-inline:auto;
+    padding-inline:clamp(18px,5vw,32px);
+  }
+
+  .masthead{
+    padding-block:36px 28px;
+    border-bottom:1px solid var(--border);
+  }
+  .eyebrow{
+    margin:0 0 10px;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--red);
+    text-transform:uppercase;
+  }
+  .wordmark{
+    font-size:clamp(30px,6vw,44px);
+    font-weight:900;
+    line-height:1.15;
+  }
+  .tagline{
+    margin:14px 0 0;
+    max-width:52ch;
+    color:var(--ink-soft);
+    font-size:15px;
+    line-height:1.7;
+  }
+  .meta{
+    margin:18px 0 0;
+    font-size:13px;
+    color:var(--ink-faint);
+    letter-spacing:.04em;
+  }
+
+  /* ---------- index list ---------- */
+  .ledger{
+    list-style:none;
+    margin:0;
+    padding:8px 0 48px;
+  }
+  .ledger li{ border-bottom:1px solid var(--border); }
+  .ledger li:first-child{ border-top:1px solid var(--border); }
+  .row{
+    display:grid;
+    grid-template-columns:88px 1fr 20px;
+    align-items:center;
+    gap:16px;
+    padding:16px 6px;
+    text-decoration:none;
+    color:var(--ink);
+    border-radius:8px;
+    transition:background-color .15s ease, transform .15s ease;
+  }
+  @media (prefers-reduced-motion:reduce){ .row{transition:none;} }
+  .row:hover{ background:var(--card); transform:translateX(2px); }
+  .thumb{
+    width:88px;
+    aspect-ratio:4/3;
+    border-radius:6px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:var(--card);
+    box-shadow:var(--shadow);
+  }
+  .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .row-body{ min-width:0; display:flex; flex-direction:column; gap:6px; }
+  .badge{
+    display:inline-block;
+    align-self:flex-start;
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    color:var(--red);
+    background:var(--red-tint);
+    border:1px solid var(--red);
+    border-radius:3px;
+    padding:2px 7px;
+    transform:rotate(-2deg);
+  }
+  .row-title{
+    font-family:'Noto Serif TC',serif;
+    font-weight:700;
+    font-size:16.5px;
+    line-height:1.4;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .row-teaser{
+    font-size:13px;
+    color:var(--ink-soft);
+    font-style:italic;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .chevron{
+    font-size:20px;
+    color:var(--ink-faint);
+    text-align:center;
+  }
+
+  /* ---------- reader ---------- */
+  .reader{ padding-block:28px 56px; }
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    color:var(--ink-soft);
+    text-decoration:none;
+    padding:6px 2px;
+  }
+  .back-link:hover{ color:var(--red); }
+  .reader-head{
+    margin:18px 0 22px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .badge-lg{ font-size:12px; padding:3px 9px; }
+  .reader-title{
+    font-size:clamp(22px,4.5vw,30px);
+    font-weight:900;
+  }
+  .pages{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:28px;
+  }
+  .page{
+    width:100%;
+    max-width:620px;
+    border-radius:8px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+  }
+  .page-tab{
+    align-self:center;
+    margin:0;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:3px 12px;
+  }
+  .pull-quote{
+    margin:36px auto 0;
+    max-width:520px;
+    padding:18px 22px;
+    border-left:3px solid var(--red);
+    background:var(--card);
+    border-radius:0 8px 8px 0;
+    font-family:'Noto Serif TC',serif;
+    font-size:16px;
+    font-style:italic;
+    color:var(--ink);
+    text-align:center;
+  }
+  .ep-nav{
+    margin-top:32px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .ep-nav-btn{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--card);
+    min-width:0;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  @media (prefers-reduced-motion:reduce){ .ep-nav-btn{transition:none;} }
+  .ep-nav-btn:not(.is-disabled):hover{ border-color:var(--red); transform:translateY(-1px); }
+  .ep-nav-btn.is-disabled{ color:var(--ink-faint); }
+  .ep-nav-dir{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:.05em;
+    color:var(--ink-faint);
+  }
+  .ep-nav-name{
+    font-size:13.5px;
+    font-weight:500;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .back-link-bottom{ display:block; margin-top:28px; text-align:center; justify-content:center; }
+  .not-found{ padding:60px 0; text-align:center; color:var(--ink-soft); }
+
+  .site-footer{
+    padding:22px clamp(18px,5vw,32px) 40px;
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+
+  @media (max-width:420px){
+    .row{ grid-template-columns:72px 1fr 16px; gap:12px; }
+    .thumb{ width:72px; }
+    .ep-nav{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="spiral" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="shell">
+    <p class="eyebrow">投資教育漫畫</p>
+    <h1 class="wordmark">小新的投資筆記</h1>
+    <p class="tagline">從一杯檸檬汁開始，跟著阿倉、小新、小娜，一格一格看懂投資這件事。</p>
+    <p class="meta num" id="episode-count"></p>
+  </div>
+</header>
+
+<main class="shell" id="app"></main>
+
+<footer class="site-footer">
+  <p>小新的投資筆記 · 內容陸續更新中</p>
+</footer>
+
+<script>
+  var EPISODES = [
+    { id:'ep01', num:1, title:'你是投資還是投機？', teaser:'看懂行情，看懂自己，才是一輩子的功課', images:['images/ep01.webp'] },
+    { id:'ep02', num:2, title:'我的投資性格？', teaser:'方法沒有對錯，重要的是「交易的紀律」', images:['images/ep02.webp'] },
+    { id:'ep03', num:3, title:'投資的底氣', teaser:'嚴格遵守投資計畫，就是我們在市場裡的「底氣」', images:['images/ep03.webp'] },
+    { id:'ep04', num:4, title:'小新的第一家投資公司(1)', teaser:'投資，從你喝的那杯檸檬汁開始', images:['images/ep04.webp'] },
+    { id:'ep05', num:5, title:'一家公司的數字秘密', teaser:'這只是其中一個評斷標準，還有很多要學的呢', images:['images/ep05.webp'] },
+    { id:'ep06', num:6, title:'巴菲特的投資', teaser:'投資，就是看懂一家公司，然後「長期持有」它', images:['images/ep06-1.webp','images/ep06-2.webp','images/ep06-3.webp','images/ep06-4.webp'] },
+    { id:'ep07', num:7, title:'複利與時間的力量', teaser:'找到夠濕的雪，和夠長的坡，投資才能走得久遠', images:['images/ep07.webp'] },
+    { id:'ep08', num:8, title:'大家都再買的ETF', teaser:'ETF就是股票版的團購，一份錢通通參一咖', images:['images/ep08.webp'] },
+    { id:'ep09', num:9, title:'不同種類的ETF', teaser:'買之前，先看清楚它裡面到底裝了什麼', images:['images/ep09.webp'] },
+    { id:'ep10', num:10, title:'高股息ETF的三個陷阱', teaser:'你領的「息」，是真的多賺，還是公司把你的錢還你', images:['images/ep10.webp'] }
+  ];
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function findIndexById(id){
+    for (var i=0;i<EPISODES.length;i++){ if (EPISODES[i].id===id) return i; }
+    return -1;
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+
+  function renderIndexView(){
+    var rows = EPISODES.map(function(ep){
+      return '' +
+        '<li>' +
+          '<a class="row" href="#/' + ep.id + '">' +
+            '<span class="thumb"><img src="images/thumbs/' + ep.id + '.webp" alt="" loading="lazy" width="480" height="360"></span>' +
+            '<span class="row-body">' +
+              '<span class="badge num">EP.' + pad(ep.num) + '</span>' +
+              '<span class="row-title">' + esc(ep.title) + '</span>' +
+              '<span class="row-teaser">「' + esc(ep.teaser) + '」</span>' +
+            '</span>' +
+            '<span class="chevron" aria-hidden="true">›</span>' +
+          '</a>' +
+        '</li>';
+    }).join('');
+    return '<ul class="ledger" role="list">' + rows + '</ul>';
+  }
+
+  function renderReaderView(id){
+    var idx = findIndexById(id);
+    if (idx === -1){
+      return '<div class="not-found"><p>找不到這一集。</p><a class="back-link" href="#/">← 回到集數列表</a></div>';
+    }
+    var ep = EPISODES[idx];
+    var prev = EPISODES[idx-1];
+    var next = EPISODES[idx+1];
+
+    var pages = ep.images.map(function(src, i){
+      var tab = ep.images.length > 1 ? '<p class="page-tab num">' + (i+1) + ' / ' + ep.images.length + '</p>' : '';
+      return tab + '<img class="page" src="' + src + '" alt="' + esc(ep.title) + ' 第' + (i+1) + '頁" loading="lazy">';
+    }).join('');
+
+    var prevBtn = prev
+      ? '<a class="ep-nav-btn" href="#/' + prev.id + '"><span class="ep-nav-dir">◀ 上一集</span><span class="ep-nav-name">' + esc(prev.title) + '</span></a>'
+      : '<span class="ep-nav-btn is-disabled"><span class="ep-nav-dir">◀ 上一集</span><span class="ep-nav-name">已經是第一集</span></span>';
+    var nextBtn = next
+      ? '<a class="ep-nav-btn" href="#/' + next.id + '"><span class="ep-nav-dir">下一集 ▶</span><span class="ep-nav-name">' + esc(next.title) + '</span></a>'
+      : '<span class="ep-nav-btn is-disabled"><span class="ep-nav-dir">下一集 ▶</span><span class="ep-nav-name">已經是最新一集</span></span>';
+
+    return '' +
+      '<div class="reader">' +
+        '<a class="back-link" href="#/">← 回到集數列表</a>' +
+        '<div class="reader-head">' +
+          '<span class="badge badge-lg num">EP.' + pad(ep.num) + '</span>' +
+          '<h2 class="reader-title">' + esc(ep.title) + '</h2>' +
+        '</div>' +
+        '<div class="pages">' + pages + '</div>' +
+        '<blockquote class="pull-quote">「' + esc(ep.teaser) + '」</blockquote>' +
+        '<nav class="ep-nav">' + prevBtn + nextBtn + '</nav>' +
+        '<a class="back-link back-link-bottom" href="#/">← 回到集數列表</a>' +
+      '</div>';
+  }
+
+  function render(){
+    var hash = location.hash.replace(/^#\/?/, '');
+    var app = document.getElementById('app');
+    if (!hash){
+      app.innerHTML = renderIndexView();
+      document.title = '小新的投資筆記';
+    } else {
+      app.innerHTML = renderReaderView(hash);
+      var idx = findIndexById(hash);
+      document.title = idx > -1 ? ('EP.' + EPISODES[idx].num + ' ' + EPISODES[idx].title + ' · 小新的投資筆記') : ('找不到這一集 · 小新的投資筆記');
+      window.scrollTo(0,0);
+    }
+  }
+
+  document.getElementById('episode-count').textContent = '共 ' + EPISODES.length + ' 集';
+  window.addEventListener('hashchange', render);
+  render();
+</script>
+
+</body>
+</html>
